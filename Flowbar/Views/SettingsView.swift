@@ -470,10 +470,22 @@ struct SettingsView: View {
         }
     }
     
-    // Bildirim izni ister
+    // Bildirim izni ister veya reddedildiyse sistem ayarlarına yönlendirir
     private func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
-            checkNotificationStatus()
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                if settings.authorizationStatus == .denied {
+                    // İzin reddedildiyse kullanıcıyı Sistem Ayarları -> Bildirimler sayfasına yönlendir
+                    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
+                        NSWorkspace.shared.open(url)
+                    }
+                } else {
+                    // İzin belirlenmediyse sistem pop-up'ını tetikle
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+                        self.checkNotificationStatus()
+                    }
+                }
+            }
         }
     }
     
