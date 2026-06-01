@@ -152,15 +152,13 @@ final class ProjectManagementTests: XCTestCase {
         let projects = PopoverLayout.size(for: .projects)
         let history = PopoverLayout.size(for: .history)
 
-        XCTAssertLessThan(session.width, projects.width)
+        XCTAssertEqual(session.width, 480)
+        XCTAssertEqual(projects.width, 480)
+        XCTAssertEqual(history.width, 480)
         XCTAssertLessThan(session.height, projects.height)
-        XCTAssertLessThan(session.width, history.width)
         XCTAssertLessThan(session.height, history.height)
-        XCTAssertEqual(session.width, 390)
         XCTAssertEqual(session.height, 318)
-        XCTAssertEqual(projects.width, 560)
         XCTAssertEqual(projects.height, 640)
-        XCTAssertEqual(history.width, 520)
         XCTAssertEqual(history.height, 560)
     }
 

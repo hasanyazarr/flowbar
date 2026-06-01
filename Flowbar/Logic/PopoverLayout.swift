@@ -23,9 +23,9 @@ enum PopoverLayout {
         case .session:
             return sessionSize(projectRowCount: 1, recentSessionCount: 0)
         case .projects:
-            return CGSize(width: 560, height: 640)
+            return CGSize(width: 480, height: 640)
         case .history:
-            return CGSize(width: 520, height: 560)
+            return CGSize(width: 480, height: 560)
         case .analytics:
             return CGSize(width: 480, height: 620)
         case .remind:
@@ -46,7 +46,7 @@ enum PopoverLayout {
         let height = 282
             + CGFloat(visibleProjectRows) * sessionProjectRowHeight
             + recentHeight
-        return CGSize(width: 390, height: min(height, sessionMaxHeight))
+        return CGSize(width: 480, height: min(height, sessionMaxHeight))
     }
 
     /// Geçmiş sekmesi boyutu. Manuel ekleme formu açıkken liste için yer kalsın diye uzar.

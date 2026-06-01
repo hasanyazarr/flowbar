@@ -106,7 +106,7 @@ struct HomeView: View {
         switch selectedTab {
         case .session:
             if stopwatch.isRunning {
-                return CGSize(width: 390, height: 260)
+                return CGSize(width: 480, height: 260)
             } else {
                 return PopoverLayout.sessionSize(
                     projectRowCount: projectPickerRowCount,
