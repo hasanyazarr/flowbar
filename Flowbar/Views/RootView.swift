@@ -1,8 +1,10 @@
 import SwiftUI
+import SwiftData
 
 struct RootView: View {
     @EnvironmentObject var appState: AppState
     @AppStorage("backgroundStyle") private var backgroundStyle = "glass"
+    @Query(sort: \Session.endedAt, order: .reverse) private var allSessions: [Session]
 
     var body: some View {
         Group {
@@ -23,5 +25,8 @@ struct RootView: View {
                 }
             }
         )
+        .onAppear {
+            AutoBackupManager.shared.checkAndRunBackup(sessions: allSessions)
+        }
     }
 }

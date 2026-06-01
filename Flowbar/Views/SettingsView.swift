@@ -18,6 +18,9 @@ struct SettingsView: View {
     
     @AppStorage("menuBarDisplayMode") private var menuBarDisplayMode = "iconAndTimer"
     @AppStorage("backgroundStyle") private var backgroundStyle = "glass"
+    @AppStorage("backupFrequency") private var backupFrequency = "never"
+    @AppStorage("backupDirectoryPath") private var backupDirectoryPath = ""
+    @AppStorage("lastBackupDate") private var lastBackupDate: Double = 0
     
     @State private var showDeleteConfirm = false
     @State private var deleteConfirmText = ""
@@ -163,7 +166,76 @@ struct SettingsView: View {
                             .stroke(CategorySurface.border, lineWidth: 1)
                     }
                     
-                    // 3. Veri İstatistikleri ve Yönetimi
+                    // 3. Otomatik Yedekleme Ayarları
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("Otomatik Yedekleme", systemImage: "archivebox.fill")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                        
+                        // Sıklık Seçimi
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Yedekleme Sıklığı")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                            
+                            Picker("", selection: $backupFrequency) {
+                                Text("Kapalı").tag("never")
+                                Text("Haftalık").tag("weekly")
+                                Text("Aylık").tag("monthly")
+                            }
+                            .pickerStyle(.segmented)
+                            .controlSize(.small)
+                        }
+                        
+                        Divider().padding(.vertical, 2)
+                        
+                        // Klasör Seçimi
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Yedekleme Klasörü")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                            
+                            HStack {
+                                Text(backupDirectoryPath.isEmpty ? "Klasör Seçilmedi" : backupDirectoryPath)
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(1)
+                                    .truncationMode(.middle)
+                                
+                                Spacer()
+                                
+                                Button(backupDirectoryPath.isEmpty ? "Klasör Seç..." : "Değiştir...") {
+                                    selectBackupDirectory()
+                                }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
+                            }
+                        }
+                        
+                        if !backupDirectoryPath.isEmpty && backupFrequency != "never" {
+                            Divider().padding(.vertical, 2)
+                            
+                            HStack {
+                                Text("Son Yedekleme:")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Text(formattedLastBackupDate())
+                                    .font(.caption2)
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                    }
+                    .padding(12)
+                    .background(CategorySurface.panel)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(CategorySurface.border, lineWidth: 1)
+                    }
+                    
+                    // 4. Veri İstatistikleri ve Yönetimi
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Veri ve Depolama", systemImage: "database.fill")
                             .font(.subheadline)
@@ -560,5 +632,30 @@ struct SettingsView: View {
                 NSApp.terminate(nil)
             }
         }
+    }
+    
+    // Kullanıcıya yedekleme klasörü seçtirir ve yer işaretini kaydeder
+    private func selectBackupDirectory() {
+        let openPanel = NSOpenPanel()
+        openPanel.canChooseDirectories = true
+        openPanel.canChooseFiles = false
+        openPanel.allowsMultipleSelection = false
+        openPanel.title = "Yedekleme Klasörünü Seçin"
+        openPanel.message = "Otomatik yedeklerin kaydedileceği klasörü seçin."
+        
+        let response = openPanel.runModal()
+        if response == .OK, let url = openPanel.url {
+            AutoBackupManager.shared.saveBookmark(url: url)
+        }
+    }
+    
+    // Son yedekleme tarihini biçimlendirip döndürür
+    private func formattedLastBackupDate() -> String {
+        guard lastBackupDate > 0 else { return "Henüz yedek alınmadı" }
+        let date = Date(timeIntervalSince1970: lastBackupDate)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMMM yyyy, HH:mm"
+        formatter.locale = Locale(identifier: "tr_TR")
+        return formatter.string(from: date)
     }
 }
