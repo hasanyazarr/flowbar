@@ -20,6 +20,7 @@ struct SettingsView: View {
     @AppStorage("backgroundStyle") private var backgroundStyle = "glass"
     
     @State private var showDeleteConfirm = false
+    @State private var deleteConfirmText = ""
     @State private var notificationStatus: String = "Kontrol ediliyor…"
     @State private var launchAtLoginEnabled: Bool = {
         if #available(macOS 13.0, *) {
@@ -210,31 +211,62 @@ struct SettingsView: View {
                         
                         Divider()
                         
-                        HStack {
-                            Button("Tamamlanan Hatırlatıcıları Temizle") {
-                                clearCompletedReminders()
-                            }
-                            .buttonStyle(.bordered)
-                            .controlSize(.small)
-                            .disabled(allReminders.filter { $0.isCompleted }.isEmpty)
-                            
-                            Spacer()
-                            
-                            if showDeleteConfirm {
+                        if showDeleteConfirm {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("DİKKAT: Tüm kayıtlı oturumlar, projeler ve hatırlatıcılar kalıcı olarak silinecektir. Bu işlem geri alınamaz!")
+                                    .font(.caption2)
+                                    .foregroundColor(.red)
+                                    .fontWeight(.semibold)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                
                                 HStack(spacing: 8) {
+                                    TextField("Onaylamak için 'SIFIRLA' yazın", text: $deleteConfirmText)
+                                        .textFieldStyle(.roundedBorder)
+                                        .controlSize(.small)
+                                    
                                     Button("Vazgeç") {
-                                        showDeleteConfirm = false
+                                        withAnimation(.snappy(duration: 0.16)) {
+                                            showDeleteConfirm = false
+                                            deleteConfirmText = ""
+                                        }
                                     }
                                     .buttonStyle(.bordered)
                                     .controlSize(.small)
                                     
-                                    Button("Tümünü Sıfırla", role: .destructive) {
+                                    Button("Sıfırla", role: .destructive) {
                                         resetDatabase()
+                                        withAnimation(.snappy(duration: 0.16)) {
+                                            showDeleteConfirm = false
+                                            deleteConfirmText = ""
+                                        }
                                     }
                                     .buttonStyle(.borderedProminent)
                                     .controlSize(.small)
+                                    .disabled(deleteConfirmText != "SIFIRLA")
                                 }
-                            } else {
+                            }
+                            .padding(8)
+                            .background(Color.red.opacity(0.06))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.red.opacity(0.2), lineWidth: 1)
+                            }
+                            .transition(.asymmetric(
+                                insertion: .opacity.combined(with: .scale(scale: 0.98)),
+                                removal: .opacity
+                            ))
+                        } else {
+                            HStack {
+                                Button("Tamamlanan Hatırlatıcıları Temizle") {
+                                    clearCompletedReminders()
+                                }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
+                                .disabled(allReminders.filter { $0.isCompleted }.isEmpty)
+                                
+                                Spacer()
+                                
                                 HStack(spacing: 8) {
                                     Button {
                                         restartApp()
@@ -245,7 +277,9 @@ struct SettingsView: View {
                                     .controlSize(.small)
                                     
                                     Button("Tüm Verileri Sıfırla", role: .destructive) {
-                                        showDeleteConfirm = true
+                                        withAnimation(.snappy(duration: 0.16)) {
+                                            showDeleteConfirm = true
+                                        }
                                     }
                                     .buttonStyle(.bordered)
                                     .controlSize(.small)
