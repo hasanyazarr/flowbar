@@ -611,6 +611,9 @@ struct SettingsView: View {
         savePanel.title = "Verileri Kaydet"
         savePanel.message = "Flowbar verilerini kaydetmek istediğiniz konumu seçin."
         
+        // Modal diyalog açılmadan önce uygulamayı ön plana alarak odaklanmayı (focus) garanti ediyoruz
+        NSApp.activate(ignoringOtherApps: true)
+        
         let response = savePanel.runModal()
         if response == .OK, let url = savePanel.url {
             do {
@@ -640,8 +643,12 @@ struct SettingsView: View {
         openPanel.canChooseDirectories = true
         openPanel.canChooseFiles = false
         openPanel.allowsMultipleSelection = false
+        openPanel.canCreateDirectories = true // Kullanıcı dilerse yeni yedekleme alt klasörü oluşturabilsin
         openPanel.title = "Yedekleme Klasörünü Seçin"
         openPanel.message = "Otomatik yedeklerin kaydedileceği klasörü seçin."
+        
+        // Modal diyalog açılmadan önce uygulamayı ön plana alarak odaklanmayı (focus) garanti ediyoruz
+        NSApp.activate(ignoringOtherApps: true)
         
         let response = openPanel.runModal()
         if response == .OK, let url = openPanel.url {
