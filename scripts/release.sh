@@ -46,7 +46,8 @@ TAG="v$NEW"
 echo "▸ Sürüm: $CURRENT → $NEW"
 
 # --- Güvenlik kontrolleri ---
-if git rev-parse "$TAG" >/dev/null 2>&1; then
+# Tag çakışmasını yalnızca gerçekten tag atacaksak engelle (local-only kurulumda atla).
+if [[ "${SKIP_TAG:-0}" != "1" ]] && git rev-parse "$TAG" >/dev/null 2>&1; then
   echo "✗ '$TAG' tag'i zaten var. Daha yüksek bir versiyon seç."; exit 1
 fi
 
