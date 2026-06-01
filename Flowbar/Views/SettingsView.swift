@@ -177,7 +177,7 @@ struct SettingsView: View {
                             Button {
                                 exportSessionsToJSON()
                             } label: {
-                                Label("JSON", systemImage: "braces")
+                                Label("JSON", systemImage: "curlybraces")
                                     .font(.caption2)
                             }
                             .buttonStyle(.bordered)
