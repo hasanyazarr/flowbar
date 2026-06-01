@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import UserNotifications
+import ServiceManagement
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var context
@@ -13,8 +14,16 @@ struct SettingsView: View {
     
     let onBack: () -> Void
     
+    @AppStorage("menuBarDisplayMode") private var menuBarDisplayMode = "iconAndTimer"
+    
     @State private var showDeleteConfirm = false
     @State private var notificationStatus: String = "Kontrol ediliyor…"
+    @State private var launchAtLoginEnabled: Bool = {
+        if #available(macOS 13.0, *) {
+            return SMAppService.mainApp.status == .enabled
+        }
+        return false
+    }()
     
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -75,7 +84,62 @@ struct SettingsView: View {
                             .stroke(CategorySurface.border, lineWidth: 1)
                     }
                     
-                    // 2. Veri İstatistikleri ve Yönetimi
+                    // 2. Genel Tercihler
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("Genel Tercihler", systemImage: "sliders.horizontal.3")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                        
+                        // Menü Bar Tercihi
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Menü Bar Gösterimi")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                            
+                            Picker("", selection: $menuBarDisplayMode) {
+                                Text("Simge ve Süre").tag("iconAndTimer")
+                                Text("Yalnızca Süre").tag("timerOnly")
+                                Text("Yalnızca Simge").tag("iconOnly")
+                            }
+                            .pickerStyle(.segmented)
+                            .controlSize(.small)
+                            
+                            Text("Sayaç çalışırken menü barında ne görüntüleneceğini ayarlar.")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        Divider().padding(.vertical, 2)
+                        
+                        // Başlangıçta Otomatik Çalıştır
+                        Toggle(isOn: Binding(
+                            get: { launchAtLoginEnabled },
+                            set: { newValue in
+                                launchAtLoginEnabled = newValue
+                                toggleLaunchAtLogin(enabled: newValue)
+                            }
+                        )) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Sistem Açılışında Otomatik Başlat")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                                Text("Bilgisayarınızı açtığınızda Flowbar kendiliğinden çalışır.")
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .toggleStyle(.checkbox)
+                    }
+                    .padding(12)
+                    .background(CategorySurface.panel)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(CategorySurface.border, lineWidth: 1)
+                    }
+                    
+                    // 3. Veri İstatistikleri ve Yönetimi
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Veri ve Depolama", systemImage: "database.fill")
                             .font(.subheadline)
@@ -134,7 +198,7 @@ struct SettingsView: View {
                             .stroke(CategorySurface.border, lineWidth: 1)
                     }
                     
-                    // 3. Hakkında ve Görünüm
+                    // 4. Hakkında ve Görünüm
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Uygulama Hakkında", systemImage: "info.circle.fill")
                             .font(.subheadline)
@@ -147,6 +211,43 @@ struct SettingsView: View {
                         Text("Gelişmiş haftalık zaman planlayıcı ve hatırlatıcı menü bar aracı. macOS sistem görünümünü (Açık/Karanlık mod) otomatik takip eder.")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
+                    }
+                    .padding(12)
+                    .background(CategorySurface.panel)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(CategorySurface.border, lineWidth: 1)
+                    }
+                    
+                    // 5. Geliştirici & Topluluk
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("Geliştirici & Topluluk", systemImage: "person.2.fill")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Color.accentColor)
+                        
+                        Text("Flowbar açık kaynaklı bir projedir. Katkıda bulunmak veya karşılaştığınız sorunları bildirmek için GitHub sayfamızı ziyaret edin.")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        
+                        HStack(spacing: 8) {
+                            Link(destination: URL(string: "https://github.com/hasanyazarr/flowbar")!) {
+                                Label("GitHub Projesi", systemImage: "arrow.up.forward.app.fill")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            
+                            Link(destination: URL(string: "https://github.com/hasanyazarr/flowbar/issues")!) {
+                                Label("Sorun Bildir", systemImage: "ladybug.fill")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                        }
                     }
                     .padding(12)
                     .background(CategorySurface.panel)
@@ -227,6 +328,28 @@ struct SettingsView: View {
             for reminder in allReminders { context.delete(reminder) }
             
             showDeleteConfirm = false
+        }
+    }
+    
+    // Başlangıçta otomatik çalıştırmayı açar/kapatır
+    private func toggleLaunchAtLogin(enabled: Bool) {
+        if #available(macOS 13.0, *) {
+            let appService = SMAppService.mainApp
+            if enabled {
+                do {
+                    try appService.register()
+                } catch {
+                    print("Otomatik başlatma kaydedilemedi: \(error.localizedDescription)")
+                    launchAtLoginEnabled = false
+                }
+            } else {
+                do {
+                    try appService.unregister()
+                } catch {
+                    print("Otomatik başlatma kaydı silinemedi: \(error.localizedDescription)")
+                    launchAtLoginEnabled = true
+                }
+            }
         }
     }
 }

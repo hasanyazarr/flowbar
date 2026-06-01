@@ -5,6 +5,8 @@ import SwiftData
 struct WeeklyMenubarApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var stopwatch = StopwatchModel()
+    
+    @AppStorage("menuBarDisplayMode") private var menuBarDisplayMode = "iconAndTimer"
 
     let container = PersistenceController.makeContainer()
 
@@ -16,7 +18,14 @@ struct WeeklyMenubarApp: App {
                 .modelContainer(container)
         } label: {
             if stopwatch.isRunning {
-                Text("⏱ \(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))")
+                switch menuBarDisplayMode {
+                case "timerOnly":
+                    Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
+                case "iconOnly":
+                    Image(systemName: "timer")
+                default:
+                    Text("⏱ \(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))")
+                }
             } else {
                 Image(systemName: "timer")
             }
