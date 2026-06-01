@@ -339,23 +339,13 @@ struct SettingsView: View {
                                 
                                 Spacer()
                                 
-                                HStack(spacing: 8) {
-                                    Button {
-                                        restartApp()
-                                    } label: {
-                                        Label("Yeniden Başlat", systemImage: "arrow.clockwise")
+                                Button("Tüm Verileri Sıfırla", role: .destructive) {
+                                    withAnimation(.snappy(duration: 0.16)) {
+                                        showDeleteConfirm = true
                                     }
-                                    .buttonStyle(.bordered)
-                                    .controlSize(.small)
-                                    
-                                    Button("Tüm Verileri Sıfırla", role: .destructive) {
-                                        withAnimation(.snappy(duration: 0.16)) {
-                                            showDeleteConfirm = true
-                                        }
-                                    }
-                                    .buttonStyle(.bordered)
-                                    .controlSize(.small)
                                 }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
                             }
                         }
                     }
@@ -411,6 +401,18 @@ struct SettingsView: View {
                             
                             Link(destination: URL(string: "https://github.com/hasanyazarr/flowbar/issues")!) {
                                 Label("Sorun Bildir", systemImage: "ladybug.fill")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            
+                            Spacer()
+                            
+                            Button {
+                                restartApp()
+                            } label: {
+                                Label("Yeniden Başlat", systemImage: "arrow.clockwise")
                                     .font(.caption)
                                     .fontWeight(.medium)
                             }
