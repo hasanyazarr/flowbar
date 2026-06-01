@@ -1437,11 +1437,11 @@ private struct CategoryChip: View {
 
     var body: some View {
         Text(name)
-            .font(.caption)
+            .font(.caption2)
             .fontWeight(.semibold)
             .foregroundStyle(.white)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2.5)
             .background((Color(hex: hex) ?? .gray).opacity(0.68))
             .clipShape(Capsule())
     }
@@ -1462,14 +1462,14 @@ private struct FilterChip: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.caption)
+                .font(.caption2)
                 .fontWeight(.semibold)
-                .foregroundStyle(isSelected ? .white : .primary)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 4)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 3.5)
                 .background(background)
                 .overlay {
-                    Capsule().stroke(tint.opacity(isSelected ? 0 : 0.6), lineWidth: 1)
+                    Capsule().stroke(.white.opacity(isSelected ? 0.9 : 0), lineWidth: 1.5)
                 }
                 .clipShape(Capsule())
         }
@@ -1480,13 +1480,8 @@ private struct FilterChip: View {
     }
 
     private var background: some View {
-        Group {
-            if isSelected {
-                tint.opacity(0.68)
-            } else {
-                tint.opacity(isHovering ? 0.25 : 0.12)
-            }
-        }
+        // Kategori çipleriyle aynı parlaklık (0.68); seçim, beyaz kenarlıkla belli olur.
+        tint.opacity(0.68)
     }
 }
 

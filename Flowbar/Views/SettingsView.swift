@@ -418,6 +418,16 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.small)
+
+                            Button(role: .destructive) {
+                                quitApp()
+                            } label: {
+                                Label("Çıkış", systemImage: "power")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
                         }
                     }
                     .padding(12)
@@ -649,6 +659,12 @@ struct SettingsView: View {
                 NSApp.terminate(nil)
             }
         }
+    }
+
+    // Uygulamadan tamamen çıkar (çalışan sayaç varsa önce durdurur)
+    private func quitApp() {
+        stopwatch.stop()
+        NSApp.terminate(nil)
     }
     
     // Kullanıcıya yedekleme klasörü seçtirir ve yer işaretini kaydeder
