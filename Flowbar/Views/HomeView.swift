@@ -752,13 +752,24 @@ private struct ProjectExpandableCard: View {
     @Query(sort: \Category.name) private var categories: [Category]
     @State private var showDeleteConfirm = false
 
+    private var statusColor: Color {
+        switch project.status {
+        case .inProgress: return .green
+        case .continuous: return .blue
+        case .paused: return .orange
+        case .done: return .secondary
+        }
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: isExpanded ? 10 : 0) {
+        VStack(alignment: .leading, spacing: isExpanded ? 14 : 0) {
             Button(action: onToggle) {
-                HStack(spacing: 9) {
-                    Image(systemName: isExpanded ? "chevron.down.circle.fill" : "chevron.right.circle")
+                HStack(spacing: 12) {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 9, weight: .bold))
                         .foregroundStyle(isExpanded ? Color.accentColor : .secondary)
-                        .frame(width: 18)
+                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                        .frame(width: 14)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text(project.name)
@@ -766,7 +777,7 @@ private struct ProjectExpandableCard: View {
                             .fontWeight(.semibold)
                             .lineLimit(1)
 
-                        HStack(spacing: 6) {
+                        HStack(spacing: 8) {
                             if let category = project.category {
                                 CategoryChip(name: category.name, hex: category.colorHex)
                             } else {
@@ -774,18 +785,29 @@ private struct ProjectExpandableCard: View {
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
-                            Text(project.status.label)
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
+                            
+                            HStack(spacing: 4) {
+                                Circle()
+                                    .fill(statusColor)
+                                    .frame(width: 6, height: 6)
+                                Text(project.status.label)
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
 
                     Spacer(minLength: 10)
 
-                    Text(Duration.short(seconds: project.totalLoggedSeconds))
-                        .foregroundStyle(.secondary)
-                        .font(.caption)
-                        .monospacedDigit()
+                    HStack(spacing: 5) {
+                        Image(systemName: "clock")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text(Duration.short(seconds: project.totalLoggedSeconds))
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                            .monospacedDigit()
+                    }
                 }
                 .contentShape(Rectangle())
             }
@@ -793,28 +815,62 @@ private struct ProjectExpandableCard: View {
 
             if isExpanded {
                 Divider()
-                    .padding(.leading, 28)
+                    .opacity(0.6)
 
-                VStack(alignment: .leading, spacing: 8) {
-                    TextField("Proje adı", text: $project.name)
-                        .textFieldStyle(.roundedBorder)
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("PROJE ADI")
+                            .font(.system(size: 9, weight: .bold, design: .rounded))
+                            .foregroundStyle(.secondary)
+                        
+                        TextField("Proje adı", text: $project.name)
+                            .textFieldStyle(.plain)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 7)
+                            .background(Color(nsColor: .textBackgroundColor).opacity(0.4))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .stroke(Color(nsColor: .separatorColor).opacity(0.5), lineWidth: 1)
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                    }
 
-                    HStack(spacing: 10) {
-                        Picker("Kategori", selection: $project.category) {
-                            Text("Yok").tag(Category?.none)
-                            ForEach(categories) { category in
-                                Text(category.name).tag(Category?.some(category))
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("KATEGORİ")
+                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                .foregroundStyle(.secondary)
+                            
+                            Picker("", selection: $project.category) {
+                                Text("Yok").tag(Category?.none)
+                                ForEach(categories) { category in
+                                    Text(category.name).tag(Category?.some(category))
+                                }
                             }
+                            .pickerStyle(.menu)
+                            .labelsHidden()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .frame(maxWidth: .infinity)
 
-                        Picker("Status", selection: Binding(
-                            get: { project.status },
-                            set: { project.status = $0 }
-                        )) {
-                            ForEach(ProjectStatus.allCases, id: \.self) { status in
-                                Text(status.label).tag(status)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("DURUM")
+                                .font(.system(size: 9, weight: .bold, design: .rounded))
+                                .foregroundStyle(.secondary)
+                            
+                            Picker("", selection: Binding(
+                                get: { project.status },
+                                set: { project.status = $0 }
+                            )) {
+                                ForEach(ProjectStatus.allCases, id: \.self) { status in
+                                    Text(status.label).tag(status)
+                                }
                             }
+                            .pickerStyle(.menu)
+                            .labelsHidden()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .frame(maxWidth: .infinity)
                     }
 
                     if showDeleteConfirm {
@@ -829,18 +885,31 @@ private struct ProjectExpandableCard: View {
                                     .font(.caption)
                             }
                             .buttonStyle(.bordered)
+                            .controlSize(.small)
                             .help("Projeyi ve tüm oturumlarını sil")
                         }
                     }
                 }
-                .padding(.leading, 28)
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 9)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(showDeleteConfirm ? Color.red.opacity(0.12) : (isExpanded ? Color.accentColor.opacity(0.12) : Color.secondary.opacity(0.06)))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .background(
+            showDeleteConfirm 
+                ? Color.red.opacity(0.08) 
+                : (isExpanded ? Color.accentColor.opacity(0.06) : Color.secondary.opacity(0.03))
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(
+                    showDeleteConfirm 
+                        ? Color.red.opacity(0.2) 
+                        : (isExpanded ? Color.accentColor.opacity(0.25) : Color(nsColor: .separatorColor).opacity(0.4)), 
+                    lineWidth: 1
+                )
+        }
     }
 
     private var deleteConfirmBar: some View {
