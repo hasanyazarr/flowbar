@@ -839,29 +839,27 @@ private struct ProjectExpandableCard: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 9)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(isExpanded ? Color.accentColor.opacity(0.12) : Color.secondary.opacity(0.06))
+        .background(showDeleteConfirm ? Color.red.opacity(0.12) : (isExpanded ? Color.accentColor.opacity(0.12) : Color.secondary.opacity(0.06)))
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
     private var deleteConfirmBar: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        HStack {
             Text(project.sessions.isEmpty
                  ? "Bu proje kalıcı olarak silinecek."
-                 : "Bu proje ve \(project.sessions.count) oturumu kalıcı olarak silinecek.")
+                 : "Bu proje ve \(project.sessions.count) oturum kalıcı olarak silinecek.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            HStack {
-                Spacer()
-                Button("Vazgeç") {
-                    withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm = false }
-                }
-                Button("Sil", role: .destructive, action: onDelete)
-                    .buttonStyle(.borderedProminent)
+            Spacer()
+            Button("Vazgeç") {
+                withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm = false }
             }
+            .controlSize(.small)
+            Button("Sil", role: .destructive, action: onDelete)
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
         }
-        .padding(10)
-        .background(Color.red.opacity(0.12))
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .padding(.vertical, 4)
     }
 }
 
