@@ -143,8 +143,6 @@ struct HomeView: View {
                     .pickerStyle(.segmented)
                     .fixedSize(horizontal: true, vertical: false)
 
-                    Spacer()
-
                     Button {
                         withAnimation(.snappy(duration: 0.18)) {
                             showSettings = true
@@ -157,6 +155,8 @@ struct HomeView: View {
                     }
                     .buttonStyle(.plain)
                     .hoverHighlight()
+                    
+                    Spacer()
                 }
                 .frame(maxWidth: .infinity)
 
