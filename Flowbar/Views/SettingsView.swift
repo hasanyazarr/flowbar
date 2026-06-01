@@ -3,6 +3,7 @@ import SwiftData
 import UserNotifications
 import ServiceManagement
 import UniformTypeIdentifiers
+import AppKit
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var context
@@ -234,11 +235,21 @@ struct SettingsView: View {
                                     .controlSize(.small)
                                 }
                             } else {
-                                Button("Tüm Verileri Sıfırla", role: .destructive) {
-                                    showDeleteConfirm = true
+                                HStack(spacing: 8) {
+                                    Button {
+                                        restartApp()
+                                    } label: {
+                                        Label("Yeniden Başlat", systemImage: "arrow.clockwise")
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .controlSize(.small)
+                                    
+                                    Button("Tüm Verileri Sıfırla", role: .destructive) {
+                                        showDeleteConfirm = true
+                                    }
+                                    .buttonStyle(.bordered)
+                                    .controlSize(.small)
                                 }
-                                .buttonStyle(.bordered)
-                                .controlSize(.small)
                             }
                         }
                     }
@@ -500,6 +511,19 @@ struct SettingsView: View {
                 try content.write(to: url, atomically: true, encoding: .utf8)
             } catch {
                 print("Dosya yazma hatası: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // Uygulamayı güvenli ve kesintisiz şekilde yeniden başlatır
+    private func restartApp() {
+        let config = NSWorkspace.OpenConfiguration()
+        config.createsNewApplicationInstance = true
+        
+        let bundleURL = Bundle.main.bundleURL
+        NSWorkspace.shared.openApplication(at: bundleURL, configuration: config) { _, _ in
+            DispatchQueue.main.async {
+                NSApp.terminate(nil)
             }
         }
     }
