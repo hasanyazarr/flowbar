@@ -15,9 +15,9 @@ enum ReminderNotificationManager {
 
         let content = UNMutableNotificationContent()
         if let project = reminder.project {
-            content.title = "Hatırlatıcı: \(project.name)"
+            content.title = String(localized: "Reminder: \(project.name)")
         } else {
-            content.title = "Hatırlatıcı"
+            content.title = String(localized: "Reminder")
         }
         content.body = reminder.content
         content.sound = .default
@@ -44,8 +44,8 @@ enum ReminderNotificationManager {
     /// Otomatik yedekleme başarılı bildirimi gönderir.
     static func sendBackupNotification(fileName: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Otomatik Yedekleme Başarılı"
-        content.body = "\(fileName) dosyası yedekleme klasörünüze kaydedildi."
+        content.title = String(localized: "Automatic Backup Successful")
+        content.body = String(localized: "\(fileName) was saved to your backup folder.")
         content.sound = .default
         
         let request = UNNotificationRequest(

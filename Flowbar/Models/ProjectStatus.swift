@@ -8,10 +8,10 @@ enum ProjectStatus: String, Codable, CaseIterable {
 
     var label: String {
         switch self {
-        case .inProgress: return "In progress"
-        case .continuous: return "Continuous"
-        case .paused: return "Paused"
-        case .done: return "Done"
+        case .inProgress: return String(localized: "In progress")
+        case .continuous: return String(localized: "Continuous")
+        case .paused: return String(localized: "Paused")
+        case .done: return String(localized: "Done")
         }
     }
 

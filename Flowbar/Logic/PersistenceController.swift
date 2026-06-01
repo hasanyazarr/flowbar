@@ -26,7 +26,7 @@ enum PersistenceController {
         do {
             return try ModelContainer(for: schema, configurations: inMemory)
         } catch {
-            fatalError("In-memory ModelContainer bile oluşturulamadı: \(error)")
+            fatalError("Could not even create an in-memory ModelContainer: \(error)")
         }
     }
 

@@ -18,10 +18,10 @@ enum Duration {
 
     static func short(seconds: Int) -> String {
         let (h, m) = hoursMinutes(fromSeconds: seconds)
-        return "\(h)s \(m)dk"
+        return String(localized: "\(h)h \(m)m", comment: "Compact duration, e.g. '3h 15m'")
     }
 
-    /// Süreyi aşağı doğru en yakın 15 dakikalık dilime yuvarlar (ölçülenden fazla loglamaz).
+    /// Rounds the duration down to the nearest 15-minute slot (never logs more than measured).
     static func flooredToQuarter(fromSeconds seconds: Int) -> (hours: Int, minutes: Int) {
         let totalMinutes = seconds / 60
         let flooredMinutes = (totalMinutes / 15) * 15

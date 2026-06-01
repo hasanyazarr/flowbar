@@ -196,7 +196,7 @@ final class ProjectManagementTests: XCTestCase {
     func test_popoverLayout_sessionNoteUsesPlainMultilineBullets() {
         XCTAssertTrue(PopoverLayout.sessionNotePlaceholder.contains("\n"))
         XCTAssertFalse(PopoverLayout.sessionNotePlaceholder.contains("•"))
-        XCTAssertEqual(PopoverLayout.recentSessionNotesTitle, "Son oturum notları")
+        XCTAssertEqual(PopoverLayout.recentSessionNotesTitle, "Recent session notes")
     }
 
     func test_popoverLayout_projectsUseInlineExpandedCards() {
@@ -481,9 +481,9 @@ final class ProjectManagementTests: XCTestCase {
     }
 
     func test_analyticsPeriod_labels() {
-        XCTAssertEqual(AnalyticsPeriod.week.label, "Hafta")
-        XCTAssertEqual(AnalyticsPeriod.month.label, "Ay")
-        XCTAssertEqual(AnalyticsPeriod.all.label, "Tümü")
+        XCTAssertEqual(AnalyticsPeriod.week.label, "Week")
+        XCTAssertEqual(AnalyticsPeriod.month.label, "Month")
+        XCTAssertEqual(AnalyticsPeriod.all.label, "All")
     }
 
     // MARK: - Analytics: category + project totals
@@ -515,7 +515,7 @@ final class ProjectManagementTests: XCTestCase {
         let now = Date()
         let totals = Analytics.categoryTotals([session(600, endedAt: now, project: p)])
         XCTAssertEqual(totals.count, 1)
-        XCTAssertEqual(totals.first?.name, "Kategorisiz")
+        XCTAssertEqual(totals.first?.name, "Uncategorized")
         XCTAssertEqual(totals.first?.colorHex, "#828282")
     }
 

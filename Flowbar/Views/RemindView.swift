@@ -31,13 +31,13 @@ struct RemindView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Hatırlatıcılar").font(.headline)
+            Text("Reminders").font(.headline)
 
             // Hatırlatıcı Ekleme Formu
             VStack(alignment: .leading, spacing: 10) {
                 // Proje Seç
-                Picker("Proje", selection: $selectedProjectID) {
-                    Text("Proje Yok (Genel)").tag(UUID?.none)
+                Picker("Project", selection: $selectedProjectID) {
+                    Text("No project (General)").tag(UUID?.none)
                     ForEach(activeProjects) { project in
                         Text(project.name).tag(UUID?.some(project.id))
                     }
@@ -46,12 +46,12 @@ struct RemindView: View {
                 .frame(maxWidth: .infinity)
 
                 // Hatırlatma Alanı (Geniş Metin Editörü)
-                SessionNoteEditor(text: $reminderContent, placeholder: "Hatırlatılacak şey…")
+                SessionNoteEditor(text: $reminderContent, placeholder: String(localized: "Something to remember…"))
                     .frame(height: 72)
 
                 // Opsiyonel Tarih/Saat Seçici
                 HStack {
-                    Toggle("Alarm/Bildirim Kur", isOn: $hasRemindTime)
+                    Toggle("Set alarm/notification", isOn: $hasRemindTime)
                         .toggleStyle(.checkbox)
                         .font(.callout)
 
@@ -73,7 +73,7 @@ struct RemindView: View {
                 }
 
                 Button(action: addReminder) {
-                    Label("Hatırlatıcı Ekle", systemImage: "bell.fill")
+                    Label("Add reminder", systemImage: "bell.fill")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -96,7 +96,7 @@ struct RemindView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.largeTitle)
                                 .foregroundStyle(.secondary)
-                            Text("Bekleyen hatırlatıcı yok")
+                            Text("No pending reminders")
                                 .font(.callout)
                                 .foregroundStyle(.secondary)
                         }
@@ -117,7 +117,7 @@ struct RemindView: View {
                             }
                         } label: {
                             HStack {
-                                Text("Tamamlananlar (\(completedReminders.count))")
+                                Text("Completed (\(completedReminders.count))")
                                     .font(.caption)
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.secondary)
@@ -253,14 +253,16 @@ struct RemindView: View {
     // Tarih formatı
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
+        formatter.locale = Locale.current
         if Calendar.current.isDateInToday(date) {
-            formatter.dateFormat = "'Bugün' HH:mm"
+            let time = date.formatted(date: .omitted, time: .shortened)
+            return String(localized: "Today \(time)")
         } else if Calendar.current.isDateInTomorrow(date) {
-            formatter.dateFormat = "'Yarın' HH:mm"
+            let time = date.formatted(date: .omitted, time: .shortened)
+            return String(localized: "Tomorrow \(time)")
         } else {
-            formatter.dateFormat = "d MMM HH:mm"
+            formatter.setLocalizedDateFormatFromTemplate("d MMM HH:mm")
+            return formatter.string(from: date)
         }
-        return formatter.string(from: date)
     }
 }

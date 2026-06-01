@@ -25,7 +25,7 @@ struct AnalyticsView: View {
             .labelsHidden()
 
             if sessions.isEmpty {
-                Text("Bu dönemde kayıtlı oturum yok")
+                Text("No sessions recorded in this period")
                     .foregroundStyle(.secondary)
                     .font(.callout)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -45,9 +45,9 @@ struct AnalyticsView: View {
 
     private var kpiRow: some View {
         HStack(spacing: 10) {
-            kpi("Toplam", Duration.short(seconds: summary.totalSeconds))
-            kpi("Oturum", "\(summary.sessionCount)")
-            kpi("Ortalama", Duration.short(seconds: summary.averageSeconds))
+            kpi(String(localized: "Total"), Duration.short(seconds: summary.totalSeconds))
+            kpi(String(localized: "Sessions"), "\(summary.sessionCount)")
+            kpi(String(localized: "Average"), Duration.short(seconds: summary.averageSeconds))
         }
     }
 
@@ -64,11 +64,11 @@ struct AnalyticsView: View {
 
     private var trendSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Çalışma trendi").font(.headline)
+            Text("Work trend").font(.headline)
             Chart(trend) { bucket in
                 BarMark(
-                    x: .value("Dönem", bucket.label),
-                    y: .value("Saat", Double(bucket.totalSeconds) / 3600.0)
+                    x: .value("Period", bucket.label),
+                    y: .value("Hours", Double(bucket.totalSeconds) / 3600.0)
                 )
                 .foregroundStyle(Color.accentColor)
             }
@@ -78,11 +78,11 @@ struct AnalyticsView: View {
 
     private var categorySection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Kategori dağılımı").font(.headline)
+            Text("Category breakdown").font(.headline)
             Chart(categories) { item in
                 BarMark(
-                    x: .value("Saat", Double(item.totalSeconds) / 3600.0),
-                    y: .value("Kategori", item.name)
+                    x: .value("Hours", Double(item.totalSeconds) / 3600.0),
+                    y: .value("Category", item.name)
                 )
                 .foregroundStyle(Color(hex: item.colorHex) ?? .gray)
                 .annotation(position: .trailing) {
@@ -96,7 +96,7 @@ struct AnalyticsView: View {
 
     private var projectSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("En çok çalışılan projeler").font(.headline)
+            Text("Most worked projects").font(.headline)
             VStack(spacing: 6) {
                 ForEach(topProjects) { project in
                     HStack {

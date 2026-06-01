@@ -26,6 +26,7 @@
 		A1000012 /* ProjectManagementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000011 /* ProjectManagementTests.swift */; };
 		A1000013 /* ProjectStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010 /* ProjectStatus.swift */; };
 		A1000014 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* Color+Hex.swift */; };
+		A1000070 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B1000070 /* Localizable.xcstrings */; };
 		A1000015 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* Color+Hex.swift */; };
 		A1000016 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* Category.swift */; };
 		A1000017 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* Category.swift */; };
@@ -88,6 +89,7 @@
 		B1000062 /* RemindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindView.swift; sourceTree = "<group>"; };
 		B1000063 /* ReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTests.swift; sourceTree = "<group>"; };
 		B1000064 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B1000070 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			children = (
 				B1000001 /* FlowbarApp.swift */,
 				B100000E /* Info.plist */,
+				B1000070 /* Localizable.xcstrings */,
 				G1000003 /* Models */,
 				G1000004 /* Logic */,
 				G1000006 /* Views */,
@@ -255,6 +258,7 @@
 			knownRegions = (
 				en,
 				Base,
+				tr,
 			);
 			mainGroup = G1000000 /* Root */;
 			productRefGroup = G1000002 /* Products */;
@@ -272,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000070 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

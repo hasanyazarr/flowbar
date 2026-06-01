@@ -20,7 +20,7 @@ struct TimerView: View {
             }
             Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
                 .font(.system(size: 34, weight: .semibold, design: .monospaced))
-            Button("Durdur") {
+            Button("Stop") {
                 stopwatch.stop()
                 appState.screen = .save
             }

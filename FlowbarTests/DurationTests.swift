@@ -18,8 +18,8 @@ final class DurationTests: XCTestCase {
     }
 
     func test_shortFormat() {
-        XCTAssertEqual(Duration.short(seconds: 4980), "1s 23dk")
-        XCTAssertEqual(Duration.short(seconds: 600), "0s 10dk")
+        XCTAssertEqual(Duration.short(seconds: 4980), "1h 23m")
+        XCTAssertEqual(Duration.short(seconds: 600), "0h 10m")
     }
 
     func test_flooredToQuarter_roundsDownTo15() {

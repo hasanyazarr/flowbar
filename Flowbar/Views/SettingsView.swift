@@ -21,10 +21,11 @@ struct SettingsView: View {
     @AppStorage("backupFrequency") private var backupFrequency = "never"
     @AppStorage("backupDirectoryPath") private var backupDirectoryPath = ""
     @AppStorage("lastBackupDate") private var lastBackupDate: Double = 0
-    
+    @AppStorage("appLanguage") private var appLanguage = "system"
+
     @State private var showDeleteConfirm = false
     @State private var deleteConfirmText = ""
-    @State private var notificationStatus: String = "Kontrol ediliyor…"
+    @State private var notificationStatus: String = String(localized: "Checking…")
     @State private var launchAtLoginEnabled: Bool = {
         if #available(macOS 13.0, *) {
             return SMAppService.mainApp.status == .enabled
@@ -41,7 +42,7 @@ struct SettingsView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Geri")
+                        Text("Back")
                     }
                 }
                 .buttonStyle(.bordered)
@@ -49,7 +50,7 @@ struct SettingsView: View {
                 
                 Spacer()
                 
-                Text("Ayarlar")
+                Text("Settings")
                     .font(.headline)
                 
                 Spacer()
@@ -62,21 +63,21 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     // 1. Sistem Bildirimleri
                     VStack(alignment: .leading, spacing: 8) {
-                        Label("macOS Bildirimleri", systemImage: "bell.badge.fill")
+                        Label("macOS Notifications", systemImage: "bell.badge.fill")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
-                        
-                        Text("Hatırlatıcı zamanı geldiğinde yerel bildirim alabilmeniz için sistem izinlerinin açık olması gerekir.")
+
+                        Text("System permissions must be enabled so you can receive local notifications when a reminder is due.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        
+
                         HStack {
-                            Text("İzin Durumu: \(notificationStatus)")
+                            Text("Permission status: \(notificationStatus)")
                                 .font(.caption2)
                                 .fontWeight(.bold)
                             Spacer()
-                            Button("İzin İste / Yenile") {
+                            Button("Request / Refresh") {
                                 requestNotificationPermission()
                             }
                             .buttonStyle(.bordered)
@@ -93,53 +94,77 @@ struct SettingsView: View {
                     
                     // 2. Genel Tercihler
                     VStack(alignment: .leading, spacing: 10) {
-                        Label("Genel Tercihler", systemImage: "sliders.horizontal.3")
+                        Label("General Preferences", systemImage: "sliders.horizontal.3")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
-                        
-                        // Menü Bar Tercihi
+
+                        // Language preference
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Menü Bar Gösterimi")
+                            Text("Language")
                                 .font(.caption)
                                 .fontWeight(.medium)
-                            
+
+                            Picker("", selection: $appLanguage) {
+                                Text("System").tag("system")
+                                Text("English").tag("en")
+                                Text("Türkçe").tag("tr")
+                            }
+                            .pickerStyle(.segmented)
+                            .controlSize(.small)
+                            .onChange(of: appLanguage) { _, newValue in
+                                applyLanguage(newValue)
+                            }
+
+                            Text("Restart the app to fully apply a language change.")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Divider().padding(.vertical, 2)
+
+                        // Menu bar preference
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Menu Bar Display")
+                                .font(.caption)
+                                .fontWeight(.medium)
+
                             Picker("", selection: $menuBarDisplayMode) {
-                                Text("Simge ve Süre").tag("iconAndTimer")
-                                Text("Yalnızca Süre").tag("timerOnly")
-                                Text("Yalnızca Simge").tag("iconOnly")
+                                Text("Icon and Timer").tag("iconAndTimer")
+                                Text("Timer Only").tag("timerOnly")
+                                Text("Icon Only").tag("iconOnly")
                             }
                             .pickerStyle(.segmented)
                             .controlSize(.small)
-                            
-                            Text("Sayaç çalışırken menü barında ne görüntüleneceğini ayarlar.")
+
+                            Text("Sets what is shown in the menu bar while the timer is running.")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }
-                        
+
                         Divider().padding(.vertical, 2)
-                        
-                        // Arka Plan Stili Tercihi
+
+                        // Background style preference
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Pencere Görünümü")
+                            Text("Window Appearance")
                                 .font(.caption)
                                 .fontWeight(.medium)
-                            
+
                             Picker("", selection: $backgroundStyle) {
-                                Text("Cam (Glass)").tag("glass")
-                                Text("Mat (Matte)").tag("matte")
+                                Text("Glass").tag("glass")
+                                Text("Matte").tag("matte")
                             }
                             .pickerStyle(.segmented)
                             .controlSize(.small)
-                            
-                            Text("Uygulama penceresinin arka plan stilini belirler.")
+
+                            Text("Determines the background style of the app window.")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }
-                        
+
                         Divider().padding(.vertical, 2)
-                        
-                        // Başlangıçta Otomatik Çalıştır
+
+                        // Launch at login
                         Toggle(isOn: Binding(
                             get: { launchAtLoginEnabled },
                             set: { newValue in
@@ -148,10 +173,10 @@ struct SettingsView: View {
                             }
                         )) {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("Sistem Açılışında Otomatik Başlat")
+                                Text("Launch at System Startup")
                                     .font(.caption)
                                     .fontWeight(.medium)
-                                Text("Bilgisayarınızı açtığınızda Flowbar kendiliğinden çalışır.")
+                                Text("Flowbar starts automatically when you turn on your computer.")
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
@@ -168,56 +193,56 @@ struct SettingsView: View {
                     
                     // 3. Otomatik Yedekleme Ayarları
                     VStack(alignment: .leading, spacing: 10) {
-                        Label("Otomatik Yedekleme", systemImage: "archivebox.fill")
+                        Label("Automatic Backup", systemImage: "archivebox.fill")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
-                        
-                        // Sıklık Seçimi
+
+                        // Frequency
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Yedekleme Sıklığı")
+                            Text("Backup Frequency")
                                 .font(.caption)
                                 .fontWeight(.medium)
-                            
+
                             Picker("", selection: $backupFrequency) {
-                                Text("Kapalı").tag("never")
-                                Text("Haftalık").tag("weekly")
-                                Text("Aylık").tag("monthly")
+                                Text("Off").tag("never")
+                                Text("Weekly").tag("weekly")
+                                Text("Monthly").tag("monthly")
                             }
                             .pickerStyle(.segmented)
                             .controlSize(.small)
                         }
-                        
+
                         Divider().padding(.vertical, 2)
-                        
-                        // Klasör Seçimi
+
+                        // Folder
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Yedekleme Klasörü")
+                            Text("Backup Folder")
                                 .font(.caption)
                                 .fontWeight(.medium)
-                            
+
                             HStack {
-                                Text(backupDirectoryPath.isEmpty ? "Klasör Seçilmedi" : backupDirectoryPath)
+                                Text(backupDirectoryPath.isEmpty ? String(localized: "No folder selected") : backupDirectoryPath)
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                                     .lineLimit(1)
                                     .truncationMode(.middle)
-                                
+
                                 Spacer()
-                                
-                                Button(backupDirectoryPath.isEmpty ? "Klasör Seç..." : "Değiştir...") {
+
+                                Button(backupDirectoryPath.isEmpty ? "Choose Folder..." : "Change...") {
                                     selectBackupDirectory()
                                 }
                                 .buttonStyle(.bordered)
                                 .controlSize(.small)
                             }
                         }
-                        
+
                         if !backupDirectoryPath.isEmpty && backupFrequency != "never" {
                             Divider().padding(.vertical, 2)
-                            
+
                             HStack {
-                                Text("Son Yedekleme:")
+                                Text("Last Backup:")
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                                 Spacer()
@@ -237,23 +262,23 @@ struct SettingsView: View {
                     
                     // 4. Veri İstatistikleri ve Yönetimi
                     VStack(alignment: .leading, spacing: 8) {
-                        Label("Veri ve Depolama", systemImage: "database.fill")
+                        Label("Data & Storage", systemImage: "database.fill")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
-                        
-                        // İstatistikler Grid
+
+                        // Stats grid
                         VStack(spacing: 6) {
-                            statRow(label: "Toplam Proje", value: "\(allProjects.count)")
-                            statRow(label: "Toplam Oturum", value: "\(allSessions.count)")
-                            statRow(label: "Toplam Kategori", value: "\(allCategories.count)")
-                            statRow(label: "Hatırlatıcılar (Bekleyen/Tamamlanan)", value: "\(allReminders.filter { !$0.isCompleted }.count) / \(allReminders.filter { $0.isCompleted }.count)")
+                            statRow(label: String(localized: "Total Projects"), value: "\(allProjects.count)")
+                            statRow(label: String(localized: "Total Sessions"), value: "\(allSessions.count)")
+                            statRow(label: String(localized: "Total Categories"), value: "\(allCategories.count)")
+                            statRow(label: String(localized: "Reminders (Pending/Completed)"), value: "\(allReminders.filter { !$0.isCompleted }.count) / \(allReminders.filter { $0.isCompleted }.count)")
                         }
                         .padding(.vertical, 4)
-                        
-                        // Veri Aktarma Butonları
+
+                        // Export buttons
                         HStack(spacing: 8) {
-                            Text("Verileri Aktar:")
+                            Text("Export Data:")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             
@@ -285,18 +310,18 @@ struct SettingsView: View {
                         
                         if showDeleteConfirm {
                             VStack(alignment: .leading, spacing: 10) {
-                                Text("DİKKAT: Tüm kayıtlı oturumlar, projeler ve hatırlatıcılar kalıcı olarak silinecektir. Bu işlem geri alınamaz!")
+                                Text("WARNING: All saved sessions, projects and reminders will be permanently deleted. This action cannot be undone!")
                                     .font(.caption2)
                                     .foregroundColor(.red)
                                     .fontWeight(.semibold)
                                     .fixedSize(horizontal: false, vertical: true)
-                                
+
                                 HStack(spacing: 8) {
-                                    TextField("Onaylamak için 'SIFIRLA' yazın", text: $deleteConfirmText)
+                                    TextField(String(localized: "Type '\(resetKeyword)' to confirm"), text: $deleteConfirmText)
                                         .textFieldStyle(.roundedBorder)
                                         .controlSize(.small)
-                                    
-                                    Button("Vazgeç") {
+
+                                    Button("Cancel") {
                                         withAnimation(.snappy(duration: 0.16)) {
                                             showDeleteConfirm = false
                                             deleteConfirmText = ""
@@ -304,8 +329,8 @@ struct SettingsView: View {
                                     }
                                     .buttonStyle(.bordered)
                                     .controlSize(.small)
-                                    
-                                    Button("Sıfırla", role: .destructive) {
+
+                                    Button("Reset", role: .destructive) {
                                         resetDatabase()
                                         withAnimation(.snappy(duration: 0.16)) {
                                             showDeleteConfirm = false
@@ -314,7 +339,7 @@ struct SettingsView: View {
                                     }
                                     .buttonStyle(.borderedProminent)
                                     .controlSize(.small)
-                                    .disabled(deleteConfirmText != "SIFIRLA")
+                                    .disabled(deleteConfirmText != resetKeyword)
                                 }
                             }
                             .padding(8)
@@ -330,16 +355,16 @@ struct SettingsView: View {
                             ))
                         } else {
                             HStack {
-                                Button("Tamamlanan Hatırlatıcıları Temizle") {
+                                Button("Clear Completed Reminders") {
                                     clearCompletedReminders()
                                 }
                                 .buttonStyle(.bordered)
                                 .controlSize(.small)
                                 .disabled(allReminders.filter { $0.isCompleted }.isEmpty)
-                                
+
                                 Spacer()
-                                
-                                Button("Tüm Verileri Sıfırla", role: .destructive) {
+
+                                Button("Reset All Data", role: .destructive) {
                                     withAnimation(.snappy(duration: 0.16)) {
                                         showDeleteConfirm = true
                                     }
@@ -359,15 +384,15 @@ struct SettingsView: View {
                     
                     // 4. Hakkında ve Görünüm
                     VStack(alignment: .leading, spacing: 6) {
-                        Label("Uygulama Hakkında", systemImage: "info.circle.fill")
+                        Label("About", systemImage: "info.circle.fill")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
-                        
+
                         Text("Flowbar v1.1")
                             .font(.caption)
                             .fontWeight(.bold)
-                        Text("Gelişmiş haftalık zaman planlayıcı ve hatırlatıcı menü bar aracı. macOS sistem görünümünü (Açık/Karanlık mod) otomatik takip eder.")
+                        Text("An advanced weekly time planner and reminder menu bar tool. Automatically follows the macOS system appearance (Light/Dark mode).")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -381,18 +406,18 @@ struct SettingsView: View {
                     
                     // 5. Geliştirici & Topluluk
                     VStack(alignment: .leading, spacing: 8) {
-                        Label("Geliştirici & Topluluk", systemImage: "person.2.fill")
+                        Label("Developer & Community", systemImage: "person.2.fill")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(Color.accentColor)
-                        
-                        Text("Flowbar açık kaynaklı bir projedir. Katkıda bulunmak veya karşılaştığınız sorunları bildirmek için GitHub sayfamızı ziyaret edin.")
+
+                        Text("Flowbar is an open source project. Visit our GitHub page to contribute or report issues you run into.")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                         
                         HStack(spacing: 8) {
                             Link(destination: URL(string: "https://github.com/hasanyazarr/flowbar")!) {
-                                Label("GitHub Projesi", systemImage: "arrow.up.forward.app.fill")
+                                Label("GitHub Project", systemImage: "arrow.up.forward.app.fill")
                                     .font(.caption)
                                     .fontWeight(.medium)
                             }
@@ -400,7 +425,7 @@ struct SettingsView: View {
                             .controlSize(.small)
                             
                             Link(destination: URL(string: "https://github.com/hasanyazarr/flowbar/issues")!) {
-                                Label("Sorun Bildir", systemImage: "ladybug.fill")
+                                Label("Report Issue", systemImage: "ladybug.fill")
                                     .font(.caption)
                                     .fontWeight(.medium)
                             }
@@ -412,7 +437,7 @@ struct SettingsView: View {
                             Button {
                                 restartApp()
                             } label: {
-                                Label("Yeniden Başlat", systemImage: "arrow.clockwise")
+                                Label("Restart", systemImage: "arrow.clockwise")
                                     .font(.caption)
                                     .fontWeight(.medium)
                             }
@@ -422,7 +447,7 @@ struct SettingsView: View {
                             Button(role: .destructive) {
                                 quitApp()
                             } label: {
-                                Label("Çıkış", systemImage: "power")
+                                Label("Quit", systemImage: "power")
                                     .font(.caption)
                                     .fontWeight(.medium)
                             }
@@ -464,17 +489,17 @@ struct SettingsView: View {
             DispatchQueue.main.async {
                 switch settings.authorizationStatus {
                 case .authorized:
-                    self.notificationStatus = "İzin Verildi ✓"
+                    self.notificationStatus = String(localized: "Granted ✓")
                 case .denied:
-                    self.notificationStatus = "İzin Reddedildi ✗"
+                    self.notificationStatus = String(localized: "Denied ✗")
                 case .notDetermined:
-                    self.notificationStatus = "Belirlenmedi ?"
+                    self.notificationStatus = String(localized: "Not determined ?")
                 case .provisional:
-                    self.notificationStatus = "Geçici İzin"
+                    self.notificationStatus = String(localized: "Provisional")
                 case .ephemeral:
-                    self.notificationStatus = "Anlık İzin"
+                    self.notificationStatus = String(localized: "Ephemeral")
                 @unknown default:
-                    self.notificationStatus = "Bilinmiyor"
+                    self.notificationStatus = String(localized: "Unknown")
                 }
             }
         }
@@ -532,14 +557,14 @@ struct SettingsView: View {
                 do {
                     try appService.register()
                 } catch {
-                    print("Otomatik başlatma kaydedilemedi: \(error.localizedDescription)")
+                    print("Failed to register launch at login: \(error.localizedDescription)")
                     launchAtLoginEnabled = false
                 }
             } else {
                 do {
                     try appService.unregister()
                 } catch {
-                    print("Otomatik başlatma kaydı silinemedi: \(error.localizedDescription)")
+                    print("Failed to unregister launch at login: \(error.localizedDescription)")
                     launchAtLoginEnabled = true
                 }
             }
@@ -550,7 +575,7 @@ struct SettingsView: View {
     private func exportSessionsToCSV() {
         let sortedSessions = allSessions.sorted { $0.startedAt > $1.startedAt }
         
-        var csvString = "Tarih,Proje,Kategori,Not,Baslangic,Bitis,Olculen Sure (Saniye),Kaydedilen Sure (Saniye),Kaydedilen Sure (Saat)\n"
+        var csvString = "Date,Project,Category,Note,Start,End,Measured Duration (Seconds),Logged Duration (Seconds),Logged Duration (Hours)\n"
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -560,8 +585,8 @@ struct SettingsView: View {
         
         for session in sortedSessions {
             let dateStr = dateFormatter.string(from: session.startedAt)
-            let projectStr = escapeCSVField(session.project?.name ?? "Kategorisiz")
-            let categoryStr = escapeCSVField(session.project?.category?.name ?? "Yok")
+            let projectStr = escapeCSVField(session.project?.name ?? "Uncategorized")
+            let categoryStr = escapeCSVField(session.project?.category?.name ?? "None")
             let noteStr = escapeCSVField(session.note)
             let startStr = timeFormatter.string(from: session.startedAt)
             let endStr = timeFormatter.string(from: session.endedAt)
@@ -632,8 +657,8 @@ struct SettingsView: View {
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = defaultFileName.hasSuffix(".csv") ? [UTType.commaSeparatedText] : [UTType.json]
         savePanel.nameFieldStringValue = defaultFileName
-        savePanel.title = "Verileri Kaydet"
-        savePanel.message = "Flowbar verilerini kaydetmek istediğiniz konumu seçin."
+        savePanel.title = String(localized: "Save Data")
+        savePanel.message = String(localized: "Choose where you want to save your Flowbar data.")
         
         // Modal diyalog açılmadan önce uygulamayı ön plana alarak odaklanmayı (focus) garanti ediyoruz
         NSApp.activate(ignoringOtherApps: true)
@@ -643,7 +668,7 @@ struct SettingsView: View {
             do {
                 try content.write(to: url, atomically: true, encoding: .utf8)
             } catch {
-                print("Dosya yazma hatası: \(error.localizedDescription)")
+                print("File write error: \(error.localizedDescription)")
             }
         }
     }
@@ -674,8 +699,8 @@ struct SettingsView: View {
         openPanel.canChooseFiles = false
         openPanel.allowsMultipleSelection = false
         openPanel.canCreateDirectories = true // Kullanıcı dilerse yeni yedekleme alt klasörü oluşturabilsin
-        openPanel.title = "Yedekleme Klasörünü Seçin"
-        openPanel.message = "Otomatik yedeklerin kaydedileceği klasörü seçin."
+        openPanel.title = String(localized: "Choose Backup Folder")
+        openPanel.message = String(localized: "Choose the folder where automatic backups will be saved.")
         
         // Modal diyalog açılmadan önce uygulamayı ön plana alarak odaklanmayı (focus) garanti ediyoruz
         NSApp.activate(ignoringOtherApps: true)
@@ -688,11 +713,27 @@ struct SettingsView: View {
     
     // Son yedekleme tarihini biçimlendirip döndürür
     private func formattedLastBackupDate() -> String {
-        guard lastBackupDate > 0 else { return "Henüz yedek alınmadı" }
+        guard lastBackupDate > 0 else { return String(localized: "No backup yet") }
         let date = Date(timeIntervalSince1970: lastBackupDate)
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM yyyy, HH:mm"
-        formatter.locale = Locale(identifier: "tr_TR")
+        formatter.locale = Locale.current
+        formatter.setLocalizedDateFormatFromTemplate("d MMMM yyyy, HH:mm")
         return formatter.string(from: date)
+    }
+
+    // The keyword the user must type to confirm a full data reset.
+    private var resetKeyword: String { String(localized: "RESET") }
+
+    // Applies the in-app language override. Persists AppleLanguages so the choice
+    // survives relaunch; a restart is required for the UI to fully re-render.
+    private func applyLanguage(_ language: String) {
+        switch language {
+        case "en":
+            UserDefaults.standard.set(["en"], forKey: "AppleLanguages")
+        case "tr":
+            UserDefaults.standard.set(["tr"], forKey: "AppleLanguages")
+        default:
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+        }
     }
 }

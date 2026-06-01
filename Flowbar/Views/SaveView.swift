@@ -49,18 +49,18 @@ struct SaveView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(project?.name ?? "—").font(.headline)
-            TextField("Oturum notu", text: $sessionNote, axis: .vertical)
+            TextField("Session note", text: $sessionNote, axis: .vertical)
                 .textFieldStyle(.plain)
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .lineLimit(2...4)
                 .frame(minHeight: SessionCompletionLayout.noteMinHeight, alignment: .topLeading)
-            Text("Ölçülen: \(Duration.short(seconds: measured))")
+            Text("Measured: \(Duration.short(seconds: measured))")
                 .font(.caption).foregroundStyle(.secondary)
 
             HStack(spacing: 18) {
                 HStack(spacing: 6) {
-                    Text("\(hours) saat")
+                    Text("\(hours) hr")
                         .monospacedDigit()
                         .frame(width: SessionCompletionLayout.durationValueWidth, alignment: .leading)
                     Stepper(value: $hours, in: 0...23) { EmptyView() }
@@ -69,7 +69,7 @@ struct SaveView: View {
                 }
 
                 HStack(spacing: 6) {
-                    Text("\(minutes) dk")
+                    Text("\(minutes) min")
                         .monospacedDigit()
                         .frame(width: SessionCompletionLayout.durationValueWidth, alignment: .leading)
                     Stepper {
@@ -93,9 +93,9 @@ struct SaveView: View {
             }
 
             HStack {
-                Button("İptal") { finish() }
+                Button("Cancel") { finish() }
                 Spacer()
-                Button("Kaydet") { save() }
+                Button("Save") { save() }
                     .disabled(!draft.canSave)
                     .keyboardShortcut(.defaultAction)
             }

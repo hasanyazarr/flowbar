@@ -1,0 +1,770 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "%lld days ago" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : { "state" : "translated", "value" : "%lld gün önce" }
+        }
+      }
+    },
+    "%lld hr" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : { "state" : "translated", "value" : "%lld saat" }
+        }
+      }
+    },
+    "%lld min" : {
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : { "state" : "translated", "value" : "%lld dk" }
+        }
+      }
+    },
+    "%lldh %lldm" : {
+      "comment" : "Compact duration, e.g. '3h 15m'",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : { "state" : "translated", "value" : "%1$llds %2$llddk" }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Uygulama Hakkında" } }
+      }
+    },
+    "ACTIVE SESSION" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "AKTİF OTURUM" } }
+      }
+    },
+    "Add" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ekle" } }
+      }
+    },
+    "Add a session manually" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geçmişe elle oturum ekle" } }
+      }
+    },
+    "Add manually" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Manuel ekle" } }
+      }
+    },
+    "Add reminder" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatıcı Ekle" } }
+      }
+    },
+    "All" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tümü" } }
+      }
+    },
+    "An advanced weekly time planner and reminder menu bar tool. Automatically follows the macOS system appearance (Light/Dark mode)." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Gelişmiş haftalık zaman planlayıcı ve hatırlatıcı menü bar aracı. macOS sistem görünümünü (Açık/Karanlık mod) otomatik takip eder." } }
+      }
+    },
+    "A project with this name already exists" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu isimde proje zaten var" } }
+      }
+    },
+    "Automatic Backup Successful" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Otomatik Yedekleme Başarılı" } }
+      }
+    },
+    "Automatic Backup" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Otomatik Yedekleme" } }
+      }
+    },
+    "Average" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ortalama" } }
+      }
+    },
+    "Back" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geri" } }
+      }
+    },
+    "Backup Folder" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yedekleme Klasörü" } }
+      }
+    },
+    "Backup Frequency" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yedekleme Sıklığı" } }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İptal" } }
+      }
+    },
+    "Categories" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategoriler" } }
+      }
+    },
+    "Category" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategori" } }
+      }
+    },
+    "CATEGORY" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "KATEGORİ" } }
+      }
+    },
+    "Category breakdown" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategori dağılımı" } }
+      }
+    },
+    "Category name" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategori adı" } }
+      }
+    },
+    "Change..." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Değiştir..." } }
+      }
+    },
+    "Checking…" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kontrol ediliyor…" } }
+      }
+    },
+    "Choose Backup Folder" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yedekleme Klasörünü Seçin" } }
+      }
+    },
+    "Choose Folder..." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Klasör Seç..." } }
+      }
+    },
+    "Choose the folder where automatic backups will be saved." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Otomatik yedeklerin kaydedileceği klasörü seçin." } }
+      }
+    },
+    "Choose where you want to save your Flowbar data." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Flowbar verilerini kaydetmek istediğiniz konumu seçin." } }
+      }
+    },
+    "Clear" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Temizle" } }
+      }
+    },
+    "Clear Completed Reminders" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tamamlanan Hatırlatıcıları Temizle" } }
+      }
+    },
+    "Close form" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Formu kapat" } }
+      }
+    },
+    "Completed (%lld)" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tamamlananlar (%lld)" } }
+      }
+    },
+    "Continuous" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sürekli" } }
+      }
+    },
+    "Data & Storage" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Veri ve Depolama" } }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sil" } }
+      }
+    },
+    "Delete category" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategoriyi sil" } }
+      }
+    },
+    "Delete project" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Projeyi sil" } }
+      }
+    },
+    "Delete the project and all its sessions" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Projeyi ve tüm oturumlarını sil" } }
+      }
+    },
+    "Delete this session?" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu oturum silinsin mi?" } }
+      }
+    },
+    "Denied ✗" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İzin Reddedildi ✗" } }
+      }
+    },
+    "Determines the background style of the app window." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Uygulama penceresinin arka plan stilini belirler." } }
+      }
+    },
+    "Developer & Community" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geliştirici & Topluluk" } }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tamamlandı" } }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Düzenle" } }
+      }
+    },
+    "Ephemeral" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Anlık İzin" } }
+      }
+    },
+    "Export Data:" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Verileri Aktar:" } }
+      }
+    },
+    "Flowbar is an open source project. Visit our GitHub page to contribute or report issues you run into." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Flowbar açık kaynaklı bir projedir. Katkıda bulunmak veya karşılaştığınız sorunları bildirmek için GitHub sayfamızı ziyaret edin." } }
+      }
+    },
+    "Focus" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Odak Noktası" } }
+      }
+    },
+    "General Preferences" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Genel Tercihler" } }
+      }
+    },
+    "GitHub Project" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "GitHub Projesi" } }
+      }
+    },
+    "Glass" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Cam (Glass)" } }
+      }
+    },
+    "Granted ✓" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İzin Verildi ✓" } }
+      }
+    },
+    "History" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geçmiş" } }
+      }
+    },
+    "Hours" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Saat" } }
+      }
+    },
+    "In progress" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Devam ediyor" } }
+      }
+    },
+    "Paused" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Duraklatıldı" } }
+      }
+    },
+    "Icon and Timer" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Simge ve Süre" } }
+      }
+    },
+    "Icon Only" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yalnızca Simge" } }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Dil" } }
+      }
+    },
+    "Last Backup:" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Son Yedekleme:" } }
+      }
+    },
+    "Launch at System Startup" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sistem Açılışında Otomatik Başlat" } }
+      }
+    },
+    "macOS Notifications" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "macOS Bildirimleri" } }
+      }
+    },
+    "Matte" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Mat (Matte)" } }
+      }
+    },
+    "Measured: %@" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ölçülen: %@" } }
+      }
+    },
+    "Menu Bar Display" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Menü Bar Gösterimi" } }
+      }
+    },
+    "Monthly" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Aylık" } }
+      }
+    },
+    "Month" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ay" } }
+      }
+    },
+    "Most worked projects" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "En çok çalışılan projeler" } }
+      }
+    },
+    "New category" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yeni kategori" } }
+      }
+    },
+    "New project" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yeni proje" } }
+      }
+    },
+    "No backup yet" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz yedek alınmadı" } }
+      }
+    },
+    "No categories yet" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz kategori yok" } }
+      }
+    },
+    "No folder selected" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Klasör Seçilmedi" } }
+      }
+    },
+    "No matching projects" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Eşleşen proje yok" } }
+      }
+    },
+    "No note" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Not yok" } }
+      }
+    },
+    "No pending reminders" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bekleyen hatırlatıcı yok" } }
+      }
+    },
+    "No project" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje yok" } }
+      }
+    },
+    "No project (General)" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje Yok (Genel)" } }
+      }
+    },
+    "No projects yet, add one" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz proje yok, bir tane ekle" } }
+      }
+    },
+    "No sessions recorded in this period" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu dönemde kayıtlı oturum yok" } }
+      }
+    },
+    "No sessions saved yet" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Henüz kaydedilmiş oturum yok" } }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yok" } }
+      }
+    },
+    "Not determined ?" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Belirlenmedi ?" } }
+      }
+    },
+    "Note (optional)" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Not (opsiyonel)" } }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kapalı" } }
+      }
+    },
+    "Past sessions" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geçmiş oturumlar" } }
+      }
+    },
+    "Period" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Dönem" } }
+      }
+    },
+    "Permission status: %@" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İzin Durumu: %@" } }
+      }
+    },
+    "Project" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje" } }
+      }
+    },
+    "PROJECT NAME" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "PROJE ADI" } }
+      }
+    },
+    "Project name" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje adı" } }
+      }
+    },
+    "Projects" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Projeler" } }
+      }
+    },
+    "Provisional" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Geçici İzin" } }
+      }
+    },
+    "Recent session notes" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Son oturum notları" } }
+      }
+    },
+    "Remind" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlat" } }
+      }
+    },
+    "Reminder" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatıcı" } }
+      }
+    },
+    "Reminder: %@" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatıcı: %@" } }
+      }
+    },
+    "Reminders" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatıcılar" } }
+      }
+    },
+    "Reminders (Pending/Completed)" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatıcılar (Bekleyen/Tamamlanan)" } }
+      }
+    },
+    "Report Issue" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sorun Bildir" } }
+      }
+    },
+    "Request / Refresh" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "İzin İste / Yenile" } }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sıfırla" } }
+      }
+    },
+    "RESET" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "SIFIRLA" } }
+      }
+    },
+    "Reset All Data" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Tüm Verileri Sıfırla" } }
+      }
+    },
+    "Restart" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yeniden Başlat" } }
+      }
+    },
+    "Restart the app to fully apply a language change." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Dil değişikliğinin tam olarak uygulanması için uygulamayı yeniden başlatın." } }
+      }
+    },
+    "Quit" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çıkış" } }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kaydet" } }
+      }
+    },
+    "Save Data" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Verileri Kaydet" } }
+      }
+    },
+    "Search projects…" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje ara…" } }
+      }
+    },
+    "Select project" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Proje seç" } }
+      }
+    },
+    "Session" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oturum" } }
+      }
+    },
+    "Session note" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oturum notu" } }
+      }
+    },
+    "Sessions" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Oturum" } }
+      }
+    },
+    "Set alarm/notification" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Alarm/Bildirim Kur" } }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Ayarlar" } }
+      }
+    },
+    "Sets what is shown in the menu bar while the timer is running." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sayaç çalışırken menü barında ne görüntüleneceğini ayarlar." } }
+      }
+    },
+    "Show/Hide Category Filters" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategori Filtrelerini Göster/Gizle" } }
+      }
+    },
+    "Something to remember…" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatılacak şey…" } }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Başlat" } }
+      }
+    },
+    "Start a new session" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yeni oturum başlat" } }
+      }
+    },
+    "STATUS" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "DURUM" } }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Durdur" } }
+      }
+    },
+    "Stop and Save" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Durdur ve Kaydet" } }
+      }
+    },
+    "System" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Sistem" } }
+      }
+    },
+    "System permissions must be enabled so you can receive local notifications when a reminder is due." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hatırlatıcı zamanı geldiğinde yerel bildirim alabilmeniz için sistem izinlerinin açık olması gerekir." } }
+      }
+    },
+    "This category already exists" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu kategori zaten var" } }
+      }
+    },
+    "This project and %lld sessions will be permanently deleted." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu proje ve %lld oturum kalıcı olarak silinecek." } }
+      }
+    },
+    "This project will be permanently deleted." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu proje kalıcı olarak silinecek." } }
+      }
+    },
+    "Timer Only" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yalnızca Süre" } }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bugün" } }
+      }
+    },
+    "Today %@" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bugün %@" } }
+      }
+    },
+    "Tomorrow %@" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Yarın %@" } }
+      }
+    },
+    "Total" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Toplam" } }
+      }
+    },
+    "Total Categories" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Toplam Kategori" } }
+      }
+    },
+    "Total Projects" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Toplam Proje" } }
+      }
+    },
+    "Total Sessions" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Toplam Oturum" } }
+      }
+    },
+    "Type '%@' to confirm" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Onaylamak için '%@' yazın" } }
+      }
+    },
+    "Uncategorized" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Kategorisiz" } }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bilinmiyor" } }
+      }
+    },
+    "WARNING: All saved sessions, projects and reminders will be permanently deleted. This action cannot be undone!" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "DİKKAT: Tüm kayıtlı oturumlar, projeler ve hatırlatıcılar kalıcı olarak silinecektir. Bu işlem geri alınamaz!" } }
+      }
+    },
+    "Week" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Hafta" } }
+      }
+    },
+    "Weekly" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Haftalık" } }
+      }
+    },
+    "What will you focus on this session?\nSecondary goal" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Bu oturumda neye odaklanacaksın?\nİkinci hedef" } }
+      }
+    },
+    "Window Appearance" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Pencere Görünümü" } }
+      }
+    },
+    "Work trend" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Çalışma trendi" } }
+      }
+    },
+    "Yesterday" : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "Dün" } }
+      }
+    },
+    "%@ was saved to your backup folder." : {
+      "localizations" : {
+        "tr" : { "stringUnit" : { "state" : "translated", "value" : "%@ dosyası yedekleme klasörünüze kaydedildi." } }
+      }
+    }
+  }
+}

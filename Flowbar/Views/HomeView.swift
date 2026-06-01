@@ -2,11 +2,31 @@ import SwiftUI
 import SwiftData
 
 private enum HomeTab: String, CaseIterable {
-    case session = "Oturum"
-    case projects = "Projeler"
-    case history = "Geçmiş"
-    case analytics = "Analiz"
-    case remind = "Hatırlat"
+    case session
+    case projects
+    case history
+    case analytics
+    case remind
+
+    var title: String {
+        switch self {
+        case .session: return String(localized: "Session")
+        case .projects: return String(localized: "Projects")
+        case .history: return String(localized: "History")
+        case .analytics: return String(localized: "Analytics")
+        case .remind: return String(localized: "Remind")
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .session: return "timer"
+        case .projects: return "folder"
+        case .history: return "clock.arrow.circlepath"
+        case .analytics: return "chart.bar.xaxis"
+        case .remind: return "bell"
+        }
+    }
 
     var layoutKind: PopoverTabKind {
         switch self {
@@ -21,6 +41,75 @@ private enum HomeTab: String, CaseIterable {
         case .remind:
             return .remind
         }
+    }
+}
+
+/// Custom segmented tab bar. Icons sit in a pill; the selected tab is marked by a
+/// filled accent capsule that slides between tabs (matchedGeometryEffect). Hovering
+/// a tab smoothly expands it to reveal the tab's full name beside the icon.
+private struct HomeTabBar: View {
+    @Binding var selection: HomeTab
+    @State private var hovered: HomeTab?
+    @Namespace private var capsuleNamespace
+
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(HomeTab.allCases, id: \.self) { tab in
+                tabButton(tab)
+            }
+        }
+        .padding(2)
+        .background(Color.secondary.opacity(0.14))
+        .clipShape(Capsule())
+        .animation(.snappy(duration: 0.22), value: selection)
+        .animation(.snappy(duration: 0.22), value: hovered)
+    }
+
+    private func tabButton(_ tab: HomeTab) -> some View {
+        let isSelected = selection == tab
+        let isHovered = hovered == tab
+        // Show the label when hovered, or for the selected tab while nothing is hovered.
+        let showsLabel = isHovered || (isSelected && hovered == nil)
+
+        return Button {
+            selection = tab
+        } label: {
+            HStack(spacing: 5) {
+                Image(systemName: tab.icon)
+                    .font(.system(size: 12, weight: .semibold))
+
+                if showsLabel {
+                    Text(tab.title)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .move(edge: .leading)),
+                            removal: .opacity
+                        ))
+                }
+            }
+            .foregroundStyle(isSelected ? Color.white : .secondary)
+            .padding(.horizontal, showsLabel ? 10 : 8)
+            .padding(.vertical, 5)
+            .background {
+                if isSelected {
+                    Capsule()
+                        .fill(Color.accentColor)
+                        .matchedGeometryEffect(id: "selectedCapsule", in: capsuleNamespace)
+                } else if isHovered {
+                    Capsule()
+                        .fill(Color.secondary.opacity(0.18))
+                }
+            }
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering in
+            hovered = hovering ? tab : (hovered == tab ? nil : hovered)
+        }
+        .help(tab.title)
     }
 }
 
@@ -140,17 +229,13 @@ struct HomeView: View {
                         .font(.system(.headline, design: .rounded))
                         .fontWeight(.bold)
                         .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .fixedSize()
                         .padding(.leading, 2)
                     
                     Spacer()
 
-                    Picker("", selection: $selectedTab) {
-                        ForEach(HomeTab.allCases, id: \.self) { tab in
-                            Text(tab.rawValue).tag(tab)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .fixedSize(horizontal: true, vertical: false)
+                    HomeTabBar(selection: $selectedTab)
 
                     Button {
                         withAnimation(.snappy(duration: 0.18)) {
@@ -194,7 +279,7 @@ struct HomeView: View {
             } else {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack(alignment: .firstTextBaseline) {
-                        Text("Yeni oturum başlat").font(.headline)
+                        Text("Start a new session").font(.headline)
                         Spacer()
                         if let selectedProject {
                             Text(selectedProject.name)
@@ -204,10 +289,10 @@ struct HomeView: View {
                         }
                     }
 
-                    SearchField(text: $search, placeholder: "Proje ara…")
+                    SearchField(text: $search, placeholder: String(localized: "Search projects…"))
 
                     if activeProjects.isEmpty {
-                        Text("Henüz proje yok, bir tane ekle")
+                        Text("No projects yet, add one")
                             .foregroundStyle(.secondary).font(.callout)
                     } else {
                         ScrollView {
@@ -240,7 +325,7 @@ struct HomeView: View {
                     Button {
                         startSession()
                     } label: {
-                        Text("Başlat")
+                        Text("Start")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.borderedProminent)
@@ -264,7 +349,7 @@ struct HomeView: View {
         VStack(spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("AKTİF OTURUM")
+                    Text("ACTIVE SESSION")
                         .font(.caption2)
                         .fontWeight(.bold)
                         .foregroundStyle(Color.accentColor)
@@ -283,7 +368,7 @@ struct HomeView: View {
 
             if !appState.activeNote.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Odak Noktası")
+                    Text("Focus")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                     Text(appState.activeNote)
@@ -307,7 +392,7 @@ struct HomeView: View {
             Button(role: .destructive) {
                 stopActiveSession()
             } label: {
-                Label("Durdur ve Kaydet", systemImage: "stop.fill")
+                Label("Stop and Save", systemImage: "stop.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
@@ -324,14 +409,14 @@ struct HomeView: View {
 
     private var projectsTab: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Projeler").font(.headline)
+            Text("Projects").font(.headline)
 
             if PopoverLayout.showsInlineProjectCreation(for: selectedTab.layoutKind) {
-                addProjectRow(buttonTitle: "Ekle")
+                addProjectRow(buttonTitle: String(localized: "Add"))
             }
 
             HStack(spacing: 8) {
-                SearchField(text: $managementSearch, placeholder: "Proje ara…")
+                SearchField(text: $managementSearch, placeholder: String(localized: "Search projects…"))
 
                 if !categories.isEmpty {
                     Button {
@@ -352,7 +437,7 @@ struct HomeView: View {
                     }
                     .buttonStyle(.plain)
                     .hoverHighlight()
-                    .help("Kategori Filtrelerini Göster/Gizle")
+                    .help("Show/Hide Category Filters")
                 }
             }
 
@@ -376,7 +461,7 @@ struct HomeView: View {
     private var categoryFilterBar: some View {
         FlowLayout(spacing: 6) {
             FilterChip(
-                title: "Tümü",
+                title: String(localized: "All"),
                 hex: nil,
                 isSelected: filterCategoryID == nil
             ) {
@@ -400,18 +485,18 @@ struct HomeView: View {
     private var historyTab: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .firstTextBaseline) {
-                Text("Geçmiş oturumlar").font(.headline)
+                Text("Past sessions").font(.headline)
                 Spacer()
                 Button {
                     withAnimation(.snappy(duration: 0.16)) {
                         showManualEntry.toggle()
                     }
                 } label: {
-                    Label("Manuel ekle", systemImage: showManualEntry ? "xmark" : "plus")
+                    Label("Add manually", systemImage: showManualEntry ? "xmark" : "plus")
                         .font(.callout)
                 }
                 .buttonStyle(.bordered)
-                .help(showManualEntry ? "Formu kapat" : "Geçmişe elle oturum ekle")
+                .help(showManualEntry ? String(localized: "Close form") : String(localized: "Add a session manually"))
             }
 
             if showManualEntry {
@@ -419,7 +504,7 @@ struct HomeView: View {
             }
 
             if historySessions.isEmpty {
-                Text("Henüz kaydedilmiş oturum yok")
+                Text("No sessions saved yet")
                     .foregroundStyle(.secondary)
                     .font(.callout)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -469,14 +554,14 @@ struct HomeView: View {
 
     private var manualEntryForm: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Picker("Proje", selection: $manualProjectID) {
-                Text("Proje seç").tag(UUID?.none)
+            Picker("Project", selection: $manualProjectID) {
+                Text("Select project").tag(UUID?.none)
                 ForEach(activeProjects) { project in
                     Text(project.name).tag(UUID?.some(project.id))
                 }
             }
 
-            SessionNoteEditor(text: $manualNote, placeholder: "Not (opsiyonel)")
+            SessionNoteEditor(text: $manualNote, placeholder: String(localized: "Note (optional)"))
                 .frame(height: 72)
 
             HStack(spacing: 16) {
@@ -490,7 +575,7 @@ struct HomeView: View {
             Button {
                 saveManualSession()
             } label: {
-                Text("Kaydet")
+                Text("Save")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
@@ -511,7 +596,7 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 6) {
                     if managementProjects.isEmpty {
-                        Text("Eşleşen proje yok")
+                        Text("No matching projects")
                             .foregroundStyle(.secondary)
                             .font(.callout)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -561,7 +646,7 @@ struct HomeView: View {
             if showCategories {
                 Group {
                     if categories.isEmpty {
-                        Text("Henüz kategori yok")
+                        Text("No categories yet")
                             .foregroundStyle(.secondary)
                             .font(.caption)
                     } else {
@@ -620,7 +705,7 @@ struct HomeView: View {
     private func addProjectRow(buttonTitle: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
-                TextField("Yeni proje", text: $newProjectName)
+                TextField("New project", text: $newProjectName)
                     .textFieldStyle(.roundedBorder)
                     .onSubmit(addProject)
                 Button(buttonTitle, action: addProject)
@@ -634,7 +719,7 @@ struct HomeView: View {
         let trimmed = newProjectName.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
         if allProjects.contains(where: { $0.name.caseInsensitiveCompare(trimmed) == .orderedSame }) {
-            nameError = "Bu isimde proje zaten var"
+            nameError = String(localized: "A project with this name already exists")
             return
         }
         let project = Project(name: trimmed)
@@ -649,7 +734,7 @@ struct HomeView: View {
         let trimmed = newCategoryName.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
         if categories.contains(where: { $0.name.caseInsensitiveCompare(trimmed) == .orderedSame }) {
-            categoryError = "Bu kategori zaten var"
+            categoryError = String(localized: "This category already exists")
             return
         }
         context.insert(Category(name: trimmed, colorHex: newCategoryColorHex))
@@ -728,7 +813,7 @@ private struct ManualDurationStepper: View {
     var body: some View {
         HStack(spacing: 14) {
             HStack(spacing: 6) {
-                Text("\(hours) saat")
+                Text("\(hours) hr")
                     .monospacedDigit()
                     .frame(width: 56, alignment: .leading)
                 Stepper(value: $hours, in: 0...23) { EmptyView() }
@@ -736,7 +821,7 @@ private struct ManualDurationStepper: View {
             }
 
             HStack(spacing: 6) {
-                Text("\(minutes) dk")
+                Text("\(minutes) min")
                     .monospacedDigit()
                     .frame(width: 48, alignment: .leading)
                 Stepper {
@@ -797,7 +882,7 @@ private struct ProjectExpandableCard: View {
                             if let category = project.category {
                                 CategoryChip(name: category.name, hex: category.colorHex)
                             } else {
-                                Text("Kategorisiz")
+                                Text("Uncategorized")
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
@@ -835,11 +920,11 @@ private struct ProjectExpandableCard: View {
 
                 VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("PROJE ADI")
+                        Text("PROJECT NAME")
                             .font(.system(size: 9, weight: .bold, design: .rounded))
                             .foregroundStyle(.secondary)
-                        
-                        TextField("Proje adı", text: $project.name)
+
+                        TextField("Project name", text: $project.name)
                             .textFieldStyle(.plain)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 7)
@@ -853,12 +938,12 @@ private struct ProjectExpandableCard: View {
 
                     HStack(spacing: 12) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("KATEGORİ")
+                            Text("CATEGORY")
                                 .font(.system(size: 9, weight: .bold, design: .rounded))
                                 .foregroundStyle(.secondary)
-                            
+
                             Picker("", selection: $project.category) {
-                                Text("Yok").tag(Category?.none)
+                                Text("None").tag(Category?.none)
                                 ForEach(categories) { category in
                                     Text(category.name).tag(Category?.some(category))
                                 }
@@ -870,7 +955,7 @@ private struct ProjectExpandableCard: View {
                         .frame(maxWidth: .infinity)
 
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("DURUM")
+                            Text("STATUS")
                                 .font(.system(size: 9, weight: .bold, design: .rounded))
                                 .foregroundStyle(.secondary)
                             
@@ -897,12 +982,12 @@ private struct ProjectExpandableCard: View {
                             Button(role: .destructive) {
                                 withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm = true }
                             } label: {
-                                Label("Projeyi sil", systemImage: "trash")
+                                Label("Delete project", systemImage: "trash")
                                     .font(.caption)
                             }
                             .buttonStyle(.bordered)
                             .controlSize(.small)
-                            .help("Projeyi ve tüm oturumlarını sil")
+                            .help("Delete the project and all its sessions")
                         }
                     }
                 }
@@ -931,16 +1016,16 @@ private struct ProjectExpandableCard: View {
     private var deleteConfirmBar: some View {
         HStack {
             Text(project.sessions.isEmpty
-                 ? "Bu proje kalıcı olarak silinecek."
-                 : "Bu proje ve \(project.sessions.count) oturum kalıcı olarak silinecek.")
+                 ? String(localized: "This project will be permanently deleted.")
+                 : String(localized: "This project and \(project.sessions.count) sessions will be permanently deleted."))
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Spacer()
-            Button("Vazgeç") {
+            Button("Cancel") {
                 withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm = false }
             }
             .controlSize(.small)
-            Button("Sil", role: .destructive, action: onDelete)
+            Button("Delete", role: .destructive, action: onDelete)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
         }
@@ -967,14 +1052,14 @@ private struct SessionEditForm: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Picker("Proje", selection: $edit.projectID) {
-                Text("Proje seç").tag(UUID?.none)
+            Picker("Project", selection: $edit.projectID) {
+                Text("Select project").tag(UUID?.none)
                 ForEach(projects) { project in
                     Text(project.name).tag(UUID?.some(project.id))
                 }
             }
 
-            SessionNoteEditor(text: $edit.note, placeholder: "Not (opsiyonel)")
+            SessionNoteEditor(text: $edit.note, placeholder: String(localized: "Note (optional)"))
                 .frame(height: 72)
 
             HStack(spacing: 16) {
@@ -986,9 +1071,9 @@ private struct SessionEditForm: View {
             }
 
             HStack {
-                Button("Vazgeç", action: onCancel)
+                Button("Cancel", action: onCancel)
                 Spacer()
-                Button("Kaydet") { save() }
+                Button("Save") { save() }
                     .buttonStyle(.borderedProminent)
                     .disabled(edit.projectID == nil || !edit.canSave)
             }
@@ -1021,7 +1106,7 @@ private struct SessionHistoryRow: View {
 
     private var dateText: String {
         session.endedAt.formatted(
-            .dateTime.day().month(.abbreviated).year().locale(Locale(identifier: "tr_TR"))
+            .dateTime.day().month(.abbreviated).year().locale(Locale.current)
         )
     }
 
@@ -1030,7 +1115,7 @@ private struct SessionHistoryRow: View {
             HStack(alignment: .top, spacing: 10) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 7) {
-                        Text(session.project?.name ?? "Proje yok")
+                        Text(session.project?.name ?? String(localized: "No project"))
                             .font(.callout)
                             .fontWeight(.semibold)
                             .lineLimit(1)
@@ -1038,7 +1123,7 @@ private struct SessionHistoryRow: View {
                             CategoryChip(name: category.name, hex: category.colorHex)
                         }
                     }
-                    Text(session.note.isEmpty ? "Not yok" : session.note)
+                    Text(session.note.isEmpty ? String(localized: "No note") : session.note)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(2)
@@ -1068,7 +1153,7 @@ private struct SessionHistoryRow: View {
                                     .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
-                            .help("Düzenle")
+                            .help("Edit")
 
                             Button(role: .destructive) {
                                 withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm.toggle() }
@@ -1078,7 +1163,7 @@ private struct SessionHistoryRow: View {
                                     .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
-                            .help("Sil")
+                            .help("Delete")
                         }
                     }
                 }
@@ -1087,14 +1172,14 @@ private struct SessionHistoryRow: View {
 
             if showDeleteConfirm {
                 HStack {
-                    Text("Bu oturum silinsin mi?")
+                    Text("Delete this session?")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Button("Vazgeç") {
+                    Button("Cancel") {
                         withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm = false }
                     }
-                    Button("Sil", role: .destructive, action: onDelete)
+                    Button("Delete", role: .destructive, action: onDelete)
                         .buttonStyle(.borderedProminent)
                         .controlSize(.small)
                 }
@@ -1267,10 +1352,10 @@ private struct CategoryCreationPanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 9) {
             HStack(spacing: 8) {
-                TextField("Yeni kategori", text: $name)
+                TextField("New category", text: $name)
                     .textFieldStyle(.roundedBorder)
 
-                Button("Ekle") { onAdd() }
+                Button("Add") { onAdd() }
                     .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
 
@@ -1293,7 +1378,7 @@ private struct CategoryEditPanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 9) {
             HStack(spacing: 8) {
-                TextField("Kategori adı", text: $category.name)
+                TextField("Category name", text: $category.name)
                     .textFieldStyle(.roundedBorder)
 
                 Button(role: .destructive) {
@@ -1303,7 +1388,7 @@ private struct CategoryEditPanel: View {
                         .frame(width: 18)
                 }
                 .buttonStyle(.bordered)
-                .help("Kategoriyi sil")
+                .help("Delete category")
             }
 
             CategorySwatchPicker(selection: $category.colorHex)
@@ -1361,7 +1446,7 @@ private struct RecentSessionNotesView: View {
                             Text("•")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text(session.note.isEmpty ? "Not yok" : session.note)
+                            Text(session.note.isEmpty ? String(localized: "No note") : session.note)
                                 .font(.caption)
                                 .lineLimit(2)
                                 .fixedSize(horizontal: false, vertical: true)
@@ -1390,21 +1475,21 @@ private struct RecentSessionNotesView: View {
         let now = Date()
         
         if calendar.isDateInToday(date) {
-            return "Bugün"
+            return String(localized: "Today")
         } else if calendar.isDateInYesterday(date) {
-            return "Dün"
+            return String(localized: "Yesterday")
         }
-        
+
         let startOfDate = calendar.startOfDay(for: date)
         let startOfNow = calendar.startOfDay(for: now)
         let components = calendar.dateComponents([.day], from: startOfDate, to: startOfNow)
-        
+
         if let days = components.day, days < 7 {
-            return "\(days) gün önce"
+            return String(localized: "\(days) days ago")
         } else {
             let formatter = DateFormatter()
-            formatter.locale = Locale(identifier: "tr_TR")
-            formatter.dateFormat = "d MMM"
+            formatter.locale = Locale.current
+            formatter.setLocalizedDateFormatFromTemplate("d MMM")
             return formatter.string(from: date)
         }
     }
@@ -1433,7 +1518,7 @@ private struct SearchField: View {
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
-                .help("Temizle")
+                .help("Clear")
             }
         }
         .padding(.horizontal, 9)
@@ -1458,7 +1543,7 @@ private struct CategoryDisclosureHeader: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                Text("Kategoriler").font(.headline)
+                Text("Categories").font(.headline)
                 Spacer()
                 Image(systemName: isOpen ? "chevron.down" : "chevron.right")
                     .font(.subheadline)

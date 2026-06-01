@@ -5,9 +5,9 @@ enum AnalyticsPeriod: String, CaseIterable {
 
     var label: String {
         switch self {
-        case .week: return "Hafta"
-        case .month: return "Ay"
-        case .all: return "Tümü"
+        case .week: return String(localized: "Week")
+        case .month: return String(localized: "Month")
+        case .all: return String(localized: "All")
         }
     }
 }
@@ -44,7 +44,7 @@ enum Analytics {
         return AnalyticsSummary(totalSeconds: total, sessionCount: count, averageSeconds: avg)
     }
 
-    static let uncategorizedName = "Kategorisiz"
+    static let uncategorizedName = String(localized: "Uncategorized")
     static let uncategorizedHex = "#828282"
 
     static func categoryTotals(_ sessions: [Session]) -> [CategoryTotal] {
@@ -121,11 +121,11 @@ enum Analytics {
     }
 
     private static func shortDay(_ date: Date) -> String {
-        date.formatted(.dateTime.day().month(.abbreviated).locale(Locale(identifier: "tr_TR")))
+        date.formatted(.dateTime.day().month(.abbreviated).locale(Locale.current))
     }
 
     private static func shortMonth(_ date: Date) -> String {
-        date.formatted(.dateTime.month(.abbreviated).locale(Locale(identifier: "tr_TR")))
+        date.formatted(.dateTime.month(.abbreviated).locale(Locale.current))
     }
 
     static func projectTotals(_ sessions: [Session], limit: Int) -> [ProjectTotal] {
