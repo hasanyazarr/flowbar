@@ -16,6 +16,7 @@ struct SettingsView: View {
     let onBack: () -> Void
     
     @AppStorage("menuBarDisplayMode") private var menuBarDisplayMode = "iconAndTimer"
+    @AppStorage("backgroundStyle") private var backgroundStyle = "glass"
     
     @State private var showDeleteConfirm = false
     @State private var notificationStatus: String = "Kontrol ediliyor…"
@@ -107,6 +108,26 @@ struct SettingsView: View {
                             .controlSize(.small)
                             
                             Text("Sayaç çalışırken menü barında ne görüntüleneceğini ayarlar.")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        Divider().padding(.vertical, 2)
+                        
+                        // Arka Plan Stili Tercihi
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Pencere Görünümü")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                            
+                            Picker("", selection: $backgroundStyle) {
+                                Text("Cam (Glass)").tag("glass")
+                                Text("Mat (Matte)").tag("matte")
+                            }
+                            .pickerStyle(.segmented)
+                            .controlSize(.small)
+                            
+                            Text("Uygulama penceresinin arka plan stilini belirler.")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }

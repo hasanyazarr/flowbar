@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject var appState: AppState
+    @AppStorage("backgroundStyle") private var backgroundStyle = "glass"
 
     var body: some View {
         Group {
@@ -15,5 +16,12 @@ struct RootView: View {
             }
         }
         .padding(12)
+        .background(
+            Group {
+                if backgroundStyle == "matte" {
+                    Color(nsColor: .windowBackgroundColor)
+                }
+            }
+        )
     }
 }
