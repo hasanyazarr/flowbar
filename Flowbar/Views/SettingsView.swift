@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 import UserNotifications
 import ServiceManagement
+import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var context
@@ -154,6 +155,36 @@ struct SettingsView: View {
                             statRow(label: "Hatırlatıcılar (Bekleyen/Tamamlanan)", value: "\(allReminders.filter { !$0.isCompleted }.count) / \(allReminders.filter { $0.isCompleted }.count)")
                         }
                         .padding(.vertical, 4)
+                        
+                        // Veri Aktarma Butonları
+                        HStack(spacing: 8) {
+                            Text("Verileri Aktar:")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            
+                            Spacer()
+                            
+                            Button {
+                                exportSessionsToCSV()
+                            } label: {
+                                Label("CSV (Excel)", systemImage: "tablecells.fill")
+                                    .font(.caption2)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .disabled(allSessions.isEmpty)
+                            
+                            Button {
+                                exportSessionsToJSON()
+                            } label: {
+                                Label("JSON", systemImage: "braces")
+                                    .font(.caption2)
+                            }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .disabled(allSessions.isEmpty)
+                        }
+                        .padding(.vertical, 2)
                         
                         Divider()
                         
@@ -349,6 +380,105 @@ struct SettingsView: View {
                     print("Otomatik başlatma kaydı silinemedi: \(error.localizedDescription)")
                     launchAtLoginEnabled = true
                 }
+            }
+        }
+    }
+    
+    // Oturumları CSV olarak dışa aktarır
+    private func exportSessionsToCSV() {
+        let sortedSessions = allSessions.sorted { $0.startedAt > $1.startedAt }
+        
+        var csvString = "Tarih,Proje,Kategori,Not,Baslangic,Bitis,Olculen Sure (Saniye),Kaydedilen Sure (Saniye),Kaydedilen Sure (Saat)\n"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm:ss"
+        
+        for session in sortedSessions {
+            let dateStr = dateFormatter.string(from: session.startedAt)
+            let projectStr = escapeCSVField(session.project?.name ?? "Kategorisiz")
+            let categoryStr = escapeCSVField(session.project?.category?.name ?? "Yok")
+            let noteStr = escapeCSVField(session.note)
+            let startStr = timeFormatter.string(from: session.startedAt)
+            let endStr = timeFormatter.string(from: session.endedAt)
+            let measuredSec = session.measuredSeconds
+            let loggedSec = session.loggedSeconds
+            let loggedHours = Double(loggedSec) / 3600.0
+            let hoursStr = String(format: "%.2f", loggedHours)
+            
+            csvString += "\(dateStr),\(projectStr),\(categoryStr),\(noteStr),\(startStr),\(endStr),\(measuredSec),\(loggedSec),\(hoursStr)\n"
+        }
+        
+        saveStringToFile(content: csvString, defaultFileName: "flowbar_sessions_export.csv")
+    }
+    
+    // Oturumları JSON olarak dışa aktarır
+    private func exportSessionsToJSON() {
+        struct SessionJSON: Codable {
+            let id: String
+            let project: String?
+            let category: String?
+            let note: String
+            let startedAt: String
+            let endedAt: String
+            let measuredSeconds: Int
+            let loggedSeconds: Int
+        }
+        
+        let isoFormatter = ISO8601DateFormatter()
+        let sortedSessions = allSessions.sorted { $0.startedAt > $1.startedAt }
+        
+        let jsonSessions = sortedSessions.map { session in
+            SessionJSON(
+                id: session.id.uuidString,
+                project: session.project?.name,
+                category: session.project?.category?.name,
+                note: session.note,
+                startedAt: isoFormatter.string(from: session.startedAt),
+                endedAt: isoFormatter.string(from: session.endedAt),
+                measuredSeconds: session.measuredSeconds,
+                loggedSeconds: session.loggedSeconds
+            )
+        }
+        
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        
+        do {
+            let data = try encoder.encode(jsonSessions)
+            if let jsonString = String(data: data, encoding: .utf8) {
+                saveStringToFile(content: jsonString, defaultFileName: "flowbar_sessions_export.json")
+            }
+        } catch {
+            print("JSON export encoding failed: \(error)")
+        }
+    }
+    
+    // CSV alanlarındaki özel karakterleri kaçış karakterleri ile sarmalar
+    private func escapeCSVField(_ field: String) -> String {
+        var escaped = field.replacingOccurrences(of: "\"", with: "\"\"")
+        if escaped.contains(",") || escaped.contains("\n") || escaped.contains("\"") {
+            escaped = "\"\(escaped)\""
+        }
+        return escaped
+    }
+    
+    // Veriyi NSSavePanel kullanarak dosyaya yazar
+    private func saveStringToFile(content: String, defaultFileName: String) {
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = defaultFileName.hasSuffix(".csv") ? [UTType.commaSeparatedText] : [UTType.json]
+        savePanel.nameFieldStringValue = defaultFileName
+        savePanel.title = "Verileri Kaydet"
+        savePanel.message = "Flowbar verilerini kaydetmek istediğiniz konumu seçin."
+        
+        let response = savePanel.runModal()
+        if response == .OK, let url = savePanel.url {
+            do {
+                try content.write(to: url, atomically: true, encoding: .utf8)
+            } catch {
+                print("Dosya yazma hatası: \(error.localizedDescription)")
             }
         }
     }
