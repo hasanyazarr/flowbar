@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1000001 /* FlowbarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001 /* FlowbarApp.swift */; };
+		A1000002 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002 /* Project.swift */; };
+		A1000003 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000003 /* Session.swift */; };
+		A1000004 /* Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000004 /* Duration.swift */; };
+		A1000005 /* StopwatchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000005 /* StopwatchModel.swift */; };
+		A1000006 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000006 /* AppState.swift */; };
+		A1000007 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000007 /* RootView.swift */; };
+		A1000008 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000008 /* HomeView.swift */; };
+		A1000009 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000009 /* TimerView.swift */; };
+		A100000A /* SaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000A /* SaveView.swift */; };
+		A100000C /* DurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000C /* DurationTests.swift */; };
+		A100000D /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000D /* ModelTests.swift */; };
+		A100000E /* Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000004 /* Duration.swift */; };
+		A100000F /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002 /* Project.swift */; };
+		A1000010 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000003 /* Session.swift */; };
+		A1000011 /* ProjectStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010 /* ProjectStatus.swift */; };
+		A1000012 /* ProjectManagementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000011 /* ProjectManagementTests.swift */; };
+		A1000013 /* ProjectStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010 /* ProjectStatus.swift */; };
+		A1000014 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* Color+Hex.swift */; };
+		A1000015 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* Color+Hex.swift */; };
+		A1000016 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* Category.swift */; };
+		A1000017 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* Category.swift */; };
+		A1000018 /* ProjectFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014 /* ProjectFiltering.swift */; };
+		A1000019 /* ProjectFiltering.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014 /* ProjectFiltering.swift */; };
+		A100001D /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000018 /* PersistenceController.swift */; };
+		A100001E /* PopoverLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* PopoverLayout.swift */; };
+		A100001F /* PopoverLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* PopoverLayout.swift */; };
+		A1000040 /* ManualSessionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000040 /* ManualSessionEntry.swift */; };
+		A1000041 /* ManualSessionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000040 /* ManualSessionEntry.swift */; };
+		A1000050 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000050 /* Analytics.swift */; };
+		A1000051 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000050 /* Analytics.swift */; };
+		A1000052 /* AnalyticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000052 /* AnalyticsView.swift */; };
+		A1000060 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000060 /* Reminder.swift */; };
+		A1000061 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000060 /* Reminder.swift */; };
+		A1000062 /* ReminderNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000061 /* ReminderNotificationManager.swift */; };
+		A1000063 /* RemindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000062 /* RemindView.swift */; };
+		A1000064 /* ReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000063 /* ReminderTests.swift */; };
+		A1000065 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000064 /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C1000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D1000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1000001;
+			remoteInfo = Flowbar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F1000001 /* Flowbar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flowbar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1000002 /* FlowbarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlowbarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000001 /* FlowbarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowbarApp.swift; sourceTree = "<group>"; };
+		B1000002 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		B1000003 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		B1000004 /* Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Duration.swift; sourceTree = "<group>"; };
+		B1000005 /* StopwatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchModel.swift; sourceTree = "<group>"; };
+		B1000006 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		B1000007 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B1000008 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B1000009 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		B100000A /* SaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveView.swift; sourceTree = "<group>"; };
+		B100000C /* DurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationTests.swift; sourceTree = "<group>"; };
+		B100000D /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		B100000E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1000010 /* ProjectStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStatus.swift; sourceTree = "<group>"; };
+		B1000011 /* ProjectManagementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManagementTests.swift; sourceTree = "<group>"; };
+		B1000012 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		B1000013 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		B1000014 /* ProjectFiltering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFiltering.swift; sourceTree = "<group>"; };
+		B1000018 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		B1000019 /* PopoverLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverLayout.swift; sourceTree = "<group>"; };
+		B1000040 /* ManualSessionEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualSessionEntry.swift; sourceTree = "<group>"; };
+		B1000050 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		B1000052 /* AnalyticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsView.swift; sourceTree = "<group>"; };
+		B1000060 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		B1000061 /* ReminderNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderNotificationManager.swift; sourceTree = "<group>"; };
+		B1000062 /* RemindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindView.swift; sourceTree = "<group>"; };
+		B1000063 /* ReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTests.swift; sourceTree = "<group>"; };
+		B1000064 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G1000000 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				G1000001 /* Flowbar */,
+				G1000005 /* FlowbarTests */,
+				G1000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G1000001 /* Flowbar */ = {
+			isa = PBXGroup;
+			children = (
+				B1000001 /* FlowbarApp.swift */,
+				B100000E /* Info.plist */,
+				G1000003 /* Models */,
+				G1000004 /* Logic */,
+				G1000006 /* Views */,
+			);
+			path = Flowbar;
+			sourceTree = "<group>";
+		};
+		G1000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F1000001 /* Flowbar.app */,
+				F1000002 /* FlowbarTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		G1000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B1000002 /* Project.swift */,
+				B1000003 /* Session.swift */,
+				B1000010 /* ProjectStatus.swift */,
+				B1000013 /* Category.swift */,
+				B1000060 /* Reminder.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		G1000004 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				B1000004 /* Duration.swift */,
+				B1000005 /* StopwatchModel.swift */,
+				B1000006 /* AppState.swift */,
+				B1000012 /* Color+Hex.swift */,
+				B1000014 /* ProjectFiltering.swift */,
+				B1000018 /* PersistenceController.swift */,
+				B1000019 /* PopoverLayout.swift */,
+				B1000040 /* ManualSessionEntry.swift */,
+				B1000050 /* Analytics.swift */,
+				B1000061 /* ReminderNotificationManager.swift */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		G1000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1000007 /* RootView.swift */,
+				B1000008 /* HomeView.swift */,
+				B1000009 /* TimerView.swift */,
+				B100000A /* SaveView.swift */,
+				B1000052 /* AnalyticsView.swift */,
+				B1000062 /* RemindView.swift */,
+				B1000064 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		G1000005 /* FlowbarTests */ = {
+			isa = PBXGroup;
+			children = (
+				B100000C /* DurationTests.swift */,
+				B100000D /* ModelTests.swift */,
+				B1000011 /* ProjectManagementTests.swift */,
+				B1000063 /* ReminderTests.swift */,
+			);
+			path = FlowbarTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E1000001 /* Flowbar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC000001 /* Build configuration list for PBXNativeTarget "Flowbar" */;
+			buildPhases = (
+				BP000001 /* Sources */,
+				AA000001 /* Frameworks */,
+				BP000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Flowbar;
+			productName = Flowbar;
+			productReference = F1000001 /* Flowbar.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E1000002 /* FlowbarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC000002 /* Build configuration list for PBXNativeTarget "FlowbarTests" */;
+			buildPhases = (
+				BP000002 /* Sources */,
+				AA000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DEP00001 /* PBXTargetDependency */,
+			);
+			name = FlowbarTests;
+			productName = FlowbarTests;
+			productReference = F1000002 /* FlowbarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D1000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					E1000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					E1000002 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = E1000001;
+					};
+				};
+			};
+			buildConfigurationList = BC000000 /* Build configuration list for PBXProject "Flowbar" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G1000000 /* Root */;
+			productRefGroup = G1000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E1000001 /* Flowbar */,
+				E1000002 /* FlowbarTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BP000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BP000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000001 /* FlowbarApp.swift in Sources */,
+				A1000002 /* Project.swift in Sources */,
+				A1000003 /* Session.swift in Sources */,
+				A1000004 /* Duration.swift in Sources */,
+				A1000005 /* StopwatchModel.swift in Sources */,
+				A1000006 /* AppState.swift in Sources */,
+				A1000007 /* RootView.swift in Sources */,
+				A1000008 /* HomeView.swift in Sources */,
+				A1000009 /* TimerView.swift in Sources */,
+				A100000A /* SaveView.swift in Sources */,
+				A1000052 /* AnalyticsView.swift in Sources */,
+				A1000011 /* ProjectStatus.swift in Sources */,
+				A1000014 /* Color+Hex.swift in Sources */,
+				A1000016 /* Category.swift in Sources */,
+				A1000018 /* ProjectFiltering.swift in Sources */,
+				A100001D /* PersistenceController.swift in Sources */,
+				A100001E /* PopoverLayout.swift in Sources */,
+				A1000040 /* ManualSessionEntry.swift in Sources */,
+				A1000050 /* Analytics.swift in Sources */,
+				A1000060 /* Reminder.swift in Sources */,
+				A1000062 /* ReminderNotificationManager.swift in Sources */,
+				A1000063 /* RemindView.swift in Sources */,
+				A1000065 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BP000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000C /* DurationTests.swift in Sources */,
+				A100000D /* ModelTests.swift in Sources */,
+				A100000E /* Duration.swift in Sources */,
+				A100000F /* Project.swift in Sources */,
+				A1000010 /* Session.swift in Sources */,
+				A1000012 /* ProjectManagementTests.swift in Sources */,
+				A1000013 /* ProjectStatus.swift in Sources */,
+				A1000015 /* Color+Hex.swift in Sources */,
+				A1000017 /* Category.swift in Sources */,
+				A1000019 /* ProjectFiltering.swift in Sources */,
+				A100001F /* PopoverLayout.swift in Sources */,
+				A1000041 /* ManualSessionEntry.swift in Sources */,
+				A1000051 /* Analytics.swift in Sources */,
+				A1000061 /* Reminder.swift in Sources */,
+				A1000064 /* ReminderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DEP00001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1000001 /* Flowbar */;
+			targetProxy = C1000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CFG00001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CFG00002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		CFG00003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flowbar/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hasan.Flowbar;
+				PRODUCT_NAME = Flowbar;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CFG00004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Flowbar/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hasan.Flowbar;
+				PRODUCT_NAME = Flowbar;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CFG00005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hasan.FlowbarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Flowbar.app/Contents/MacOS/Flowbar";
+			};
+			name = Debug;
+		};
+		CFG00006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hasan.FlowbarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Flowbar.app/Contents/MacOS/Flowbar";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BC000000 /* Build configuration list for PBXProject "Flowbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG00001 /* Debug */,
+				CFG00002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC000001 /* Build configuration list for PBXNativeTarget "Flowbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG00003 /* Debug */,
+				CFG00004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC000002 /* Build configuration list for PBXNativeTarget "FlowbarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG00005 /* Debug */,
+				CFG00006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D1000001 /* Project object */;
+}
