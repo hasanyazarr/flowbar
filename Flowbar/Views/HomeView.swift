@@ -1469,7 +1469,7 @@ private struct FilterChip: View {
                 .padding(.vertical, 4)
                 .background(background)
                 .overlay {
-                    Capsule().stroke(tint.opacity(isSelected ? 0 : 0.5), lineWidth: 1)
+                    Capsule().stroke(tint.opacity(isSelected ? 0 : 0.6), lineWidth: 1)
                 }
                 .clipShape(Capsule())
         }
@@ -1482,9 +1482,9 @@ private struct FilterChip: View {
     private var background: some View {
         Group {
             if isSelected {
-                tint.opacity(0.9)
+                tint.opacity(0.68)
             } else {
-                tint.opacity(isHovering ? 0.3 : 0.14)
+                tint.opacity(isHovering ? 0.25 : 0.12)
             }
         }
     }
