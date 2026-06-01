@@ -135,6 +135,14 @@ struct HomeView: View {
                 .environmentObject(stopwatch)
             } else {
                 HStack(spacing: 8) {
+                    Text("Flowbar")
+                        .font(.system(.headline, design: .rounded))
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
+                        .padding(.leading, 2)
+                    
+                    Spacer()
+
                     Picker("", selection: $selectedTab) {
                         ForEach(HomeTab.allCases, id: \.self) { tab in
                             Text(tab.rawValue).tag(tab)
@@ -155,8 +163,6 @@ struct HomeView: View {
                     }
                     .buttonStyle(.plain)
                     .hoverHighlight()
-                    
-                    Spacer()
                 }
                 .frame(maxWidth: .infinity)
 
