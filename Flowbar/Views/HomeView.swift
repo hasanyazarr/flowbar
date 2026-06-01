@@ -49,6 +49,7 @@ struct HomeView: View {
     @State private var managementSearch = ""
     @State private var filterCategoryID: UUID?
     @State private var showFilters = false
+    @State private var showCategories = false
     @State private var newCategoryName = ""
     @State private var newCategoryColorHex = CategoryPalette.defaultHex
     @State private var editingCategoryID: UUID?
@@ -364,7 +365,7 @@ struct HomeView: View {
             }
 
             projectManagementList
-                .frame(maxHeight: 360)
+                .frame(maxHeight: .infinity)
 
             Divider()
 
@@ -547,49 +548,64 @@ struct HomeView: View {
     }
 
     private var categoryManager: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Kategoriler").font(.headline)
-
-            if categories.isEmpty {
-                Text("Henüz kategori yok")
-                    .foregroundStyle(.secondary)
-                    .font(.caption)
-            } else {
-                FlowLayout(spacing: 6) {
-                    ForEach(categories) { category in
-                        Button {
-                            withAnimation(.snappy(duration: 0.16)) {
-                                editingCategoryID = editingCategoryID == category.id ? nil : category.id
-                            }
-                        } label: {
-                            CategoryChip(name: category.name, hex: category.colorHex)
-                                .overlay {
-                                    if editingCategoryID == category.id {
-                                        Capsule()
-                                            .stroke(Color.accentColor, lineWidth: 2)
-                                    }
-                                }
-                                .hoverHighlight()
-                        }
-                        .buttonStyle(.plain)
-                    }
+        VStack(alignment: .leading, spacing: showCategories ? 8 : 0) {
+            // Tıklanabilir başlık: bölümü filtre barı gibi aç/kapa yapar.
+            CategoryDisclosureHeader(isOpen: showCategories) {
+                withAnimation(.snappy(duration: 0.16)) {
+                    showCategories.toggle()
+                    // Kapatılırken gizli bir düzenleme state'i kalmasın.
+                    if !showCategories { editingCategoryID = nil }
                 }
-                .padding(.vertical, 6)
-                .padding(.horizontal, 2)
             }
 
-            if let editingCategory {
-                CategoryEditPanel(category: editingCategory) {
-                    deleteCategory(editingCategory)
+            if showCategories {
+                Group {
+                    if categories.isEmpty {
+                        Text("Henüz kategori yok")
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                    } else {
+                        FlowLayout(spacing: 6) {
+                            ForEach(categories) { category in
+                                Button {
+                                    withAnimation(.snappy(duration: 0.16)) {
+                                        editingCategoryID = editingCategoryID == category.id ? nil : category.id
+                                    }
+                                } label: {
+                                    CategoryChip(name: category.name, hex: category.colorHex)
+                                        .overlay {
+                                            if editingCategoryID == category.id {
+                                                Capsule()
+                                                    .stroke(Color.accentColor, lineWidth: 2)
+                                            }
+                                        }
+                                        .hoverHighlight()
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 2)
+                    }
+
+                    if let editingCategory {
+                        CategoryEditPanel(category: editingCategory) {
+                            deleteCategory(editingCategory)
+                        }
+                    } else {
+                        CategoryCreationPanel(
+                            name: $newCategoryName,
+                            colorHex: $newCategoryColorHex,
+                            error: categoryError
+                        ) {
+                            addCategory()
+                        }
+                    }
                 }
-            } else {
-                CategoryCreationPanel(
-                    name: $newCategoryName,
-                    colorHex: $newCategoryColorHex,
-                    error: categoryError
-                ) {
-                    addCategory()
-                }
+                .transition(.asymmetric(
+                    insertion: .opacity.combined(with: .scale(scale: 0.98)),
+                    removal: .opacity
+                ))
             }
         }
         .padding(12)
@@ -1428,6 +1444,32 @@ private struct SearchField: View {
                 .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+}
+
+/// "Kategoriler" bölümünü aç/kapa eden başlık satırı. Geniş bir satır olduğu için
+/// scale yerine hover'da renk değiştirir (scale taşmaya yol açıyordu).
+private struct CategoryDisclosureHeader: View {
+    let isOpen: Bool
+    let action: () -> Void
+
+    @State private var isHovering = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text("Kategoriler").font(.headline)
+                Spacer()
+                Image(systemName: isOpen ? "chevron.down" : "chevron.right")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+            }
+            .foregroundStyle(isHovering ? Color.accentColor : .primary)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .animation(.snappy(duration: 0.12), value: isHovering)
+        .onHover { isHovering = $0 }
     }
 }
 
