@@ -19,10 +19,9 @@ struct RootView: View {
         .background(
             Group {
                 if backgroundStyle == "matte" {
-                    Color(hex: "#101010") ?? Color.black
+                    Color(nsColor: .windowBackgroundColor)
                 }
             }
         )
-        .preferredColorScheme(backgroundStyle == "matte" ? .dark : nil)
     }
 }
