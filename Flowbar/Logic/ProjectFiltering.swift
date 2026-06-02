@@ -34,7 +34,13 @@ enum ProjectFiltering {
 enum SessionHistory {
     static func latest(_ sessions: [Session]) -> [Session] {
         sessions.sorted { lhs, rhs in
-            lhs.endedAt > rhs.endedAt
+            // Birincil: oturumun bittiği an (yeni → eski).
+            // İkincil: aynı/çok yakın endedAt'te (özellikle elle eklenen ve
+            // günün sonuna yerleşen oturumlarda) en son eklenen üstte kalsın.
+            if lhs.endedAt != rhs.endedAt {
+                return lhs.endedAt > rhs.endedAt
+            }
+            return lhs.createdAt > rhs.createdAt
         }
     }
 
