@@ -17,14 +17,15 @@ struct WeeklyMenubarApp: App {
                 .environmentObject(stopwatch)
                 .modelContainer(container)
         } label: {
-            if stopwatch.isRunning {
+            if stopwatch.isActive {
+                let symbol = stopwatch.isPaused ? "⏸" : "⏱"
                 switch menuBarDisplayMode {
                 case "timerOnly":
                     Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
                 case "iconOnly":
-                    Image(systemName: "timer")
+                    Image(systemName: stopwatch.isPaused ? "pause.circle" : "timer")
                 default:
-                    Text("⏱ \(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))")
+                    Text("\(symbol) \(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))")
                 }
             } else {
                 Image(systemName: "timer")

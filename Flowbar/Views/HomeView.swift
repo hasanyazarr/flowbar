@@ -195,7 +195,7 @@ struct HomeView: View {
         }
         switch selectedTab {
         case .session:
-            if stopwatch.isRunning {
+            if stopwatch.isActive {
                 return CGSize(width: 480, height: 260)
             } else {
                 return PopoverLayout.sessionSize(
@@ -274,7 +274,7 @@ struct HomeView: View {
 
     private var sessionTab: some View {
         Group {
-            if stopwatch.isRunning {
+            if stopwatch.isActive {
                 activeSessionCard
             } else {
                 VStack(alignment: .leading, spacing: 10) {
@@ -382,21 +382,46 @@ struct HomeView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
             }
 
-            // Canlı Sayaç
-            Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
-                .font(.system(size: 34, weight: .bold, design: .monospaced))
-                .foregroundStyle(Color.accentColor)
-                .shadow(color: Color.accentColor.opacity(0.2), radius: 6, x: 0, y: 3)
-                .padding(.vertical, 4)
+            // Canlı Sayaç (duraklıyken soluk + "Paused" etiketi)
+            VStack(spacing: 2) {
+                Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
+                    .font(.system(size: 34, weight: .bold, design: .monospaced))
+                    .foregroundStyle(Color.accentColor)
+                    .shadow(color: Color.accentColor.opacity(stopwatch.isPaused ? 0 : 0.2), radius: 6, x: 0, y: 3)
+                    .opacity(stopwatch.isPaused ? 0.45 : 1)
 
-            Button(role: .destructive) {
-                stopActiveSession()
-            } label: {
-                Label("Stop and Save", systemImage: "stop.fill")
-                    .frame(maxWidth: .infinity)
+                if stopwatch.isPaused {
+                    Label("Paused", systemImage: "pause.fill")
+                        .font(.caption2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                }
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .padding(.vertical, 4)
+            .animation(.snappy(duration: 0.16), value: stopwatch.isPaused)
+
+            HStack(spacing: 10) {
+                Button {
+                    togglePause()
+                } label: {
+                    Label(
+                        stopwatch.isPaused ? String(localized: "Resume") : String(localized: "Pause"),
+                        systemImage: stopwatch.isPaused ? "play.fill" : "pause.fill"
+                    )
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+
+                Button(role: .destructive) {
+                    stopActiveSession()
+                } label: {
+                    Label("Stop and Save", systemImage: "stop.fill")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+            }
         }
         .padding(14)
         .background(Color.accentColor.opacity(0.06))
@@ -787,6 +812,14 @@ struct HomeView: View {
         appState.activeProjectID = id
         appState.activeNote = note
         stopwatch.start()
+    }
+
+    private func togglePause() {
+        if stopwatch.isPaused {
+            stopwatch.resume()
+        } else {
+            stopwatch.pause()
+        }
     }
 
     private func stopActiveSession() {

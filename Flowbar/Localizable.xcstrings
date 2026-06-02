@@ -913,6 +913,16 @@
         }
       }
     },
+    "Pause": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duraklat"
+          }
+        }
+      }
+    },
     "Paused": {
       "localizations": {
         "tr": {
@@ -1119,6 +1129,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dil değişikliğinin tam olarak uygulanması için uygulamayı yeniden başlatın."
+          }
+        }
+      }
+    },
+    "Resume": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devam et"
           }
         }
       }
