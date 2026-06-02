@@ -488,6 +488,12 @@ struct HomeView: View {
                 Text("Past sessions").font(.headline)
                 Spacer()
                 Button {
+                    // Form açılırken tarihi bugüne sabitle; menubar uygulaması
+                    // arka planda günlerce açık kalabildiği için @State'in ilk
+                    // başlatıldığı günde takılı kalmasını önler.
+                    if !showManualEntry {
+                        manualDay = .now
+                    }
                     withAnimation(.snappy(duration: 0.16)) {
                         showManualEntry.toggle()
                     }
