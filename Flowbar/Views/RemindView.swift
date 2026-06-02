@@ -159,18 +159,8 @@ struct RemindView: View {
         }
     }
 
-    // Tek bir hatırlatıcı satırı (düzenleme modundaysa edit görünümü)
-    @ViewBuilder
+    // Tek bir hatırlatıcı satırı
     private func reminderRow(for reminder: Reminder) -> some View {
-        if editingReminderID == reminder.id {
-            editRow(for: reminder)
-        } else {
-            displayRow(for: reminder)
-        }
-    }
-
-    // Okuma görünümü
-    private func displayRow(for reminder: Reminder) -> some View {
         HStack(alignment: .top, spacing: 10) {
             // Checkbox
             Button {
@@ -214,7 +204,7 @@ struct RemindView: View {
 
             Spacer()
 
-            // Düzenleme Butonu (tamamlanmamışlarda)
+            // Düzenleme Butonu (tamamlanmamışlarda) — popover açar
             if !reminder.isCompleted {
                 Button {
                     beginEditing(reminder)
@@ -228,6 +218,15 @@ struct RemindView: View {
                 .buttonStyle(.plain)
                 .hoverHighlight()
                 .help(String(localized: "Edit reminder"))
+                .popover(
+                    isPresented: Binding(
+                        get: { editingReminderID == reminder.id },
+                        set: { if !$0 { editingReminderID = nil } }
+                    ),
+                    arrowEdge: .trailing
+                ) {
+                    editPopover(for: reminder)
+                }
             }
 
             // Silme Butonu
@@ -249,9 +248,12 @@ struct RemindView: View {
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
-    // Inline düzenleme görünümü
-    private func editRow(for reminder: Reminder) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+    // Düzenleme popover içeriği
+    private func editPopover(for reminder: Reminder) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Edit reminder")
+                .font(.headline)
+
             Picker("Project", selection: $editProjectID) {
                 Text("No project (General)").tag(UUID?.none)
                 ForEach(activeProjects) { project in
@@ -264,24 +266,19 @@ struct RemindView: View {
             SessionNoteEditor(text: $editContent, placeholder: String(localized: "Something to remember…"))
                 .frame(height: 60)
 
-            HStack {
-                Toggle("Set alarm/notification", isOn: $editHasRemindTime)
-                    .toggleStyle(.checkbox)
-                    .font(.callout)
-
-                Spacer()
-
-                if editHasRemindTime {
-                    DatePicker("", selection: $editRemindTime, displayedComponents: [.date, .hourAndMinute])
-                        .labelsHidden()
-                        .datePickerStyle(.compact)
-                }
-            }
-            .animation(.snappy(duration: 0.16), value: editHasRemindTime)
+            Toggle("Set alarm/notification", isOn: $editHasRemindTime)
+                .toggleStyle(.checkbox)
+                .font(.callout)
 
             if editHasRemindTime {
+                DatePicker("", selection: $editRemindTime, displayedComponents: [.date, .hourAndMinute])
+                    .labelsHidden()
+                    .datePickerStyle(.compact)
+
                 quickTimeShortcuts(binding: $editRemindTime)
             }
+
+            Divider().padding(.vertical, 2)
 
             HStack {
                 Button("Cancel") { cancelEditing() }
@@ -300,13 +297,9 @@ struct RemindView: View {
                 .disabled(editContent.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
-        .padding(12)
-        .background(CategorySurface.panel)
-        .overlay {
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.accentColor.opacity(0.4), lineWidth: 1)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .padding(16)
+        .frame(width: 320)
+        .animation(.snappy(duration: 0.16), value: editHasRemindTime)
     }
 
     // Hızlı tarih/saat kısayolları: verilen binding'i ayarlar.
