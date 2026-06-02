@@ -16,6 +16,13 @@ struct RemindView: View {
     // Tamamlananları göster/gizle
     @State private var showCompleted: Bool = false
 
+    // Inline düzenleme durumları
+    @State private var editingReminderID: UUID?
+    @State private var editContent: String = ""
+    @State private var editProjectID: UUID?
+    @State private var editHasRemindTime: Bool = false
+    @State private var editRemindTime: Date = .now
+
     private var activeReminders: [Reminder] {
         allReminders.filter { !$0.isCompleted }
     }
@@ -65,6 +72,11 @@ struct RemindView: View {
                     }
                 }
                 .animation(.snappy(duration: 0.16), value: hasRemindTime)
+
+                if hasRemindTime {
+                    quickTimeShortcuts(binding: $remindTime)
+                        .transition(.opacity)
+                }
 
                 if let contentError {
                     Text(contentError)
@@ -147,8 +159,18 @@ struct RemindView: View {
         }
     }
 
-    // Tek bir hatırlatıcı satırı
+    // Tek bir hatırlatıcı satırı (düzenleme modundaysa edit görünümü)
+    @ViewBuilder
     private func reminderRow(for reminder: Reminder) -> some View {
+        if editingReminderID == reminder.id {
+            editRow(for: reminder)
+        } else {
+            displayRow(for: reminder)
+        }
+    }
+
+    // Okuma görünümü
+    private func displayRow(for reminder: Reminder) -> some View {
         HStack(alignment: .top, spacing: 10) {
             // Checkbox
             Button {
@@ -171,13 +193,14 @@ struct RemindView: View {
 
                 HStack(spacing: 6) {
                     if let project = reminder.project {
+                        let chipColor = (project.category?.colorHex).flatMap { Color(hex: $0) } ?? .accentColor
                         Text(project.name)
                             .font(.caption2)
                             .fontWeight(.semibold)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.accentColor.opacity(0.12))
-                            .foregroundStyle(Color.accentColor)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2.5)
+                            .background(chipColor.opacity(0.68))
+                            .foregroundStyle(.white)
                             .clipShape(Capsule())
                     }
 
@@ -190,6 +213,22 @@ struct RemindView: View {
             }
 
             Spacer()
+
+            // Düzenleme Butonu (tamamlanmamışlarda)
+            if !reminder.isCompleted {
+                Button {
+                    beginEditing(reminder)
+                } label: {
+                    Image(systemName: "pencil")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .frame(width: 22, height: 22)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .hoverHighlight()
+                .help(String(localized: "Edit reminder"))
+            }
 
             // Silme Butonu
             Button {
@@ -208,6 +247,142 @@ struct RemindView: View {
         .padding(.vertical, 8)
         .background(Color.secondary.opacity(0.06))
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+
+    // Inline düzenleme görünümü
+    private func editRow(for reminder: Reminder) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Picker("Project", selection: $editProjectID) {
+                Text("No project (General)").tag(UUID?.none)
+                ForEach(activeProjects) { project in
+                    Text(project.name).tag(UUID?.some(project.id))
+                }
+            }
+            .labelsHidden()
+            .frame(maxWidth: .infinity)
+
+            SessionNoteEditor(text: $editContent, placeholder: String(localized: "Something to remember…"))
+                .frame(height: 60)
+
+            HStack {
+                Toggle("Set alarm/notification", isOn: $editHasRemindTime)
+                    .toggleStyle(.checkbox)
+                    .font(.callout)
+
+                Spacer()
+
+                if editHasRemindTime {
+                    DatePicker("", selection: $editRemindTime, displayedComponents: [.date, .hourAndMinute])
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                }
+            }
+            .animation(.snappy(duration: 0.16), value: editHasRemindTime)
+
+            if editHasRemindTime {
+                quickTimeShortcuts(binding: $editRemindTime)
+            }
+
+            HStack {
+                Button("Cancel") { cancelEditing() }
+                    .buttonStyle(.bordered)
+                    .controlSize(.regular)
+
+                Spacer()
+
+                Button {
+                    saveEditing(reminder)
+                } label: {
+                    Label("Save", systemImage: "checkmark")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.regular)
+                .disabled(editContent.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
+        }
+        .padding(12)
+        .background(CategorySurface.panel)
+        .overlay {
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.accentColor.opacity(0.4), lineWidth: 1)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+
+    // Hızlı tarih/saat kısayolları: verilen binding'i ayarlar.
+    private func quickTimeShortcuts(binding: Binding<Date>) -> some View {
+        HStack(spacing: 6) {
+            ForEach(QuickTime.allCases) { option in
+                Button(option.label) {
+                    binding.wrappedValue = option.date()
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
+        }
+    }
+
+    // Önceden tanımlı hızlı saat seçenekleri.
+    private enum QuickTime: String, CaseIterable, Identifiable {
+        case inOneHour
+        case thisEvening
+        case tomorrowMorning
+
+        var id: String { rawValue }
+
+        var label: LocalizedStringKey {
+            switch self {
+            case .inOneHour: return "In 1 hour"
+            case .thisEvening: return "This evening"
+            case .tomorrowMorning: return "Tomorrow morning"
+            }
+        }
+
+        func date(now: Date = .now, calendar: Calendar = .current) -> Date {
+            switch self {
+            case .inOneHour:
+                return now.addingTimeInterval(3600)
+            case .thisEvening:
+                // Bugün 18:00; geçmişse 1 saat sonrasına düş.
+                let evening = calendar.date(bySettingHour: 18, minute: 0, second: 0, of: now) ?? now
+                return evening > now ? evening : now.addingTimeInterval(3600)
+            case .tomorrowMorning:
+                // Yarın 09:00.
+                let tomorrow = calendar.date(byAdding: .day, value: 1, to: now) ?? now
+                return calendar.date(bySettingHour: 9, minute: 0, second: 0, of: tomorrow) ?? tomorrow
+            }
+        }
+    }
+
+    // Düzenlemeyi başlatır: mevcut değerleri edit alanlarına yükler.
+    private func beginEditing(_ reminder: Reminder) {
+        editingReminderID = reminder.id
+        editContent = reminder.content
+        editProjectID = reminder.project?.id
+        editHasRemindTime = reminder.remindAt != nil
+        editRemindTime = reminder.remindAt ?? Date().addingTimeInterval(900)
+    }
+
+    private func cancelEditing() {
+        editingReminderID = nil
+    }
+
+    // Düzenlemeyi kaydeder; bildirim varsa yeniden zamanlar.
+    private func saveEditing(_ reminder: Reminder) {
+        let trimmed = editContent.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return }
+
+        reminder.content = trimmed
+        reminder.project = activeProjects.first { $0.id == editProjectID }
+        reminder.remindAt = editHasRemindTime ? editRemindTime : nil
+
+        // Bildirimi güncel duruma göre yeniden kur.
+        ReminderNotificationManager.cancelNotification(for: reminder)
+        if editHasRemindTime && !reminder.isCompleted {
+            ReminderNotificationManager.scheduleNotification(for: reminder)
+        }
+
+        editingReminderID = nil
     }
 
     // Hatırlatıcıyı kaydeder
