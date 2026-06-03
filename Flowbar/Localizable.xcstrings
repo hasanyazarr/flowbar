@@ -223,6 +223,16 @@
         }
       }
     },
+    "Card": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kart"
+          }
+        }
+      }
+    },
     "Categories": {
       "localizations": {
         "tr": {
@@ -323,6 +333,16 @@
         }
       }
     },
+    "Chooses how the active session screen is laid out.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktif oturum ekranının nasıl düzenleneceğini seçer."
+          }
+        }
+      }
+    },
     "Clear": {
       "localizations": {
         "tr": {
@@ -349,6 +369,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Formu kapat"
+          }
+        }
+      }
+    },
+    "Compact": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıkışık"
           }
         }
       }
@@ -1379,6 +1409,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu proje kalıcı olarak silinecek."
+          }
+        }
+      }
+    },
+    "Timer Layout": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayaç Düzeni"
           }
         }
       }

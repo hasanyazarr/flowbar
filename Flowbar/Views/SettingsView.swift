@@ -18,6 +18,7 @@ struct SettingsView: View {
     
     @AppStorage("menuBarDisplayMode") private var menuBarDisplayMode = "iconAndTimer"
     @AppStorage("backgroundStyle") private var backgroundStyle = "glass"
+    @AppStorage("timerLayout") private var timerLayout = TimerLayout.card.rawValue
     @AppStorage("backupFrequency") private var backupFrequency = "never"
     @AppStorage("backupDirectoryPath") private var backupDirectoryPath = ""
     @AppStorage("lastBackupDate") private var lastBackupDate: Double = 0
@@ -158,6 +159,27 @@ struct SettingsView: View {
                             .controlSize(.small)
 
                             Text("Determines the background style of the app window.")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Divider().padding(.vertical, 2)
+
+                        // Active session layout preference
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Timer Layout")
+                                .font(.caption)
+                                .fontWeight(.medium)
+
+                            Picker("", selection: $timerLayout) {
+                                ForEach(TimerLayout.allCases) { layout in
+                                    Text(layout.title).tag(layout.rawValue)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .controlSize(.small)
+
+                            Text("Chooses how the active session screen is laid out.")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
                         }

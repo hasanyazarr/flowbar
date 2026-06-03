@@ -44,6 +44,46 @@ private enum HomeTab: String, CaseIterable {
     }
 }
 
+/// Aktif oturum ekranının görünüm seçenekleri. Ayarlardan seçilir
+/// (@AppStorage "timerLayout"). Sayaç boyutu ve popover yüksekliği presete bağlı.
+enum TimerLayout: String, CaseIterable, Identifiable {
+    case card      // Mevcut: proje + kategori + not + sayaç + iki buton
+    case focus     // Sade: devasa sayaç, minimum bilgi
+    case compact   // Yoğun: küçük sayaç, sıkı yerleşim
+
+    var id: String { rawValue }
+
+    static func from(_ raw: String) -> TimerLayout {
+        TimerLayout(rawValue: raw) ?? .card
+    }
+
+    var title: String {
+        switch self {
+        case .card: return String(localized: "Card")
+        case .focus: return String(localized: "Focus")
+        case .compact: return String(localized: "Compact")
+        }
+    }
+
+    /// Canlı sayacın punto boyutu.
+    var timerFontSize: CGFloat {
+        switch self {
+        case .card: return 34
+        case .focus: return 56
+        case .compact: return 24
+        }
+    }
+
+    /// Aktif oturumdayken popover yüksekliği.
+    var popoverHeight: CGFloat {
+        switch self {
+        case .card: return 260
+        case .focus: return 300
+        case .compact: return 200
+        }
+    }
+}
+
 /// Custom segmented tab bar. Icons sit in a pill; the selected tab is marked by a
 /// filled accent capsule that slides between tabs (matchedGeometryEffect). Hovering
 /// a tab smoothly expands it to reveal the tab's full name beside the icon.
@@ -144,6 +184,9 @@ struct HomeView: View {
     @State private var editingCategoryID: UUID?
     @State private var categoryError: String?
     @State private var showSettings = false
+    @AppStorage("timerLayout") private var timerLayoutRaw = TimerLayout.card.rawValue
+
+    private var timerLayout: TimerLayout { TimerLayout.from(timerLayoutRaw) }
 
     private var activeProjects: [Project] {
         ProjectFiltering.active(allProjects)
@@ -196,7 +239,7 @@ struct HomeView: View {
         switch selectedTab {
         case .session:
             if stopwatch.isActive {
-                return CGSize(width: 480, height: 260)
+                return CGSize(width: 480, height: timerLayout.popoverHeight)
             } else {
                 return PopoverLayout.sessionSize(
                     projectRowCount: projectPickerRowCount,
@@ -345,15 +388,32 @@ struct HomeView: View {
         allProjects.first { $0.id == appState.activeProjectID }?.category
     }
 
+    @ViewBuilder
     private var activeSessionCard: some View {
+        Group {
+            switch timerLayout {
+            case .card: cardLayout
+            case .focus: focusLayout
+            case .compact: compactLayout
+            }
+        }
+        .padding(14)
+        .background(Color.accentColor.opacity(0.06))
+        .overlay {
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.accentColor.opacity(0.25), lineWidth: 1.5)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    // MARK: Active session layouts
+
+    /// Mevcut tasarım: başlık + kategori + (varsa) odak notu + sayaç + iki buton.
+    private var cardLayout: some View {
         VStack(spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("ACTIVE SESSION")
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.accentColor)
-
+                    activeSessionLabel
                     Text(activeProjectName)
                         .font(.title3)
                         .fontWeight(.semibold)
@@ -382,54 +442,92 @@ struct HomeView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
             }
 
-            // Canlı Sayaç (duraklıyken soluk + "Paused" etiketi)
+            timerReadout
+            sessionControls
+        }
+    }
+
+    /// Sade odak modu: devasa sayaç, ortalı proje adı, kategori/not gizli.
+    private var focusLayout: some View {
+        VStack(spacing: 14) {
             VStack(spacing: 2) {
-                Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
-                    .font(.system(size: 34, weight: .bold, design: .monospaced))
-                    .foregroundStyle(Color.accentColor)
-                    .shadow(color: Color.accentColor.opacity(stopwatch.isPaused ? 0 : 0.2), radius: 6, x: 0, y: 3)
-                    .opacity(stopwatch.isPaused ? 0.45 : 1)
-
-                if stopwatch.isPaused {
-                    Label("Paused", systemImage: "pause.fill")
-                        .font(.caption2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                }
+                activeSessionLabel
+                Text(activeProjectName)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .lineLimit(1)
             }
-            .padding(.vertical, 4)
-            .animation(.snappy(duration: 0.16), value: stopwatch.isPaused)
 
-            HStack(spacing: 10) {
-                Button {
-                    togglePause()
-                } label: {
-                    Label(
-                        stopwatch.isPaused ? String(localized: "Resume") : String(localized: "Pause"),
-                        systemImage: stopwatch.isPaused ? "play.fill" : "pause.fill"
-                    )
+            timerReadout
+            sessionControls
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    /// Yoğun mod: tek satır başlık + küçük sayaç + butonlar; minimum yükseklik.
+    private var compactLayout: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Text(activeProjectName)
+                    .font(.headline)
+                    .lineLimit(1)
+                Spacer()
+                timerReadout
+            }
+            sessionControls
+        }
+    }
+
+    private var activeSessionLabel: some View {
+        Text("ACTIVE SESSION")
+            .font(.caption2)
+            .fontWeight(.bold)
+            .foregroundStyle(Color.accentColor)
+    }
+
+    /// Canlı sayaç (duraklıyken soluk + "Paused" etiketi). Punto presete bağlı.
+    private var timerReadout: some View {
+        VStack(spacing: 2) {
+            Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
+                .font(.system(size: timerLayout.timerFontSize, weight: .bold, design: .monospaced))
+                .foregroundStyle(Color.accentColor)
+                .shadow(color: Color.accentColor.opacity(stopwatch.isPaused ? 0 : 0.2), radius: 6, x: 0, y: 3)
+                .opacity(stopwatch.isPaused ? 0.45 : 1)
+
+            if stopwatch.isPaused {
+                Label("Paused", systemImage: "pause.fill")
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, timerLayout == .compact ? 0 : 4)
+        .animation(.snappy(duration: 0.16), value: stopwatch.isPaused)
+    }
+
+    private var sessionControls: some View {
+        HStack(spacing: 10) {
+            Button {
+                togglePause()
+            } label: {
+                Label(
+                    stopwatch.isPaused ? String(localized: "Resume") : String(localized: "Pause"),
+                    systemImage: stopwatch.isPaused ? "play.fill" : "pause.fill"
+                )
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+            .controlSize(timerLayout == .compact ? .regular : .large)
+
+            Button(role: .destructive) {
+                stopActiveSession()
+            } label: {
+                Label("Stop and Save", systemImage: "stop.fill")
                     .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-
-                Button(role: .destructive) {
-                    stopActiveSession()
-                } label: {
-                    Label("Stop and Save", systemImage: "stop.fill")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
             }
+            .buttonStyle(.borderedProminent)
+            .controlSize(timerLayout == .compact ? .regular : .large)
         }
-        .padding(14)
-        .background(Color.accentColor.opacity(0.06))
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.accentColor.opacity(0.25), lineWidth: 1.5)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
     private var projectsTab: some View {
