@@ -138,6 +138,28 @@ final class CategoryStatsTests: XCTestCase {
         XCTAssertEqual(weekly.lastWeekSeconds, 600)
     }
 
+    func test_share_fractionOfAllFolders() throws {
+        let ctx = try makeContext()
+        let a = Category(name: "A", colorHex: "#98C379")
+        let b = Category(name: "B", colorHex: "#61AFEF")
+        ctx.insert(a); ctx.insert(b)
+        let pa = makeProject("PA", category: a, sessionSeconds: [3000], in: ctx)
+        let pb = makeProject("PB", category: b, sessionSeconds: [1000], in: ctx)
+        let folders = CategoryStats.folders(projects: [pa, pb])
+        let folderA = try XCTUnwrap(folders.first { $0.name == "A" })
+        XCTAssertEqual(CategoryStats.share(folderA, among: folders), 0.75, accuracy: 0.0001)
+    }
+
+    func test_share_zeroWhenNoTime() throws {
+        let ctx = try makeContext()
+        let a = Category(name: "A", colorHex: "#98C379")
+        ctx.insert(a)
+        let pa = makeProject("PA", category: a, sessionSeconds: [], in: ctx)
+        let folders = CategoryStats.folders(projects: [pa])
+        let folderA = try XCTUnwrap(folders.first)
+        XCTAssertEqual(CategoryStats.share(folderA, among: folders), 0.0, accuracy: 0.0001)
+    }
+
     private func fetch(_ name: String, _ ctx: ModelContext) throws -> Project? {
         try ctx.fetch(FetchDescriptor<Project>()).first { $0.name == name }
     }

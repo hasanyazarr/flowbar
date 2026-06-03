@@ -46,6 +46,14 @@ enum CategoryStats {
         return WeeklyComparison(thisWeekSeconds: thisWeek, lastWeekSeconds: lastWeek)
     }
 
+    /// Folder's fraction (0...1) of total logged time across all folders.
+    /// Returns 0 when there is no logged time anywhere.
+    static func share(_ folder: CategoryFolder, among folders: [CategoryFolder]) -> Double {
+        let grandTotal = folders.reduce(0) { $0 + $1.totalSeconds }
+        guard grandTotal > 0 else { return 0 }
+        return Double(folder.totalSeconds) / Double(grandTotal)
+    }
+
     /// Number of projects in the folder per status. Statuses with zero projects
     /// are omitted from the dictionary.
     static func statusDistribution(_ folder: CategoryFolder) -> [ProjectStatus: Int] {
