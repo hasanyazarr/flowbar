@@ -972,7 +972,7 @@ private struct ManualDurationStepper: View {
     }
 }
 
-private struct ProjectExpandableCard: View {
+struct ProjectExpandableCard: View {
     @Bindable var project: Project
     let isExpanded: Bool
     let onToggle: () -> Void
