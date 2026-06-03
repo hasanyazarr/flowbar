@@ -15,9 +15,11 @@ struct CategoryFolder: Identifiable {
     let name: String
     let colorHex: String
     let projects: [Project]
+    /// Toplam loglanan süre, kuruluş anında bir kez hesaplanır (her SwiftUI
+    /// render'ında sessions üzerinde yeniden iterasyon yapılmasın diye).
+    let totalSeconds: Int
 
     var projectCount: Int { projects.count }
-    var totalSeconds: Int { projects.reduce(0) { $0 + $1.totalLoggedSeconds } }
 }
 
 enum CategoryStats {
@@ -42,7 +44,8 @@ enum CategoryStats {
                     id: .category(bucket.category.id),
                     name: bucket.category.name,
                     colorHex: bucket.category.colorHex,
-                    projects: bucket.projects
+                    projects: bucket.projects,
+                    totalSeconds: bucket.projects.reduce(0) { $0 + $1.totalLoggedSeconds }
                 )
             }
             .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
@@ -52,7 +55,8 @@ enum CategoryStats {
                 id: .uncategorized,
                 name: Analytics.uncategorizedName,
                 colorHex: Analytics.uncategorizedHex,
-                projects: uncategorized
+                projects: uncategorized,
+                totalSeconds: uncategorized.reduce(0) { $0 + $1.totalLoggedSeconds }
             ))
         }
         return result

@@ -49,6 +49,53 @@ final class CategoryStatsTests: XCTestCase {
         XCTAssertEqual(uncategorized.colorHex, Analytics.uncategorizedHex)
     }
 
+    func test_folders_empty() {
+        XCTAssertTrue(CategoryStats.folders(projects: []).isEmpty)
+    }
+
+    func test_folders_allUncategorized() throws {
+        let ctx = try makeContext()
+        let p1 = makeProject("A", category: nil, sessionSeconds: [600], in: ctx)
+        let p2 = makeProject("B", category: nil, sessionSeconds: [300], in: ctx)
+
+        let folders = CategoryStats.folders(projects: [p1, p2])
+
+        XCTAssertEqual(folders.count, 1)
+        let folder = try XCTUnwrap(folders.first)
+        XCTAssertEqual(folder.id, .uncategorized)
+        XCTAssertEqual(folder.projectCount, 2)
+        XCTAssertEqual(folder.totalSeconds, 900)
+    }
+
+    func test_folders_noneUncategorized_noTrailingBucket() throws {
+        let ctx = try makeContext()
+        let cat = Category(name: "Work", colorHex: "#61AFEF")
+        ctx.insert(cat)
+        let p1 = makeProject("A", category: cat, sessionSeconds: [600], in: ctx)
+        let p2 = makeProject("B", category: cat, sessionSeconds: [300], in: ctx)
+
+        let folders = CategoryStats.folders(projects: [p1, p2])
+
+        XCTAssertEqual(folders.count, 1)
+        XCTAssertNil(folders.first { $0.id == .uncategorized })
+    }
+
+    func test_folders_alphabeticalSort_uncategorizedLast() throws {
+        let ctx = try makeContext()
+        let zzz = Category(name: "Zzz", colorHex: "#E06C75")
+        let aaa = Category(name: "Aaa", colorHex: "#98C379")
+        ctx.insert(zzz); ctx.insert(aaa)
+        // Kasıtlı olarak alfabetik olmayan ekleme sırası + bir kategorisiz.
+        let pz = makeProject("PZ", category: zzz, sessionSeconds: [100], in: ctx)
+        let pa = makeProject("PA", category: aaa, sessionSeconds: [100], in: ctx)
+        let pu = makeProject("PU", category: nil, sessionSeconds: [100], in: ctx)
+
+        let folders = CategoryStats.folders(projects: [pz, pa, pu])
+
+        XCTAssertEqual(folders.map(\.name), ["Aaa", "Zzz", Analytics.uncategorizedName])
+        XCTAssertEqual(folders.last?.id, .uncategorized)
+    }
+
     private func fetch(_ name: String, _ ctx: ModelContext) throws -> Project? {
         try ctx.fetch(FetchDescriptor<Project>()).first { $0.name == name }
     }
