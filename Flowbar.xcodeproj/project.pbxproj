@@ -47,6 +47,13 @@
 		A1000064 /* ReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000063 /* ReminderTests.swift */; };
 		A1000065 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000064 /* SettingsView.swift */; };
 		A1000071 /* StopwatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000071 /* StopwatchTests.swift */; };
+		A1000080 /* CategoryStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000080 /* CategoryStats.swift */; };
+		A1000081 /* CategoryStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000080 /* CategoryStats.swift */; };
+		A1000082 /* CategoryStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000081 /* CategoryStatsTests.swift */; };
+		A1000090 /* CategoryFolderStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000090 /* CategoryFolderStats.swift */; };
+		A1000091 /* CategoryFolderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000091 /* CategoryFolderCard.swift */; };
+		A1000092 /* CategoryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000092 /* CategoryGridView.swift */; };
+		A1000093 /* CategoryShareChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000093 /* CategoryShareChart.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +99,12 @@
 		B1000071 /* StopwatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchTests.swift; sourceTree = "<group>"; };
 		B1000064 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B1000070 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B1000080 /* CategoryStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStats.swift; sourceTree = "<group>"; };
+		B1000081 /* CategoryStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStatsTests.swift; sourceTree = "<group>"; };
+		B1000090 /* CategoryFolderStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFolderStats.swift; sourceTree = "<group>"; };
+		B1000091 /* CategoryFolderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFolderCard.swift; sourceTree = "<group>"; };
+		B1000092 /* CategoryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridView.swift; sourceTree = "<group>"; };
+		B1000093 /* CategoryShareChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryShareChart.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +181,7 @@
 				B1000040 /* ManualSessionEntry.swift */,
 				B1000050 /* Analytics.swift */,
 				B1000061 /* ReminderNotificationManager.swift */,
+				B1000080 /* CategoryStats.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -182,6 +196,10 @@
 				B1000052 /* AnalyticsView.swift */,
 				B1000062 /* RemindView.swift */,
 				B1000064 /* SettingsView.swift */,
+				B1000090 /* CategoryFolderStats.swift */,
+				B1000091 /* CategoryFolderCard.swift */,
+				B1000092 /* CategoryGridView.swift */,
+				B1000093 /* CategoryShareChart.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -194,6 +212,7 @@
 				B1000011 /* ProjectManagementTests.swift */,
 				B1000063 /* ReminderTests.swift */,
 				B1000071 /* StopwatchTests.swift */,
+				B1000081 /* CategoryStatsTests.swift */,
 			);
 			path = FlowbarTests;
 			sourceTree = "<group>";
@@ -313,6 +332,11 @@
 				A1000062 /* ReminderNotificationManager.swift in Sources */,
 				A1000063 /* RemindView.swift in Sources */,
 				A1000065 /* SettingsView.swift in Sources */,
+				A1000080 /* CategoryStats.swift in Sources */,
+				A1000090 /* CategoryFolderStats.swift in Sources */,
+				A1000091 /* CategoryFolderCard.swift in Sources */,
+				A1000092 /* CategoryGridView.swift in Sources */,
+				A1000093 /* CategoryShareChart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +360,8 @@
 				A1000051 /* Analytics.swift in Sources */,
 				A1000061 /* Reminder.swift in Sources */,
 				A1000064 /* ReminderTests.swift in Sources */,
+				A1000081 /* CategoryStats.swift in Sources */,
+				A1000082 /* CategoryStatsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

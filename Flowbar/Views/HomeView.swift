@@ -185,6 +185,7 @@ struct HomeView: View {
     @State private var categoryError: String?
     @State private var showSettings = false
     @AppStorage("timerLayout") private var timerLayoutRaw = TimerLayout.card.rawValue
+    @AppStorage("projectsViewMode") private var projectsViewMode = "list"
 
     private var timerLayout: TimerLayout { TimerLayout.from(timerLayoutRaw) }
 
@@ -313,6 +314,13 @@ struct HomeView: View {
         .animation(.snappy(duration: 0.18), value: selectedTab)
         .animation(.snappy(duration: 0.18), value: showSettings)
         .hidesScrollIndicators()
+        .onDisappear {
+            // Menübar pop'u kapanınca sekmeyi sıfırla; bir sonraki açılış hep
+            // Session sekmesinden başlasın (kullanıcı History/Analytics'te
+            // bırakıp kapatsa bile "takılı" kalmasın).
+            selectedTab = .session
+            showSettings = false
+        }
     }
 
     private var sessionTab: some View {
@@ -557,6 +565,26 @@ struct HomeView: View {
                     .hoverHighlight()
                     .help("Show/Hide Category Filters")
                 }
+
+                Button {
+                    withAnimation(.snappy(duration: 0.16)) {
+                        projectsViewMode = projectsViewMode == "grid" ? "list" : "grid"
+                    }
+                } label: {
+                    Image(systemName: projectsViewMode == "grid" ? "square.grid.2x2.fill" : "list.bullet")
+                        .font(.title3)
+                        .foregroundStyle(projectsViewMode == "grid" ? Color.accentColor : .secondary)
+                        .frame(width: 28, height: 28)
+                        .background(Color(nsColor: .textBackgroundColor).opacity(0.85))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1)
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .buttonStyle(.plain)
+                .hoverHighlight()
+                .help("Toggle list / grid view")
             }
 
             if showFilters && !categories.isEmpty {
@@ -567,7 +595,7 @@ struct HomeView: View {
                     ))
             }
 
-            projectManagementList
+            projectsContent
                 .frame(maxHeight: .infinity)
 
             Divider()
@@ -708,6 +736,19 @@ struct HomeView: View {
                 .stroke(CategorySurface.border, lineWidth: 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
+    }
+
+    @ViewBuilder
+    private var projectsContent: some View {
+        let isSearching = !managementSearch.trimmingCharacters(in: .whitespaces).isEmpty
+        if projectsViewMode == "grid" && !isSearching {
+            CategoryGridView(
+                folders: CategoryStats.folders(projects: managementProjects),
+                onProjectDelete: { project in deleteProject(project) }
+            )
+        } else {
+            projectManagementList
+        }
     }
 
     private var projectManagementList: some View {
@@ -972,7 +1013,7 @@ private struct ManualDurationStepper: View {
     }
 }
 
-private struct ProjectExpandableCard: View {
+struct ProjectExpandableCard: View {
     @Bindable var project: Project
     let isExpanded: Bool
     let onToggle: () -> Void

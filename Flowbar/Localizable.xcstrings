@@ -623,6 +623,16 @@
         }
       }
     },
+    "Hover a segment to see its category": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategoriyi görmek için bir segmentin üzerine gelin"
+          }
+        }
+      }
+    },
     "Icon Only": {
       "localizations": {
         "tr": {
@@ -679,6 +689,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Son Yedekleme:"
+          }
+        }
+      }
+    },
+    "Last week": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçen hafta"
           }
         }
       }
@@ -1413,6 +1433,16 @@
         }
       }
     },
+    "This week": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hafta"
+          }
+        }
+      }
+    },
     "Timer Layout": {
       "localizations": {
         "tr": {
@@ -1449,6 +1479,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bugün %@"
+          }
+        }
+      }
+    },
+    "Toggle list / grid view": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste / ızgara görünümü"
           }
         }
       }
@@ -1619,6 +1659,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "macOS Bildirimleri"
+          }
+        }
+      }
+    },
+    "projects": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "proje"
           }
         }
       }
