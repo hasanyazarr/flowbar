@@ -114,6 +114,30 @@ final class CategoryStatsTests: XCTestCase {
         XCTAssertNil(dist[.paused])
     }
 
+    func test_weeklyComparison_thisVsLastWeek() throws {
+        let ctx = try makeContext()
+        let cal = Calendar(identifier: .gregorian)
+        let now = cal.date(from: DateComponents(year: 2026, month: 6, day: 3))! // Wednesday
+        let lastWeek = cal.date(byAdding: .day, value: -7, to: now)!
+
+        let cat = Category(name: "Work", colorHex: "#61AFEF")
+        ctx.insert(cat)
+        let p = Project(name: "P")
+        p.category = cat
+        ctx.insert(p)
+        let sThis = Session(note: "", measuredSeconds: 1200, loggedSeconds: 1200,
+                            startedAt: now, endedAt: now, project: p)
+        ctx.insert(sThis)
+        let sLast = Session(note: "", measuredSeconds: 600, loggedSeconds: 600,
+                            startedAt: lastWeek, endedAt: lastWeek, project: p)
+        ctx.insert(sLast)
+
+        let folder = try XCTUnwrap(CategoryStats.folders(projects: [p]).first)
+        let weekly = CategoryStats.weeklyComparison(folder, now: now, calendar: cal)
+        XCTAssertEqual(weekly.thisWeekSeconds, 1200)
+        XCTAssertEqual(weekly.lastWeekSeconds, 600)
+    }
+
     private func fetch(_ name: String, _ ctx: ModelContext) throws -> Project? {
         try ctx.fetch(FetchDescriptor<Project>()).first { $0.name == name }
     }

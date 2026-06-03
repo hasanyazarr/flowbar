@@ -22,7 +22,30 @@ struct CategoryFolder: Identifiable {
     var projectCount: Int { projects.count }
 }
 
+struct WeeklyComparison {
+    let thisWeekSeconds: Int
+    let lastWeekSeconds: Int
+}
+
 enum CategoryStats {
+    /// Logged seconds for the folder this week vs last week, by session endedAt.
+    static func weeklyComparison(_ folder: CategoryFolder, now: Date = .now,
+                                 calendar: Calendar = .current) -> WeeklyComparison {
+        let lastWeekRef = calendar.date(byAdding: .day, value: -7, to: now) ?? now
+        var thisWeek = 0
+        var lastWeek = 0
+        for project in folder.projects {
+            for session in project.sessions {
+                if calendar.isDate(session.endedAt, equalTo: now, toGranularity: .weekOfYear) {
+                    thisWeek += session.loggedSeconds
+                } else if calendar.isDate(session.endedAt, equalTo: lastWeekRef, toGranularity: .weekOfYear) {
+                    lastWeek += session.loggedSeconds
+                }
+            }
+        }
+        return WeeklyComparison(thisWeekSeconds: thisWeek, lastWeekSeconds: lastWeek)
+    }
+
     /// Number of projects in the folder per status. Statuses with zero projects
     /// are omitted from the dictionary.
     static func statusDistribution(_ folder: CategoryFolder) -> [ProjectStatus: Int] {
