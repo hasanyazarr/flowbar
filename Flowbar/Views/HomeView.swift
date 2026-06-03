@@ -314,6 +314,13 @@ struct HomeView: View {
         .animation(.snappy(duration: 0.18), value: selectedTab)
         .animation(.snappy(duration: 0.18), value: showSettings)
         .hidesScrollIndicators()
+        .onDisappear {
+            // Menübar pop'u kapanınca sekmeyi sıfırla; bir sonraki açılış hep
+            // Session sekmesinden başlasın (kullanıcı History/Analytics'te
+            // bırakıp kapatsa bile "takılı" kalmasın).
+            selectedTab = .session
+            showSettings = false
+        }
     }
 
     private var sessionTab: some View {
