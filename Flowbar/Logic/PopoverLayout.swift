@@ -12,7 +12,7 @@ enum PopoverLayout {
     static let projectsUseInlineExpandedCards = true
     static let projectsUseSideInspector = false
     static let sessionNoteMinHeight: CGFloat = 110
-    static var sessionNotePlaceholder: String { String(localized: "What will you focus on this session?\nSecondary goal") }
+    static var sessionNotePlaceholder: String { String(localized: "What will you focus on this session?") }
     static var recentSessionNotesTitle: String { String(localized: "Recent session notes") }
     static let sessionMaxHeight: CGFloat = 520
     static let sessionProjectRowHeight: CGFloat = 36

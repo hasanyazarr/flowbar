@@ -1613,12 +1613,12 @@
         }
       }
     },
-    "What will you focus on this session?\nSecondary goal": {
+    "What will you focus on this session?": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu oturumda neye odaklanacaksın?\nİkinci hedef"
+            "value": "Bu oturumda neye odaklanacaksın?"
           }
         }
       }
