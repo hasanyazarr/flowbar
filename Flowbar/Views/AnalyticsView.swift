@@ -79,18 +79,7 @@ struct AnalyticsView: View {
     private var categorySection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Category breakdown").font(.headline)
-            Chart(categories) { item in
-                BarMark(
-                    x: .value("Hours", Double(item.totalSeconds) / 3600.0),
-                    y: .value("Category", item.name)
-                )
-                .foregroundStyle(Color(hex: item.colorHex) ?? .gray)
-                .annotation(position: .trailing) {
-                    Text(Duration.short(seconds: item.totalSeconds))
-                        .font(.caption2).foregroundStyle(.secondary)
-                }
-            }
-            .frame(height: CGFloat(categories.count) * 34 + 10)
+            CategoryShareChart(categories: categories)
         }
     }
 

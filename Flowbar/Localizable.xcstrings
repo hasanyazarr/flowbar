@@ -623,6 +623,16 @@
         }
       }
     },
+    "Hover a segment to see its category": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kategoriyi görmek için bir segmentin üzerine gelin"
+          }
+        }
+      }
+    },
     "Icon Only": {
       "localizations": {
         "tr": {
