@@ -50,6 +50,7 @@
 		A1000080 /* CategoryStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000080 /* CategoryStats.swift */; };
 		A1000081 /* CategoryStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000080 /* CategoryStats.swift */; };
 		A1000082 /* CategoryStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000081 /* CategoryStatsTests.swift */; };
+		A1000090 /* CategoryFolderStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000090 /* CategoryFolderStats.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		B1000070 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B1000080 /* CategoryStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStats.swift; sourceTree = "<group>"; };
 		B1000081 /* CategoryStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStatsTests.swift; sourceTree = "<group>"; };
+		B1000090 /* CategoryFolderStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFolderStats.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 				B1000052 /* AnalyticsView.swift */,
 				B1000062 /* RemindView.swift */,
 				B1000064 /* SettingsView.swift */,
+				B1000090 /* CategoryFolderStats.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				A1000063 /* RemindView.swift in Sources */,
 				A1000065 /* SettingsView.swift in Sources */,
 				A1000080 /* CategoryStats.swift in Sources */,
+				A1000090 /* CategoryFolderStats.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
