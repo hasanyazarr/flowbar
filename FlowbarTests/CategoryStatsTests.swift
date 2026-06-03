@@ -96,6 +96,24 @@ final class CategoryStatsTests: XCTestCase {
         XCTAssertEqual(folders.last?.id, .uncategorized)
     }
 
+    func test_statusDistribution_countsByStatus() throws {
+        let ctx = try makeContext()
+        let cat = Category(name: "Work", colorHex: "#61AFEF")
+        ctx.insert(cat)
+        let p1 = makeProject("P1", category: cat, sessionSeconds: [], in: ctx)
+        p1.status = .inProgress
+        let p2 = makeProject("P2", category: cat, sessionSeconds: [], in: ctx)
+        p2.status = .done
+        let p3 = makeProject("P3", category: cat, sessionSeconds: [], in: ctx)
+        p3.status = .inProgress
+
+        let folder = try XCTUnwrap(CategoryStats.folders(projects: [p1, p2, p3]).first)
+        let dist = CategoryStats.statusDistribution(folder)
+        XCTAssertEqual(dist[.inProgress], 2)
+        XCTAssertEqual(dist[.done], 1)
+        XCTAssertNil(dist[.paused])
+    }
+
     private func fetch(_ name: String, _ ctx: ModelContext) throws -> Project? {
         try ctx.fetch(FetchDescriptor<Project>()).first { $0.name == name }
     }

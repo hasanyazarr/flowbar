@@ -23,6 +23,16 @@ struct CategoryFolder: Identifiable {
 }
 
 enum CategoryStats {
+    /// Number of projects in the folder per status. Statuses with zero projects
+    /// are omitted from the dictionary.
+    static func statusDistribution(_ folder: CategoryFolder) -> [ProjectStatus: Int] {
+        var counts: [ProjectStatus: Int] = [:]
+        for project in folder.projects {
+            counts[project.status, default: 0] += 1
+        }
+        return counts
+    }
+
     /// Groups projects into folders: one per distinct category (by category id),
     /// plus a trailing uncategorized folder for projects without a category.
     /// Category folders are sorted by name; uncategorized always last.
