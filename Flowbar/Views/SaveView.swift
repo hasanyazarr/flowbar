@@ -49,12 +49,8 @@ struct SaveView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(project?.name ?? "—").font(.headline)
-            TextField("Session note", text: $sessionNote, axis: .vertical)
-                .textFieldStyle(.plain)
-                .font(.callout)
-                .foregroundStyle(.secondary)
-                .lineLimit(2...4)
-                .frame(minHeight: SessionCompletionLayout.noteMinHeight, alignment: .topLeading)
+            SessionNoteEditor(text: $sessionNote, placeholder: String(localized: "Session note"))
+                .frame(height: SessionCompletionLayout.noteMinHeight, alignment: .topLeading)
             Text("Measured: \(Duration.short(seconds: measured))")
                 .font(.caption).foregroundStyle(.secondary)
 
