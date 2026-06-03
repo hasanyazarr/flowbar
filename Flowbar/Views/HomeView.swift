@@ -554,11 +554,7 @@ struct HomeView: View {
                             .font(.title3)
                             .foregroundStyle(showFilters || filterCategoryID != nil ? Color.accentColor : .secondary)
                             .frame(width: 28, height: 28)
-                            .background(Color(nsColor: .textBackgroundColor).opacity(0.85))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1)
-                            }
+                            .background(Color.secondary.opacity(0.08))
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                     .buttonStyle(.plain)
@@ -575,11 +571,7 @@ struct HomeView: View {
                         .font(.title3)
                         .foregroundStyle(projectsViewMode == "grid" ? Color.accentColor : .secondary)
                         .frame(width: 28, height: 28)
-                        .background(Color(nsColor: .textBackgroundColor).opacity(0.85))
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1)
-                        }
+                        .background(Color.secondary.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
@@ -731,10 +723,6 @@ struct HomeView: View {
         }
         .padding(12)
         .background(CategorySurface.panel)
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(CategorySurface.border, lineWidth: 1)
-        }
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
@@ -855,10 +843,6 @@ struct HomeView: View {
         }
         .padding(12)
         .background(CategorySurface.panel)
-        .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(CategorySurface.border, lineWidth: 1)
-        }
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
@@ -1096,11 +1080,7 @@ struct ProjectExpandableCard: View {
                             .textFieldStyle(.plain)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 7)
-                            .background(Color(nsColor: .textBackgroundColor).opacity(0.4))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(Color(nsColor: .separatorColor).opacity(0.5), lineWidth: 1)
-                            )
+                            .background(Color.secondary.opacity(0.08))
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
 
@@ -1173,9 +1153,9 @@ struct ProjectExpandableCard: View {
         .overlay {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(
-                    showDeleteConfirm 
-                        ? Color.red.opacity(0.2) 
-                        : (isExpanded ? Color.accentColor.opacity(0.25) : Color(nsColor: .separatorColor).opacity(0.4)), 
+                    showDeleteConfirm
+                        ? Color.red.opacity(0.2)
+                        : (isExpanded ? Color.accentColor.opacity(0.25) : Color.clear),
                     lineWidth: 1
                 )
         }
@@ -1379,11 +1359,7 @@ struct SessionNoteEditor: View {
 
             MultilineTextView(text: $text, contentInset: Self.contentInset)
         }
-        .background(Color(nsColor: .textBackgroundColor).opacity(0.86))
-        .overlay {
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(nsColor: .separatorColor).opacity(0.75), lineWidth: 1)
-        }
+        .background(Color.secondary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
@@ -1500,10 +1476,12 @@ private struct ScrollerHider: NSViewRepresentable {
     }
 }
 
+/// Minimalist yüzey paleti: paneller çizgi yerine çok hafif bir zeminle
+/// gruplanır. `border` neredeyse görünmezdir (çift-çizgi hissini önler);
+/// gruplama kontrastı `panel`'in hafif dolgusundan gelir.
 enum CategorySurface {
-    static let panel = Color(nsColor: .controlBackgroundColor).opacity(0.98)
-    static let inset = Color(nsColor: .windowBackgroundColor).opacity(0.98)
-    static let border = Color(nsColor: .separatorColor).opacity(0.7)
+    static let panel = Color.secondary.opacity(0.05)
+    static let inset = Color.secondary.opacity(0.03)
 }
 
 private struct CategoryCreationPanel: View {
@@ -1686,11 +1664,7 @@ private struct SearchField: View {
         }
         .padding(.horizontal, 9)
         .padding(.vertical, 6)
-        .background(Color(nsColor: .textBackgroundColor).opacity(0.85))
-        .overlay {
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1)
-        }
+        .background(Color.secondary.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }

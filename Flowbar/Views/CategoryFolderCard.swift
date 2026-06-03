@@ -43,7 +43,7 @@ struct CategoryFolderCard: View {
         .background(CategorySurface.panel)
         .overlay {
             RoundedRectangle(cornerRadius: 10)
-                .stroke(isExpanded ? Color.accentColor.opacity(0.35) : CategorySurface.border, lineWidth: 1)
+                .stroke(isExpanded ? Color.accentColor.opacity(0.35) : Color.clear, lineWidth: 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }

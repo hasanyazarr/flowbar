@@ -88,10 +88,6 @@ struct SettingsView: View {
                     .padding(12)
                     .background(CategorySurface.panel)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(CategorySurface.border, lineWidth: 1)
-                    }
                     
                     // 2. Genel Tercihler
                     VStack(alignment: .leading, spacing: 10) {
@@ -224,10 +220,6 @@ struct SettingsView: View {
                     .padding(12)
                     .background(CategorySurface.panel)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(CategorySurface.border, lineWidth: 1)
-                    }
                     
                     // 3. Otomatik Yedekleme Ayarları
                     VStack(alignment: .leading, spacing: 10) {
@@ -293,10 +285,6 @@ struct SettingsView: View {
                     .padding(12)
                     .background(CategorySurface.panel)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(CategorySurface.border, lineWidth: 1)
-                    }
                     
                     // 4. Veri İstatistikleri ve Yönetimi
                     VStack(alignment: .leading, spacing: 8) {
@@ -415,10 +403,6 @@ struct SettingsView: View {
                     .padding(12)
                     .background(CategorySurface.panel)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(CategorySurface.border, lineWidth: 1)
-                    }
                     
                     // 4. Hakkında ve Görünüm
                     VStack(alignment: .leading, spacing: 6) {
@@ -437,10 +421,6 @@ struct SettingsView: View {
                     .padding(12)
                     .background(CategorySurface.panel)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(CategorySurface.border, lineWidth: 1)
-                    }
                     
                     // 5. Geliştirici & Topluluk
                     VStack(alignment: .leading, spacing: 8) {
@@ -496,10 +476,6 @@ struct SettingsView: View {
                     .padding(12)
                     .background(CategorySurface.panel)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(CategorySurface.border, lineWidth: 1)
-                    }
                 }
             }
         }

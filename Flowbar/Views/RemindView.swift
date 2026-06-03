@@ -94,10 +94,6 @@ struct RemindView: View {
             }
             .padding(12)
             .background(CategorySurface.panel)
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(CategorySurface.border, lineWidth: 1)
-            }
             .clipShape(RoundedRectangle(cornerRadius: 10))
 
             // Hatırlatıcı Listesi
