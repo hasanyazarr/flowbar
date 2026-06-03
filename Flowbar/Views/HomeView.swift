@@ -344,14 +344,7 @@ struct HomeView: View {
                                     Button {
                                         selectedProjectID = p.id
                                     } label: {
-                                        HStack {
-                                            Image(systemName: selectedProjectID == p.id ? "largecircle.fill.circle" : "circle")
-                                                .foregroundStyle(selectedProjectID == p.id ? Color.accentColor : .secondary)
-                                            Text(p.name)
-                                            Spacer()
-                                            Text(Duration.short(seconds: p.totalLoggedSeconds))
-                                                .foregroundStyle(.secondary).font(.caption)
-                                        }
+                                        ProjectPickerRow(project: p, isSelected: selectedProjectID == p.id)
                                     }
                                     .buttonStyle(.plain)
                                 }
@@ -1659,6 +1652,38 @@ private struct SearchField: View {
     }
 }
 
+/// Proje seçim listelerindeki tek satır: solda kategori renginde dikey şerit,
+/// ardından seçim dairesi + proje adı + toplam süre. Kategorisi olmayan
+/// projelerde şerit şeffaf kalır (renk gösterilmez). Hem "Start a new session"
+/// listesi hem de form'lardaki `ProjectSelectList` bunu kullanır.
+private struct ProjectPickerRow: View {
+    let project: Project
+    let isSelected: Bool
+
+    private var stripeColor: Color {
+        guard let hex = project.category?.colorHex,
+              let color = Color(hex: hex) else { return .clear }
+        return color
+    }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            RoundedRectangle(cornerRadius: 1.5)
+                .fill(stripeColor)
+                .frame(width: 3)
+                .frame(maxHeight: .infinity)
+
+            Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
+                .foregroundStyle(isSelected ? Color.accentColor : .secondary)
+            Text(project.name)
+            Spacer()
+            Text(Duration.short(seconds: project.totalLoggedSeconds))
+                .foregroundStyle(.secondary).font(.caption)
+        }
+        .frame(height: PopoverLayout.sessionProjectRowHeight)
+    }
+}
+
 /// Arama çubuğu + aynı yükseklikte liste satırları olan proje seçici.
 /// Form'lardaki yerel `Picker` dropdown'ı yerine kullanılır; uzun proje
 /// listesinde aramayı kolaylaştırır.
@@ -1698,14 +1723,7 @@ private struct ProjectSelectList: View {
                             Button {
                                 selection = p.id
                             } label: {
-                                HStack {
-                                    Image(systemName: selection == p.id ? "largecircle.fill.circle" : "circle")
-                                        .foregroundStyle(selection == p.id ? Color.accentColor : .secondary)
-                                    Text(p.name)
-                                    Spacer()
-                                    Text(Duration.short(seconds: p.totalLoggedSeconds))
-                                        .foregroundStyle(.secondary).font(.caption)
-                                }
+                                ProjectPickerRow(project: p, isSelected: selection == p.id)
                             }
                             .buttonStyle(.plain)
                         }
