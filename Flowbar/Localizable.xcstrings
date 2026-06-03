@@ -683,6 +683,16 @@
         }
       }
     },
+    "Last week": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçen hafta"
+          }
+        }
+      }
+    },
     "Launch at System Startup": {
       "localizations": {
         "tr": {
@@ -1413,6 +1423,16 @@
         }
       }
     },
+    "This week": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu hafta"
+          }
+        }
+      }
+    },
     "Timer Layout": {
       "localizations": {
         "tr": {
@@ -1449,6 +1469,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bugün %@"
+          }
+        }
+      }
+    },
+    "Toggle list / grid view": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste / ızgara görünümü"
           }
         }
       }
@@ -1619,6 +1649,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "macOS Bildirimleri"
+          }
+        }
+      }
+    },
+    "projects": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "proje"
           }
         }
       }
