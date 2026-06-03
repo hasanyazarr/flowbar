@@ -179,6 +179,22 @@ struct SettingsView: View {
                             .pickerStyle(.segmented)
                             .controlSize(.small)
 
+                            // Her preset'in nasıl göründüğünü gösteren minyatür
+                            // önizlemeler. Önizlemeye tıklamak da seçer.
+                            HStack(spacing: 8) {
+                                ForEach(TimerLayout.allCases) { layout in
+                                    TimerLayoutThumbnail(
+                                        layout: layout,
+                                        isSelected: timerLayout == layout.rawValue
+                                    )
+                                    .onTapGesture {
+                                        timerLayout = layout.rawValue
+                                    }
+                                }
+                            }
+                            .padding(.top, 4)
+                            .animation(.snappy(duration: 0.18), value: timerLayout)
+
                             Text("Chooses how the active session screen is laid out.")
                                 .font(.caption2)
                                 .foregroundStyle(.secondary)
@@ -757,5 +773,112 @@ struct SettingsView: View {
         default:
             UserDefaults.standard.removeObject(forKey: "AppleLanguages")
         }
+    }
+}
+
+/// Bir Timer Layout preset'inin şematik minyatür önizlemesi. Gerçek metin
+/// yerine basit kutu/çizgilerle layout iskeletini temsil eder; böylece tema
+/// ve dilden bağımsız kalır. Seçiliyken çerçeve accent renkte vurgulanır.
+private struct TimerLayoutThumbnail: View {
+    let layout: TimerLayout
+    let isSelected: Bool
+
+    // İskelet parçalarının renkleri.
+    private var inkSoft: Color { Color.secondary.opacity(0.35) }
+    private var timerInk: Color { Color.accentColor }
+
+    var body: some View {
+        VStack(spacing: 5) {
+            preview
+                .frame(maxWidth: .infinity)
+                .frame(height: 52)
+                .padding(7)
+                .background(Color.accentColor.opacity(isSelected ? 0.10 : 0.04))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 7)
+                        .stroke(
+                            isSelected ? Color.accentColor : Color.secondary.opacity(0.25),
+                            lineWidth: isSelected ? 1.5 : 1
+                        )
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 7))
+
+            Text(layout.title)
+                .font(.caption2)
+                .fontWeight(isSelected ? .semibold : .regular)
+                .foregroundStyle(isSelected ? Color.accentColor : .secondary)
+        }
+        .contentShape(Rectangle())
+    }
+
+    @ViewBuilder
+    private var preview: some View {
+        switch layout {
+        case .card:    cardPreview
+        case .focus:   focusPreview
+        case .compact: compactPreview
+        }
+    }
+
+    // Üst satır: başlık + kategori noktası · orta-boy sayaç · alt: iki buton.
+    private var cardPreview: some View {
+        VStack(spacing: 4) {
+            HStack(spacing: 3) {
+                bar(width: 22, height: 4)
+                Spacer()
+                Circle().fill(inkSoft).frame(width: 5, height: 5)
+            }
+            timerBar(width: 34, height: 9)
+            HStack(spacing: 4) {
+                buttonBar
+                buttonBar
+            }
+        }
+    }
+
+    // Ortalı kısa başlık · devasa sayaç · iki buton. (kategori/not yok)
+    private var focusPreview: some View {
+        VStack(spacing: 5) {
+            bar(width: 20, height: 3)
+            timerBar(width: 42, height: 14)
+            HStack(spacing: 4) {
+                buttonBar
+                buttonBar
+            }
+        }
+    }
+
+    // Tek satır: başlık + küçük sayaç · altta iki buton. (sıkışık)
+    private var compactPreview: some View {
+        VStack(spacing: 6) {
+            HStack(spacing: 4) {
+                bar(width: 24, height: 4)
+                Spacer()
+                timerBar(width: 18, height: 6)
+            }
+            HStack(spacing: 4) {
+                buttonBar
+                buttonBar
+            }
+        }
+    }
+
+    private var buttonBar: some View {
+        RoundedRectangle(cornerRadius: 2)
+            .fill(inkSoft)
+            .frame(height: 6)
+            .frame(maxWidth: .infinity)
+    }
+
+    private func bar(width: CGFloat, height: CGFloat) -> some View {
+        RoundedRectangle(cornerRadius: 1.5)
+            .fill(inkSoft)
+            .frame(width: width, height: height)
+    }
+
+    private func timerBar(width: CGFloat, height: CGFloat) -> some View {
+        RoundedRectangle(cornerRadius: 2)
+            .fill(timerInk)
+            .frame(width: width, height: height)
     }
 }
