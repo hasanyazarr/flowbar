@@ -773,6 +773,16 @@
         }
       }
     },
+    "No matches": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eşleşme yok"
+          }
+        }
+      }
+    },
     "No matching projects": {
       "localizations": {
         "tr": {

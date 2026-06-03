@@ -585,12 +585,7 @@ struct HomeView: View {
 
     private var manualEntryForm: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Picker("Project", selection: $manualProjectID) {
-                Text("Select project").tag(UUID?.none)
-                ForEach(activeProjects) { project in
-                    Text(project.name).tag(UUID?.some(project.id))
-                }
-            }
+            ProjectSelectList(projects: activeProjects, selection: $manualProjectID)
 
             SessionNoteEditor(text: $manualNote, placeholder: String(localized: "Note (optional)"))
                 .frame(height: 72)
@@ -1091,12 +1086,7 @@ private struct SessionEditForm: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Picker("Project", selection: $edit.projectID) {
-                Text("Select project").tag(UUID?.none)
-                ForEach(projects) { project in
-                    Text(project.name).tag(UUID?.some(project.id))
-                }
-            }
+            ProjectSelectList(projects: projects, selection: $edit.projectID)
 
             SessionNoteEditor(text: $edit.note, placeholder: String(localized: "Note (optional)"))
                 .frame(height: 72)
@@ -1568,6 +1558,64 @@ private struct SearchField: View {
                 .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1)
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+}
+
+/// Arama çubuğu + aynı yükseklikte liste satırları olan proje seçici.
+/// Form'lardaki yerel `Picker` dropdown'ı yerine kullanılır; uzun proje
+/// listesinde aramayı kolaylaştırır.
+private struct ProjectSelectList: View {
+    let projects: [Project]
+    @Binding var selection: UUID?
+
+    @State private var query = ""
+
+    /// Boş query'de en son kullanılana göre; arama varsa eşleşenler.
+    private var visibleProjects: [Project] {
+        let base = ProjectFiltering.filtered(projects, query: query)
+        return query.trimmingCharacters(in: .whitespaces).isEmpty
+            ? ProjectFiltering.recencySorted(base)
+            : base
+    }
+
+    private var rowCount: Int {
+        min(max(visibleProjects.count, 1), 4)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            SearchField(text: $query, placeholder: String(localized: "Search projects…"))
+
+            if projects.isEmpty {
+                Text("No projects yet, add one")
+                    .foregroundStyle(.secondary).font(.callout)
+            } else if visibleProjects.isEmpty {
+                Text("No matches")
+                    .foregroundStyle(.secondary).font(.callout)
+                    .frame(height: PopoverLayout.sessionProjectRowHeight)
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 2) {
+                        ForEach(visibleProjects) { p in
+                            Button {
+                                selection = p.id
+                            } label: {
+                                HStack {
+                                    Image(systemName: selection == p.id ? "largecircle.fill.circle" : "circle")
+                                        .foregroundStyle(selection == p.id ? Color.accentColor : .secondary)
+                                    Text(p.name)
+                                    Spacer()
+                                    Text(Duration.short(seconds: p.totalLoggedSeconds))
+                                        .foregroundStyle(.secondary).font(.caption)
+                                }
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+                .frame(height: CGFloat(rowCount) * PopoverLayout.sessionProjectRowHeight)
+            }
+        }
     }
 }
 
