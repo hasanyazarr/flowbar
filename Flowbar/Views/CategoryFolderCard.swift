@@ -16,27 +16,26 @@ struct CategoryFolderCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: isExpanded ? 12 : 8) {
-            Button(action: onToggle) {
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(Color(hex: folder.colorHex) ?? .gray)
-                        .frame(width: 9, height: 9)
-                    Text(folder.name)
-                        .font(.callout).fontWeight(.semibold)
-                        .lineLimit(1)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(isExpanded ? Color.accentColor : .secondary)
-                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+            // Başlık + özet her zaman var ve tek bir tıklanabilir bölge.
+            // Sabit yapı + tek onTapGesture: aç/kapa için tap hedefi her
+            // durumda aynı yerde olduğundan tıklama güvenilir tetiklenir,
+            // aynı noktaya tekrar tıklamak kartı kapatır.
+            VStack(alignment: .leading, spacing: 8) {
+                header
+                summaryText
+                if !isExpanded {
+                    StatusDistributionLabels(distribution: CategoryStats.statusDistribution(folder))
+                    WeeklyComparisonPills(comparison: CategoryStats.weeklyComparison(folder))
                 }
             }
-            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: onToggle)
 
+            // Açık içerikteki proje kartları kendi tıklamalarını alır;
+            // bu bölge toggle gesture'ının dışında kalır.
             if isExpanded {
-                expandedBody
-            } else {
-                closedBody
+                expandedProjects
             }
         }
         .padding(10)
@@ -48,21 +47,30 @@ struct CategoryFolderCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 
-    private var closedBody: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(summary)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-            StatusDistributionLabels(distribution: CategoryStats.statusDistribution(folder))
-            WeeklyComparisonPills(comparison: CategoryStats.weeklyComparison(folder))
+    private var header: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(Color(hex: folder.colorHex) ?? .gray)
+                .frame(width: 9, height: 9)
+            Text(folder.name)
+                .font(.callout).fontWeight(.semibold)
+                .lineLimit(1)
+            Spacer()
+            Image(systemName: "chevron.right")
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(isExpanded ? Color.accentColor : .secondary)
+                .rotationEffect(.degrees(isExpanded ? 90 : 0))
         }
     }
 
-    private var expandedBody: some View {
+    private var summaryText: some View {
+        Text(summary)
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+    }
+
+    private var expandedProjects: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(summary)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
             ForEach(folder.projects) { project in
                 ProjectExpandableCard(
                     project: project,
@@ -74,3 +82,4 @@ struct CategoryFolderCard: View {
         }
     }
 }
+

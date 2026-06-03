@@ -46,6 +46,8 @@ struct CategoryGridView: View {
                         }
                     }
                 }
+                .animation(Self.expandAnimation, value: expandedFolderID)
+                .animation(Self.expandAnimation, value: expandedProjectID)
             }
         }
     }
@@ -83,16 +85,14 @@ struct CategoryGridView: View {
             folder: folder,
             isExpanded: isExpanded(folder),
             onToggle: {
-                withAnimation(Self.expandAnimation) {
-                    expandedFolderID = isExpanded(folder) ? nil : folder.id
-                    expandedProjectID = nil
-                }
+                // Animasyon VStack'teki .animation(value:) ile declarative
+                // yürütülür; burada sadece state'i değiştiriyoruz.
+                expandedFolderID = isExpanded(folder) ? nil : folder.id
+                expandedProjectID = nil
             },
             expandedProjectID: expandedProjectID,
             onProjectToggle: { id in
-                withAnimation(Self.expandAnimation) {
-                    expandedProjectID = (expandedProjectID == id) ? nil : id
-                }
+                expandedProjectID = (expandedProjectID == id) ? nil : id
             },
             onProjectDelete: onProjectDelete
         )
