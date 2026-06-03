@@ -52,6 +52,7 @@
 		A1000082 /* CategoryStatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000081 /* CategoryStatsTests.swift */; };
 		A1000090 /* CategoryFolderStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000090 /* CategoryFolderStats.swift */; };
 		A1000091 /* CategoryFolderCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000091 /* CategoryFolderCard.swift */; };
+		A1000092 /* CategoryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000092 /* CategoryGridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		B1000081 /* CategoryStatsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryStatsTests.swift; sourceTree = "<group>"; };
 		B1000090 /* CategoryFolderStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFolderStats.swift; sourceTree = "<group>"; };
 		B1000091 /* CategoryFolderCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFolderCard.swift; sourceTree = "<group>"; };
+		B1000092 /* CategoryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +196,7 @@
 				B1000064 /* SettingsView.swift */,
 				B1000090 /* CategoryFolderStats.swift */,
 				B1000091 /* CategoryFolderCard.swift */,
+				B1000092 /* CategoryGridView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				A1000080 /* CategoryStats.swift in Sources */,
 				A1000090 /* CategoryFolderStats.swift in Sources */,
 				A1000091 /* CategoryFolderCard.swift in Sources */,
+				A1000092 /* CategoryGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
