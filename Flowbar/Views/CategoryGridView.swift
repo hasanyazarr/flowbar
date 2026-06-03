@@ -24,17 +24,24 @@ struct CategoryGridView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 8) {
-                ForEach(rows) { row in
-                    if row.folders.count == 1, let folder = row.folders.first, isExpanded(folder) {
-                        card(for: folder)            // full-width expanded row
-                    } else {
-                        HStack(spacing: 8) {
-                            ForEach(row.folders) { folder in
-                                card(for: folder)
-                            }
-                            if row.folders.count == 1 {
-                                Color.clear.frame(maxWidth: .infinity) // keep last odd card half-width
+            if folders.isEmpty {
+                Text("No matching projects")
+                    .foregroundStyle(.secondary)
+                    .font(.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                VStack(spacing: 8) {
+                    ForEach(rows) { row in
+                        if row.folders.count == 1, let folder = row.folders.first, isExpanded(folder) {
+                            card(for: folder)            // full-width expanded row
+                        } else {
+                            HStack(spacing: 8) {
+                                ForEach(row.folders) { folder in
+                                    card(for: folder)
+                                }
+                                if row.folders.count == 1 {
+                                    Color.clear.frame(maxWidth: .infinity) // keep last odd card half-width
+                                }
                             }
                         }
                     }
