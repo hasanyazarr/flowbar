@@ -78,7 +78,7 @@ enum TimerLayout: String, CaseIterable, Identifiable {
     var popoverHeight: CGFloat {
         switch self {
         case .card: return 260
-        case .focus: return 300
+        case .focus: return 240
         case .compact: return 200
         }
     }
@@ -478,24 +478,26 @@ struct HomeView: View {
             .foregroundStyle(Color.accentColor)
     }
 
-    /// Canlı sayaç (duraklıyken soluk + "Paused" etiketi). Punto presete bağlı.
+    /// Canlı sayaç. Duraklıyken solar ve sağına kırmızı duraklatma ikonu eklenir
+    /// (alta taşmaması için sayacın yanında, dikey ortada). Punto presete bağlı.
     private var timerReadout: some View {
-        VStack(spacing: 2) {
-            Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
-                .font(.system(size: timerLayout.timerFontSize, weight: .bold, design: .monospaced))
-                .foregroundStyle(Color.accentColor)
-                .shadow(color: Color.accentColor.opacity(stopwatch.isPaused ? 0 : 0.2), radius: 6, x: 0, y: 3)
-                .opacity(stopwatch.isPaused ? 0.45 : 1)
-
-            if stopwatch.isPaused {
-                Label("Paused", systemImage: "pause.fill")
-                    .font(.caption2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
+        Text(Duration.stopwatch(seconds: stopwatch.elapsedSeconds))
+            .font(.system(size: timerLayout.timerFontSize, weight: .bold, design: .monospaced))
+            .foregroundStyle(Color.accentColor)
+            .shadow(color: Color.accentColor.opacity(stopwatch.isPaused ? 0 : 0.2), radius: 6, x: 0, y: 3)
+            .opacity(stopwatch.isPaused ? 0.45 : 1)
+            .overlay(alignment: .trailing) {
+                if stopwatch.isPaused {
+                    Image(systemName: "pause.circle.fill")
+                        .font(.system(size: timerLayout.timerFontSize * 0.34))
+                        .foregroundStyle(.red)
+                        .help(String(localized: "Paused"))
+                        .offset(x: timerLayout.timerFontSize * 0.55)
+                        .transition(.opacity.combined(with: .scale))
+                }
             }
-        }
-        .padding(.vertical, timerLayout == .compact ? 0 : 4)
-        .animation(.snappy(duration: 0.16), value: stopwatch.isPaused)
+            .padding(.vertical, timerLayout == .compact ? 0 : 4)
+            .animation(.snappy(duration: 0.16), value: stopwatch.isPaused)
     }
 
     private var sessionControls: some View {
