@@ -577,7 +577,7 @@ struct HomeView: View {
                 }
                 .buttonStyle(.plain)
                 .hoverHighlight()
-                .help(String(localized: "Toggle list / grid view"))
+                .help("Toggle list / grid view")
             }
 
             if showFilters && !categories.isEmpty {
