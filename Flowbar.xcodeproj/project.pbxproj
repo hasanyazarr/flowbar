@@ -46,6 +46,7 @@
 		A1000063 /* RemindView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000062 /* RemindView.swift */; };
 		A1000064 /* ReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000063 /* ReminderTests.swift */; };
 		A1000065 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000064 /* SettingsView.swift */; };
+		A1000071 /* StopwatchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000071 /* StopwatchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		B1000061 /* ReminderNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderNotificationManager.swift; sourceTree = "<group>"; };
 		B1000062 /* RemindView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindView.swift; sourceTree = "<group>"; };
 		B1000063 /* ReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTests.swift; sourceTree = "<group>"; };
+		B1000071 /* StopwatchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopwatchTests.swift; sourceTree = "<group>"; };
 		B1000064 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B1000070 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,6 +193,7 @@
 				B100000D /* ModelTests.swift */,
 				B1000011 /* ProjectManagementTests.swift */,
 				B1000063 /* ReminderTests.swift */,
+				B1000071 /* StopwatchTests.swift */,
 			);
 			path = FlowbarTests;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				A100000F /* Project.swift in Sources */,
 				A1000010 /* Session.swift in Sources */,
 				A1000012 /* ProjectManagementTests.swift in Sources */,
+				A1000071 /* StopwatchTests.swift in Sources */,
 				A1000013 /* ProjectStatus.swift in Sources */,
 				A1000015 /* Color+Hex.swift in Sources */,
 				A1000017 /* Category.swift in Sources */,
