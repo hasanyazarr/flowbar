@@ -55,6 +55,8 @@
 		A1000092 /* CategoryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000092 /* CategoryGridView.swift */; };
 		A1000093 /* CategoryShareChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000093 /* CategoryShareChart.swift */; };
 		A1000094 /* ProjectHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000094 /* ProjectHistory.swift */; };
+		A1000095 /* ProjectHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000094 /* ProjectHistory.swift */; };
+		A1000096 /* ProjectHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000095 /* ProjectHistoryTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,7 @@
 		B1000092 /* CategoryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridView.swift; sourceTree = "<group>"; };
 		B1000093 /* CategoryShareChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryShareChart.swift; sourceTree = "<group>"; };
 		B1000094 /* ProjectHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHistory.swift; sourceTree = "<group>"; };
+		B1000095 /* ProjectHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHistoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +219,7 @@
 				B1000063 /* ReminderTests.swift */,
 				B1000071 /* StopwatchTests.swift */,
 				B1000081 /* CategoryStatsTests.swift */,
+				B1000095 /* ProjectHistoryTests.swift */,
 			);
 			path = FlowbarTests;
 			sourceTree = "<group>";
@@ -366,6 +370,8 @@
 				A1000064 /* ReminderTests.swift in Sources */,
 				A1000081 /* CategoryStats.swift in Sources */,
 				A1000082 /* CategoryStatsTests.swift in Sources */,
+				A1000095 /* ProjectHistory.swift in Sources */,
+				A1000096 /* ProjectHistoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
