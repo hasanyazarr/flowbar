@@ -2,7 +2,6 @@ import SwiftUI
 
 struct CategoryFolderCard: View {
     let folder: CategoryFolder
-    let share: Double
     let isExpanded: Bool
     let onToggle: () -> Void
     // Expanded-content plumbing for the inner project cards:
@@ -50,13 +49,12 @@ struct CategoryFolderCard: View {
     }
 
     private var closedBody: some View {
-        VStack(alignment: .leading, spacing: 7) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(summary)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
-            StatusDistributionBar(distribution: CategoryStats.statusDistribution(folder))
-            WeeklyComparisonBar(comparison: CategoryStats.weeklyComparison(folder), colorHex: folder.colorHex)
-            CategoryShareBar(share: share, colorHex: folder.colorHex)
+            StatusDistributionLabels(distribution: CategoryStats.statusDistribution(folder))
+            WeeklyComparisonPills(comparison: CategoryStats.weeklyComparison(folder))
         }
     }
 

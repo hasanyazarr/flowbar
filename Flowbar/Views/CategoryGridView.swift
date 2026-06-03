@@ -81,7 +81,6 @@ struct CategoryGridView: View {
     private func card(for folder: CategoryFolder) -> some View {
         CategoryFolderCard(
             folder: folder,
-            share: CategoryStats.share(folder, among: folders),
             isExpanded: isExpanded(folder),
             onToggle: {
                 withAnimation(Self.expandAnimation) {
