@@ -15,8 +15,12 @@ final class ProjectHistoryTests: XCTestCase {
         let p = Project(name: name)
         ctx.insert(p)
         for s in sessions {
+            // endedAt = started + süre: SessionHistory.latest endedAt'e göre
+            // sıraladığı için gerçekçi bitiş zamanı kullanmak sıralamayı
+            // gerçekten sınar (başlangıçla aynı olunca fark görünmezdi).
+            let ended = s.started.addingTimeInterval(Double(s.logged))
             let session = Session(note: "", measuredSeconds: s.logged, loggedSeconds: s.logged,
-                                  startedAt: s.started, endedAt: s.started, project: p)
+                                  startedAt: s.started, endedAt: ended, project: p)
             ctx.insert(session)
         }
         return p
