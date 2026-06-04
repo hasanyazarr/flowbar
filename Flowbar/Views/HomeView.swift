@@ -1182,7 +1182,7 @@ struct ProjectExpandableCard: View {
 }
 
 /// Bir geçmiş oturumu yerinde düzenleme formu (proje/not/süre/tarih).
-private struct SessionEditForm: View {
+struct SessionEditForm: View {
     let session: Session
     let projects: [Project]
     let onCancel: () -> Void
@@ -1237,7 +1237,7 @@ private struct SessionEditForm: View {
     }
 }
 
-private struct SessionHistoryRow: View {
+struct SessionHistoryRow: View {
     let session: Session
     let onEdit: () -> Void
     let onDelete: () -> Void
