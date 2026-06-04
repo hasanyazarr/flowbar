@@ -178,6 +178,7 @@ struct HomeView: View {
     @State private var managementSearch = ""
     @State private var filterCategoryID: UUID?
     @State private var showFilters = false
+    @State private var showSortMenu = false
     @State private var showCategories = false
     @State private var newCategoryName = ""
     @State private var newCategoryColorHex = CategoryPalette.defaultHex
@@ -186,8 +187,11 @@ struct HomeView: View {
     @State private var showSettings = false
     @AppStorage("timerLayout") private var timerLayoutRaw = TimerLayout.card.rawValue
     @AppStorage("projectsViewMode") private var projectsViewMode = "list"
+    @AppStorage("historyViewMode") private var historyViewMode = "list"
+    @AppStorage("historySortMode") private var historySortModeRaw = HistorySortMode.recent.rawValue
 
     private var timerLayout: TimerLayout { TimerLayout.from(timerLayoutRaw) }
+    private var historySortMode: HistorySortMode { HistorySortMode.from(historySortModeRaw) }
 
     private var activeProjects: [Project] {
         ProjectFiltering.active(allProjects)
@@ -625,6 +629,46 @@ struct HomeView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("Past sessions").font(.headline)
                 Spacer()
+                if historyViewMode == "grid" {
+                    // SwiftUI `Menu` özel label'la macOS'ta label altında fantom bir
+                    // buton katmanı çiziyor; bunun yerine Button + popover ile kendi
+                    // sıralama listemizi açıyoruz (toggle butonuyla aynı görünüm).
+                    Button {
+                        showSortMenu.toggle()
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down.circle")
+                            .font(.title3)
+                            .foregroundStyle(showSortMenu ? Color.accentColor : .secondary)
+                            .frame(width: 28, height: 28)
+                            .background(Color.secondary.opacity(0.08))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
+                    .hoverHighlight()
+                    .help("Sort projects")
+                    .popover(isPresented: $showSortMenu, arrowEdge: .bottom) {
+                        SortMenu(selection: $historySortModeRaw) {
+                            showSortMenu = false
+                        }
+                    }
+                }
+
+                Button {
+                    withAnimation(.snappy(duration: 0.16)) {
+                        historyViewMode = historyViewMode == "grid" ? "list" : "grid"
+                    }
+                } label: {
+                    Image(systemName: historyViewMode == "grid" ? "square.grid.2x2.fill" : "list.bullet")
+                        .font(.title3)
+                        .foregroundStyle(historyViewMode == "grid" ? Color.accentColor : .secondary)
+                        .frame(width: 28, height: 28)
+                        .background(Color.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .buttonStyle(.plain)
+                .hoverHighlight()
+                .help("Toggle list / grid view")
+
                 Button {
                     // Form açılırken tarihi bugüne sabitle; menubar uygulaması
                     // arka planda günlerce açık kalabildiği için @State'in ilk
@@ -647,7 +691,23 @@ struct HomeView: View {
                 manualEntryForm
             }
 
-            if historySessions.isEmpty {
+            if historyViewMode == "grid" {
+                HistoryGridView(
+                    folders: ProjectHistory.folders(projects: activeProjects, sort: historySortMode),
+                    projects: activeProjects,
+                    editingSessionID: editingSessionID,
+                    onEditSession: { session in
+                        withAnimation(.snappy(duration: 0.16)) { editingSessionID = session.id }
+                    },
+                    onCancelEdit: {
+                        withAnimation(.snappy(duration: 0.16)) { editingSessionID = nil }
+                    },
+                    onSaveEdit: {
+                        withAnimation(.snappy(duration: 0.16)) { editingSessionID = nil }
+                    },
+                    onDeleteSession: { session in deleteSession(session) }
+                )
+            } else if historySessions.isEmpty {
                 Text("No sessions saved yet")
                     .foregroundStyle(.secondary)
                     .font(.callout)
@@ -1182,7 +1242,7 @@ struct ProjectExpandableCard: View {
 }
 
 /// Bir geçmiş oturumu yerinde düzenleme formu (proje/not/süre/tarih).
-private struct SessionEditForm: View {
+struct SessionEditForm: View {
     let session: Session
     let projects: [Project]
     let onCancel: () -> Void
@@ -1237,7 +1297,7 @@ private struct SessionEditForm: View {
     }
 }
 
-private struct SessionHistoryRow: View {
+struct SessionHistoryRow: View {
     let session: Session
     let onEdit: () -> Void
     let onDelete: () -> Void
@@ -1636,6 +1696,41 @@ private struct RecentSessionNotesView: View {
     }
 }
 
+/// History grid'i için sıralama seçenekleri listesi (popover içeriği). Her satır
+/// tıklanabilir; seçili olan başında tik işaretiyle vurgulanır. Seçince kapanır.
+private struct SortMenu: View {
+    @Binding var selection: String
+    let onSelect: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(HistorySortMode.allCases) { mode in
+                Button {
+                    selection = mode.rawValue
+                    onSelect()
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark")
+                            .font(.caption2.weight(.bold))
+                            .opacity(selection == mode.rawValue ? 1 : 0)
+                            .frame(width: 12)
+                        Text(mode.title)
+                            .fixedSize()
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .hoverHighlight()
+            }
+        }
+        .padding(6)
+        .frame(minWidth: 150)
+    }
+}
+
 /// İkonlu, kapsül biçimli arama alanı. Metin girilince temizleme (×) butonu belirir.
 private struct SearchField: View {
     @Binding var text: String
@@ -1778,7 +1873,7 @@ private struct CategoryDisclosureHeader: View {
     }
 }
 
-private struct CategoryChip: View {
+struct CategoryChip: View {
     let name: String
     let hex: String
 
