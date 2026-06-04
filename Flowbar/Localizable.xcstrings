@@ -63,22 +63,22 @@
         }
       }
     },
-    "ACTIVE SESSION": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AKTİF OTURUM"
-          }
-        }
-      }
-    },
     "About": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Uygulama Hakkında"
+          }
+        }
+      }
+    },
+    "ACTIVE SESSION": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AKTİF OTURUM"
           }
         }
       }
@@ -129,6 +129,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tümü"
+          }
+        }
+      }
+    },
+    "Alphabetical": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alfabetik"
           }
         }
       }
@@ -203,16 +213,6 @@
         }
       }
     },
-    "CATEGORY": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "KATEGORİ"
-          }
-        }
-      }
-    },
     "Cancel": {
       "localizations": {
         "tr": {
@@ -239,6 +239,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kategoriler"
+          }
+        }
+      }
+    },
+    "CATEGORY": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KATEGORİ"
           }
         }
       }
@@ -633,22 +643,22 @@
         }
       }
     },
-    "Icon Only": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yalnızca Simge"
-          }
-        }
-      }
-    },
     "Icon and Timer": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Simge ve Süre"
+          }
+        }
+      }
+    },
+    "Icon Only": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca Simge"
           }
         }
       }
@@ -709,6 +719,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem Açılışında Otomatik Başlat"
+          }
+        }
+      }
+    },
+    "macOS Notifications": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS Bildirimleri"
           }
         }
       }
@@ -953,16 +973,6 @@
         }
       }
     },
-    "PROJECT NAME": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PROJE ADI"
-          }
-        }
-      }
-    },
     "Past sessions": {
       "localizations": {
         "tr": {
@@ -1023,6 +1033,16 @@
         }
       }
     },
+    "PROJECT NAME": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PROJE ADI"
+          }
+        }
+      }
+    },
     "Project name": {
       "localizations": {
         "tr": {
@@ -1039,6 +1059,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Projeler"
+          }
+        }
+      }
+    },
+    "projects": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "proje"
           }
         }
       }
@@ -1063,12 +1093,12 @@
         }
       }
     },
-    "RESET": {
+    "Recent": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "SIFIRLA"
+            "value": "Son oturum"
           }
         }
       }
@@ -1153,6 +1183,16 @@
         }
       }
     },
+    "RESET": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SIFIRLA"
+          }
+        }
+      }
+    },
     "Reset": {
       "localizations": {
         "tr": {
@@ -1199,16 +1239,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Devam et"
-          }
-        }
-      }
-    },
-    "STATUS": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DURUM"
           }
         }
       }
@@ -1283,6 +1313,16 @@
         }
       }
     },
+    "sessions": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "oturum"
+          }
+        }
+      }
+    },
     "Set alarm/notification": {
       "localizations": {
         "tr": {
@@ -1333,6 +1373,16 @@
         }
       }
     },
+    "Sort projects": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projeleri sırala"
+          }
+        }
+      }
+    },
     "Start": {
       "localizations": {
         "tr": {
@@ -1349,6 +1399,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yeni oturum başlat"
+          }
+        }
+      }
+    },
+    "STATUS": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DURUM"
           }
         }
       }
@@ -1553,6 +1613,16 @@
         }
       }
     },
+    "Total time": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toplam süre"
+          }
+        }
+      }
+    },
     "Type '%@' to confirm": {
       "localizations": {
         "tr": {
@@ -1649,26 +1719,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dün"
-          }
-        }
-      }
-    },
-    "macOS Notifications": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "macOS Bildirimleri"
-          }
-        }
-      }
-    },
-    "projects": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "proje"
           }
         }
       }

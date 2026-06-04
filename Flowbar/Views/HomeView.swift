@@ -186,8 +186,11 @@ struct HomeView: View {
     @State private var showSettings = false
     @AppStorage("timerLayout") private var timerLayoutRaw = TimerLayout.card.rawValue
     @AppStorage("projectsViewMode") private var projectsViewMode = "list"
+    @AppStorage("historyViewMode") private var historyViewMode = "list"
+    @AppStorage("historySortMode") private var historySortModeRaw = HistorySortMode.recent.rawValue
 
     private var timerLayout: TimerLayout { TimerLayout.from(timerLayoutRaw) }
+    private var historySortMode: HistorySortMode { HistorySortMode.from(historySortModeRaw) }
 
     private var activeProjects: [Project] {
         ProjectFiltering.active(allProjects)
@@ -625,6 +628,43 @@ struct HomeView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("Past sessions").font(.headline)
                 Spacer()
+                if historyViewMode == "grid" {
+                    Menu {
+                        Picker("", selection: $historySortModeRaw) {
+                            ForEach(HistorySortMode.allCases) { mode in
+                                Text(mode.title).tag(mode.rawValue)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down.circle")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                            .frame(width: 28, height: 28)
+                            .background(Color.secondary.opacity(0.08))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    .menuStyle(.borderlessButton)
+                    .menuIndicator(.hidden)
+                    .fixedSize()
+                    .help("Sort projects")
+                }
+
+                Button {
+                    withAnimation(.snappy(duration: 0.16)) {
+                        historyViewMode = historyViewMode == "grid" ? "list" : "grid"
+                    }
+                } label: {
+                    Image(systemName: historyViewMode == "grid" ? "square.grid.2x2.fill" : "list.bullet")
+                        .font(.title3)
+                        .foregroundStyle(historyViewMode == "grid" ? Color.accentColor : .secondary)
+                        .frame(width: 28, height: 28)
+                        .background(Color.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .buttonStyle(.plain)
+                .hoverHighlight()
+                .help("Toggle list / grid view")
+
                 Button {
                     // Form açılırken tarihi bugüne sabitle; menubar uygulaması
                     // arka planda günlerce açık kalabildiği için @State'in ilk
@@ -647,7 +687,23 @@ struct HomeView: View {
                 manualEntryForm
             }
 
-            if historySessions.isEmpty {
+            if historyViewMode == "grid" {
+                HistoryGridView(
+                    folders: ProjectHistory.folders(projects: activeProjects, sort: historySortMode),
+                    projects: activeProjects,
+                    editingSessionID: editingSessionID,
+                    onEditSession: { session in
+                        withAnimation(.snappy(duration: 0.16)) { editingSessionID = session.id }
+                    },
+                    onCancelEdit: {
+                        withAnimation(.snappy(duration: 0.16)) { editingSessionID = nil }
+                    },
+                    onSaveEdit: {
+                        withAnimation(.snappy(duration: 0.16)) { editingSessionID = nil }
+                    },
+                    onDeleteSession: { session in deleteSession(session) }
+                )
+            } else if historySessions.isEmpty {
                 Text("No sessions saved yet")
                     .foregroundStyle(.secondary)
                     .font(.callout)
