@@ -178,6 +178,7 @@ struct HomeView: View {
     @State private var managementSearch = ""
     @State private var filterCategoryID: UUID?
     @State private var showFilters = false
+    @State private var showSortMenu = false
     @State private var showCategories = false
     @State private var newCategoryName = ""
     @State private var newCategoryColorHex = CategoryPalette.defaultHex
@@ -629,24 +630,27 @@ struct HomeView: View {
                 Text("Past sessions").font(.headline)
                 Spacer()
                 if historyViewMode == "grid" {
-                    Menu {
-                        Picker("", selection: $historySortModeRaw) {
-                            ForEach(HistorySortMode.allCases) { mode in
-                                Text(mode.title).tag(mode.rawValue)
-                            }
-                        }
+                    // SwiftUI `Menu` özel label'la macOS'ta label altında fantom bir
+                    // buton katmanı çiziyor; bunun yerine Button + popover ile kendi
+                    // sıralama listemizi açıyoruz (toggle butonuyla aynı görünüm).
+                    Button {
+                        showSortMenu.toggle()
                     } label: {
                         Image(systemName: "arrow.up.arrow.down.circle")
                             .font(.title3)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(showSortMenu ? Color.accentColor : .secondary)
                             .frame(width: 28, height: 28)
                             .background(Color.secondary.opacity(0.08))
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
-                    .menuStyle(.borderlessButton)
-                    .menuIndicator(.hidden)
-                    .fixedSize()
+                    .buttonStyle(.plain)
+                    .hoverHighlight()
                     .help("Sort projects")
+                    .popover(isPresented: $showSortMenu, arrowEdge: .bottom) {
+                        SortMenu(selection: $historySortModeRaw) {
+                            showSortMenu = false
+                        }
+                    }
                 }
 
                 Button {
@@ -1689,6 +1693,41 @@ private struct RecentSessionNotesView: View {
             formatter.setLocalizedDateFormatFromTemplate("d MMM")
             return formatter.string(from: date)
         }
+    }
+}
+
+/// History grid'i için sıralama seçenekleri listesi (popover içeriği). Her satır
+/// tıklanabilir; seçili olan başında tik işaretiyle vurgulanır. Seçince kapanır.
+private struct SortMenu: View {
+    @Binding var selection: String
+    let onSelect: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(HistorySortMode.allCases) { mode in
+                Button {
+                    selection = mode.rawValue
+                    onSelect()
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark")
+                            .font(.caption2.weight(.bold))
+                            .opacity(selection == mode.rawValue ? 1 : 0)
+                            .frame(width: 12)
+                        Text(mode.title)
+                            .fixedSize()
+                        Spacer(minLength: 0)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 5)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .hoverHighlight()
+            }
+        }
+        .padding(6)
+        .frame(minWidth: 150)
     }
 }
 
