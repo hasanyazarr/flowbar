@@ -193,9 +193,12 @@ final class ProjectManagementTests: XCTestCase {
         XCTAssertEqual(PopoverLayout.sessionNoteMinHeight, 110)
     }
 
-    func test_popoverLayout_sessionNoteUsesPlainMultilineBullets() {
-        XCTAssertTrue(PopoverLayout.sessionNotePlaceholder.contains("\n"))
+    func test_popoverLayout_sessionNotePlaceholderIsSingleLine() {
+        // Placeholder artık tek satır (eski "Secondary goal" ikinci satırı kaldırıldı):
+        // yeni satır veya madde işareti içermemeli.
+        XCTAssertFalse(PopoverLayout.sessionNotePlaceholder.contains("\n"))
         XCTAssertFalse(PopoverLayout.sessionNotePlaceholder.contains("•"))
+        XCTAssertFalse(PopoverLayout.sessionNotePlaceholder.isEmpty)
         XCTAssertEqual(PopoverLayout.recentSessionNotesTitle, "Recent session notes")
     }
 
