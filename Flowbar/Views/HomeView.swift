@@ -1778,7 +1778,7 @@ private struct CategoryDisclosureHeader: View {
     }
 }
 
-private struct CategoryChip: View {
+struct CategoryChip: View {
     let name: String
     let hex: String
 
