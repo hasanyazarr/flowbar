@@ -15,8 +15,10 @@ enum PersistenceController {
             return container
         }
 
-        // 2. Migrate edilemeyen eski store'u sil ve tekrar dene.
-        deleteDefaultStore()
+        // 2. Migrate edilemeyen store'u SİLME — kenara taşı (kurtarılabilir kalsın)
+        //    ve tekrar dene. Eskiden burada veri siliniyordu; bu, lightweight
+        //    migration başarısız olduğunda kullanıcının tüm verisini yok etti.
+        quarantineDefaultStore()
         if let container = try? ModelContainer(for: schema) {
             return container
         }
@@ -30,15 +32,13 @@ enum PersistenceController {
         }
     }
 
-    /// Varsayılan SwiftData store dosyalarını (.store, -shm, -wal) siler.
-    private static func deleteDefaultStore() {
+    /// Varsayılan SwiftData store'unu silmek yerine karantinaya alır
+    /// (`default.store.corrupt-<zaman>`). Veri yok edilmez, kurtarılabilir kalır.
+    private static func quarantineDefaultStore() {
         guard let appSupport = FileManager.default.urls(
             for: .applicationSupportDirectory, in: .userDomainMask
         ).first else { return }
 
-        for suffix in ["default.store", "default.store-shm", "default.store-wal"] {
-            let url = appSupport.appendingPathComponent(suffix)
-            try? FileManager.default.removeItem(at: url)
-        }
+        StoreQuarantine.quarantine(storeAt: appSupport.appendingPathComponent("default.store"))
     }
 }

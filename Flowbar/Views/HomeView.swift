@@ -928,6 +928,7 @@ struct HomeView: View {
         }
         let project = Project(name: trimmed)
         context.insert(project)
+        SessionPersistence.save(context)
         selectedProjectID = project.id
         expandedProjectID = project.id
         newProjectName = ""
@@ -942,6 +943,7 @@ struct HomeView: View {
             return
         }
         context.insert(Category(name: trimmed, colorHex: newCategoryColorHex))
+        SessionPersistence.save(context)
         newCategoryName = ""
         categoryError = nil
     }
@@ -961,11 +963,12 @@ struct HomeView: View {
         if manualProjectID == id { manualProjectID = nil }
         // .cascade ilişkisi sayesinde oturumlar da silinir.
         context.delete(project)
+        SessionPersistence.save(context)
     }
 
     private func deleteSession(_ session: Session) {
         if editingSessionID == session.id { editingSessionID = nil }
-        context.delete(session)
+        try? SessionPersistence.delete(session, in: context)
     }
 
     private func startEditingSession(_ session: Session, scroll proxy: ScrollViewProxy) {
@@ -1003,7 +1006,7 @@ struct HomeView: View {
     private func saveManualSession() {
         guard let project = activeProjects.first(where: { $0.id == manualProjectID }),
               manualDraft.canSave else { return }
-        context.insert(manualDraft.makeSession(project: project))
+        try? SessionPersistence.commit(manualDraft.makeSession(project: project), in: context)
         // Girişten sonra formu temizle ve kapat.
         manualNote = ""
         manualHours = 0
@@ -1248,6 +1251,7 @@ struct SessionEditForm: View {
     let onCancel: () -> Void
     let onSave: () -> Void
 
+    @Environment(\.modelContext) private var context
     @State private var edit: SessionEdit
 
     init(session: Session, projects: [Project], onCancel: @escaping () -> Void, onSave: @escaping () -> Void) {
@@ -1293,6 +1297,7 @@ struct SessionEditForm: View {
     private func save() {
         let project = projects.first { $0.id == edit.projectID }
         edit.apply(to: session, project: project)
+        SessionPersistence.save(context)
         onSave()
     }
 }

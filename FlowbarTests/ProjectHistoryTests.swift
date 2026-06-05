@@ -2,6 +2,8 @@ import XCTest
 import SwiftData
 @testable import Flowbar
 
+private typealias Category = Flowbar.Category
+
 final class ProjectHistoryTests: XCTestCase {
     func makeContext() throws -> ModelContext {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)

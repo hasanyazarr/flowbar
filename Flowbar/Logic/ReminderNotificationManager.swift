@@ -90,29 +90,32 @@ final class AutoBackupManager: ObservableObject {
         }
     }
     
+    /// Yedeklerin saklanacağı klasör. Kullanıcı özel bir klasör seçtiyse onu (bookmark),
+    /// seçmediyse varsayılan ~/Documents/Flowbar Backups klasörünü kullanır.
+    func backupDirectory() -> URL? {
+        if let bookmarked = restoreBookmark() { return bookmarked }
+        guard let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        else { return nil }
+        let dir = documents.appendingPathComponent("Flowbar Backups", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+
+    /// Saklanacak yedek sayısı (eskiler rotasyonla silinir).
+    static let backupsToKeep = 7
+
     // Otomatik yedekleme koşullarını kontrol eder ve çalıştırır
     func checkAndRunBackup(sessions: [Session]) {
         let frequency = UserDefaults.standard.string(forKey: "backupFrequency") ?? "never"
-        guard frequency != "never" else { return }
-        
-        guard let backupURL = restoreBookmark() else { return }
-        
-        let lastBackupTime = UserDefaults.standard.double(forKey: "lastBackupDate")
-        let lastBackupDate = Date(timeIntervalSince1970: lastBackupTime)
-        
-        let interval: TimeInterval
-        if frequency == "weekly" {
-            interval = 7 * 24 * 60 * 60 // 7 gün
-        } else if frequency == "monthly" {
-            interval = 30 * 24 * 60 * 60 // 30 gün
-        } else {
-            return
-        }
-        
-        let timePassed = Date().timeIntervalSince(lastBackupDate)
-        if timePassed >= interval {
-            triggerBackup(sessions: sessions, to: backupURL)
-        }
+        let lastTime = UserDefaults.standard.double(forKey: "lastBackupDate")
+        let lastBackup: Date? = lastTime > 0 ? Date(timeIntervalSince1970: lastTime) : nil
+
+        guard BackupSchedule.shouldBackup(
+            frequency: frequency, lastBackup: lastBackup, now: Date(), calendar: .current)
+        else { return }
+
+        guard let backupURL = backupDirectory() else { return }
+        triggerBackup(sessions: sessions, to: backupURL)
     }
     
     // Asıl yedekleme işlemini yapar
@@ -156,7 +159,7 @@ final class AutoBackupManager: ObservableObject {
             let fileName = "flowbar_backup_\(dateStr).json"
             
             let fileURL = url.appendingPathComponent(fileName)
-            
+
             // Güvenlik Kapsamlı URL erişimini başlat
             let accessing = url.startAccessingSecurityScopedResource()
             defer {
@@ -164,20 +167,58 @@ final class AutoBackupManager: ObservableObject {
                     url.stopAccessingSecurityScopedResource()
                 }
             }
-            
+
             try data.write(to: fileURL)
-            
+
+            // Tam SwiftData store kopyası (gerçek kurtarma için: proje+kategori+oturum hepsi).
+            // JSON sadece okunabilir özet; asıl kurtarma .store dosyasından yapılır.
+            copyStore(to: url, dateStr: dateStr)
+
+            // Eski yedekleri rotasyonla temizle (son N tut).
+            pruneOldBackups(in: url)
+
             // Tarih ve bildirimleri güncelle
             UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "lastBackupDate")
-            
+
             DispatchQueue.main.async {
                 ReminderNotificationManager.sendBackupNotification(fileName: fileName)
             }
-            
+
             print("AutoBackupManager: Backup successfully saved to \(fileURL.path)")
-            
+
         } catch {
             print("AutoBackupManager: Backup failed: \(error.localizedDescription)")
+        }
+    }
+
+    /// Canlı SwiftData store dosyasını (ve -wal/-shm) yedek klasörüne kopyalar.
+    private func copyStore(to backupDir: URL, dateStr: String) {
+        let fm = FileManager.default
+        guard let appSupport = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+        else { return }
+        for suffix in ["", "-wal", "-shm"] {
+            let src = appSupport.appendingPathComponent("default.store\(suffix)")
+            guard fm.fileExists(atPath: src.path) else { continue }
+            let dest = backupDir.appendingPathComponent("flowbar_backup_\(dateStr).store\(suffix)")
+            try? fm.removeItem(at: dest)  // aynı günün önceki kopyasını değiştir
+            try? fm.copyItem(at: src, to: dest)
+        }
+    }
+
+    /// Yedek klasöründe son N yedek setini tutar, eskilerini (.json + .store*) siler.
+    private func pruneOldBackups(in backupDir: URL) {
+        let fm = FileManager.default
+        guard let names = try? fm.contentsOfDirectory(atPath: backupDir.path) else { return }
+        // .store dosyalarının tarihine göre rotasyon kararı ver (her gün 1 set).
+        let storeFiles = names.filter { $0.hasSuffix(".store") }
+        let expired = BackupSchedule.expiredBackups(storeFiles, keeping: Self.backupsToKeep)
+        for storeName in expired {
+            // storeName = "flowbar_backup_<tarih>.store" → o güne ait tüm dosyaları sil
+            // (.json, .store, .store-wal, .store-shm). Prefix eşleşmesi: yanlış silmeyi önler.
+            let prefix = storeName.replacingOccurrences(of: ".store", with: "")
+            for related in names where related.hasPrefix(prefix) {
+                try? fm.removeItem(at: backupDir.appendingPathComponent(related))
+            }
         }
     }
 }

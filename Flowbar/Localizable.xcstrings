@@ -63,22 +63,22 @@
         }
       }
     },
-    "About": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uygulama Hakkında"
-          }
-        }
-      }
-    },
     "ACTIVE SESSION": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "AKTİF OTURUM"
+          }
+        }
+      }
+    },
+    "About": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama Hakkında"
           }
         }
       }
@@ -213,6 +213,16 @@
         }
       }
     },
+    "CATEGORY": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KATEGORİ"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "tr": {
@@ -239,16 +249,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Kategoriler"
-          }
-        }
-      }
-    },
-    "CATEGORY": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "KATEGORİ"
           }
         }
       }
@@ -413,6 +413,16 @@
         }
       }
     },
+    "Daily": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Günlük"
+          }
+        }
+      }
+    },
     "Data & Storage": {
       "localizations": {
         "tr": {
@@ -499,6 +509,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Geliştirici & Topluluk"
+          }
+        }
+      }
+    },
+    "Documents › Flowbar Backups": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belgeler › Flowbar Yedekleri"
           }
         }
       }
@@ -643,22 +663,22 @@
         }
       }
     },
-    "Icon and Timer": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Simge ve Süre"
-          }
-        }
-      }
-    },
     "Icon Only": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Yalnızca Simge"
+          }
+        }
+      }
+    },
+    "Icon and Timer": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simge ve Süre"
           }
         }
       }
@@ -719,16 +739,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem Açılışında Otomatik Başlat"
-          }
-        }
-      }
-    },
-    "macOS Notifications": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "macOS Bildirimleri"
           }
         }
       }
@@ -973,6 +983,16 @@
         }
       }
     },
+    "PROJECT NAME": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PROJE ADI"
+          }
+        }
+      }
+    },
     "Past sessions": {
       "localizations": {
         "tr": {
@@ -1033,16 +1053,6 @@
         }
       }
     },
-    "PROJECT NAME": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PROJE ADI"
-          }
-        }
-      }
-    },
     "Project name": {
       "localizations": {
         "tr": {
@@ -1063,16 +1073,6 @@
         }
       }
     },
-    "projects": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "proje"
-          }
-        }
-      }
-    },
     "Provisional": {
       "localizations": {
         "tr": {
@@ -1089,6 +1089,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çıkış"
+          }
+        }
+      }
+    },
+    "RESET": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SIFIRLA"
           }
         }
       }
@@ -1183,16 +1193,6 @@
         }
       }
     },
-    "RESET": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SIFIRLA"
-          }
-        }
-      }
-    },
     "Reset": {
       "localizations": {
         "tr": {
@@ -1239,6 +1239,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Devam et"
+          }
+        }
+      }
+    },
+    "STATUS": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DURUM"
           }
         }
       }
@@ -1309,16 +1319,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Oturum"
-          }
-        }
-      }
-    },
-    "sessions": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "oturum"
           }
         }
       }
@@ -1403,16 +1403,6 @@
         }
       }
     },
-    "STATUS": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "DURUM"
-          }
-        }
-      }
-    },
     "Stop": {
       "localizations": {
         "tr": {
@@ -1469,6 +1459,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bu akşam"
+          }
+        }
+      }
+    },
+    "This is an early version and may contain undiscovered bugs. Keeping automatic backups on is strongly recommended to avoid data loss.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu erken bir sürümdür ve keşfedilmemiş hatalar içerebilir. Veri kaybını önlemek için otomatik yedeklemeyi açık tutmanız önemle önerilir."
           }
         }
       }
@@ -1719,6 +1719,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dün"
+          }
+        }
+      }
+    },
+    "macOS Notifications": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS Bildirimleri"
+          }
+        }
+      }
+    },
+    "projects": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "proje"
+          }
+        }
+      }
+    },
+    "sessions": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "oturum"
           }
         }
       }
