@@ -5,6 +5,7 @@ import Charts
 struct AnalyticsView: View {
     @Query(sort: \Session.endedAt) private var allSessions: [Session]
     @State private var period: AnalyticsPeriod = .week
+    @State private var hoveredBucketID: Date?
 
     private var sessions: [Session] {
         Analytics.filter(allSessions, period: period)
@@ -62,18 +63,57 @@ struct AnalyticsView: View {
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
+    private var hoveredBucket: TrendBucket? {
+        guard let id = hoveredBucketID else { return nil }
+        return trend.first { $0.id == id }
+    }
+
     private var trendSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Work trend").font(.headline)
+            HStack {
+                Text("Work trend").font(.headline)
+                Spacer()
+                // Hover edilen günün toplam süresi (ör. "6h 0m").
+                if let bucket = hoveredBucket {
+                    Text("\(bucket.label) · \(Duration.short(seconds: bucket.totalSeconds))")
+                        .font(.caption).fontWeight(.semibold).monospacedDigit()
+                        .foregroundStyle(Color.accentColor)
+                        .transition(.opacity)
+                }
+            }
             Chart(trend) { bucket in
                 BarMark(
                     x: .value("Period", bucket.label),
                     y: .value("Hours", Double(bucket.totalSeconds) / 3600.0)
                 )
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(Color.accentColor.opacity(
+                    hoveredBucketID == nil || hoveredBucketID == bucket.id ? 1.0 : 0.4
+                ))
             }
             .frame(height: 160)
+            .chartOverlay { proxy in
+                GeometryReader { geo in
+                    Rectangle().fill(.clear).contentShape(Rectangle())
+                        .onContinuousHover { phase in
+                            switch phase {
+                            case .active(let location):
+                                hoveredBucketID = bucketID(at: location, proxy: proxy, geo: geo)
+                            case .ended:
+                                hoveredBucketID = nil
+                            }
+                        }
+                }
+            }
+            .animation(.easeOut(duration: 0.12), value: hoveredBucketID)
         }
+    }
+
+    /// Fare konumundaki x değerinden (kategorik label) ilgili bucket'ın id'sini bulur.
+    private func bucketID(at location: CGPoint, proxy: ChartProxy, geo: GeometryProxy) -> Date? {
+        let plotOrigin = geo[proxy.plotAreaFrame].origin
+        let xInPlot = location.x - plotOrigin.x
+        guard let label: String = proxy.value(atX: xInPlot) else { return nil }
+        return trend.first { $0.label == label }?.id
     }
 
     private var categorySection: some View {
