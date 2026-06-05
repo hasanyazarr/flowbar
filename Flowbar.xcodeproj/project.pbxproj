@@ -59,6 +59,12 @@
 		A1000096 /* ProjectHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000095 /* ProjectHistoryTests.swift */; };
 		A1000097 /* ProjectHistoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000097 /* ProjectHistoryCard.swift */; };
 		A1000098 /* HistoryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000098 /* HistoryGridView.swift */; };
+		A1000099 /* SessionPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000099 /* SessionPersistenceTests.swift */; };
+		A100009A /* SessionPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009A /* SessionPersistence.swift */; };
+		A100009C /* StoreQuarantine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009C /* StoreQuarantine.swift */; };
+		A100009D /* StoreQuarantineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009D /* StoreQuarantineTests.swift */; };
+		A100009E /* BackupSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009E /* BackupSchedule.swift */; };
+		A100009F /* BackupScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009F /* BackupScheduleTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +120,12 @@
 		B1000095 /* ProjectHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHistoryTests.swift; sourceTree = "<group>"; };
 		B1000097 /* ProjectHistoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHistoryCard.swift; sourceTree = "<group>"; };
 		B1000098 /* HistoryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryGridView.swift; sourceTree = "<group>"; };
+		B1000099 /* SessionPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPersistenceTests.swift; sourceTree = "<group>"; };
+		B100009A /* SessionPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPersistence.swift; sourceTree = "<group>"; };
+		B100009C /* StoreQuarantine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreQuarantine.swift; sourceTree = "<group>"; };
+		B100009D /* StoreQuarantineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreQuarantineTests.swift; sourceTree = "<group>"; };
+		B100009E /* BackupSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSchedule.swift; sourceTree = "<group>"; };
+		B100009F /* BackupScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupScheduleTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +204,9 @@
 				B1000061 /* ReminderNotificationManager.swift */,
 				B1000080 /* CategoryStats.swift */,
 				B1000094 /* ProjectHistory.swift */,
+				B100009A /* SessionPersistence.swift */,
+				B100009C /* StoreQuarantine.swift */,
+				B100009E /* BackupSchedule.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -226,6 +241,9 @@
 				B1000071 /* StopwatchTests.swift */,
 				B1000081 /* CategoryStatsTests.swift */,
 				B1000095 /* ProjectHistoryTests.swift */,
+				B1000099 /* SessionPersistenceTests.swift */,
+				B100009D /* StoreQuarantineTests.swift */,
+				B100009F /* BackupScheduleTests.swift */,
 			);
 			path = FlowbarTests;
 			sourceTree = "<group>";
@@ -353,6 +371,9 @@
 				A1000094 /* ProjectHistory.swift in Sources */,
 				A1000097 /* ProjectHistoryCard.swift in Sources */,
 				A1000098 /* HistoryGridView.swift in Sources */,
+				A100009A /* SessionPersistence.swift in Sources */,
+				A100009C /* StoreQuarantine.swift in Sources */,
+				A100009E /* BackupSchedule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,24 +383,14 @@
 			files = (
 				A100000C /* DurationTests.swift in Sources */,
 				A100000D /* ModelTests.swift in Sources */,
-				A100000E /* Duration.swift in Sources */,
-				A100000F /* Project.swift in Sources */,
-				A1000010 /* Session.swift in Sources */,
 				A1000012 /* ProjectManagementTests.swift in Sources */,
 				A1000071 /* StopwatchTests.swift in Sources */,
-				A1000013 /* ProjectStatus.swift in Sources */,
-				A1000015 /* Color+Hex.swift in Sources */,
-				A1000017 /* Category.swift in Sources */,
-				A1000019 /* ProjectFiltering.swift in Sources */,
-				A100001F /* PopoverLayout.swift in Sources */,
-				A1000041 /* ManualSessionEntry.swift in Sources */,
-				A1000051 /* Analytics.swift in Sources */,
-				A1000061 /* Reminder.swift in Sources */,
 				A1000064 /* ReminderTests.swift in Sources */,
-				A1000081 /* CategoryStats.swift in Sources */,
 				A1000082 /* CategoryStatsTests.swift in Sources */,
-				A1000095 /* ProjectHistory.swift in Sources */,
 				A1000096 /* ProjectHistoryTests.swift in Sources */,
+				A1000099 /* SessionPersistenceTests.swift in Sources */,
+				A100009D /* StoreQuarantineTests.swift in Sources */,
+				A100009F /* BackupScheduleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

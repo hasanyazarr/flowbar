@@ -3,6 +3,8 @@ import SwiftUI
 import SwiftData
 @testable import Flowbar
 
+private typealias Category = Flowbar.Category
+
 final class ProjectManagementTests: XCTestCase {
     func makeContext() throws -> ModelContext {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)

@@ -236,6 +236,7 @@ struct SettingsView: View {
 
                             Picker("", selection: $backupFrequency) {
                                 Text("Off").tag("never")
+                                Text("Daily").tag("daily")
                                 Text("Weekly").tag("weekly")
                                 Text("Monthly").tag("monthly")
                             }
@@ -252,7 +253,7 @@ struct SettingsView: View {
                                 .fontWeight(.medium)
 
                             HStack {
-                                Text(backupDirectoryPath.isEmpty ? String(localized: "No folder selected") : backupDirectoryPath)
+                                Text(backupDirectoryPath.isEmpty ? String(localized: "Documents › Flowbar Backups") : backupDirectoryPath)
                                     .font(.caption2)
                                     .foregroundStyle(.secondary)
                                     .lineLimit(1)
@@ -268,7 +269,7 @@ struct SettingsView: View {
                             }
                         }
 
-                        if !backupDirectoryPath.isEmpty && backupFrequency != "never" {
+                        if backupFrequency != "never" {
                             Divider().padding(.vertical, 2)
 
                             HStack {
@@ -280,6 +281,18 @@ struct SettingsView: View {
                                     .font(.caption2)
                                     .fontWeight(.semibold)
                             }
+                        }
+
+                        // Erken sürüm uyarısı: keşfedilmemiş hatalara karşı yedekle çalışma önerisi.
+                        Divider().padding(.vertical, 2)
+                        HStack(alignment: .top, spacing: 6) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.yellow)
+                            Text("This is an early version and may contain undiscovered bugs. Keeping automatic backups on is strongly recommended to avoid data loss.")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                     .padding(12)
@@ -545,6 +558,7 @@ struct SettingsView: View {
             for reminder in completed {
                 context.delete(reminder)
             }
+            SessionPersistence.save(context)
         }
     }
     
@@ -558,7 +572,8 @@ struct SettingsView: View {
             for project in allProjects { context.delete(project) }
             for category in allCategories { context.delete(category) }
             for reminder in allReminders { context.delete(reminder) }
-            
+            SessionPersistence.save(context)
+
             showDeleteConfirm = false
         }
     }

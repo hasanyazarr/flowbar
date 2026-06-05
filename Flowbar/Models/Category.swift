@@ -40,5 +40,6 @@ enum CategoryManagement {
             project.category = nil
         }
         context.delete(category)
+        SessionPersistence.save(context)
     }
 }

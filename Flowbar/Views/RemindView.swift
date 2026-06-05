@@ -383,6 +383,7 @@ struct RemindView: View {
         let reminder = Reminder(content: trimmed, remindAt: rTime, project: selectedProject)
 
         context.insert(reminder)
+        SessionPersistence.save(context)
 
         if hasRemindTime {
             ReminderNotificationManager.scheduleNotification(for: reminder)
@@ -403,6 +404,7 @@ struct RemindView: View {
             } else if reminder.remindAt != nil {
                 ReminderNotificationManager.scheduleNotification(for: reminder)
             }
+            SessionPersistence.save(context)
         }
     }
 
@@ -411,6 +413,7 @@ struct RemindView: View {
         withAnimation(.snappy(duration: 0.14)) {
             ReminderNotificationManager.cancelNotification(for: reminder)
             context.delete(reminder)
+            SessionPersistence.save(context)
         }
     }
 

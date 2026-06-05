@@ -107,7 +107,7 @@ struct SaveView: View {
         guard let project else { finish(); return }
         let start = stopwatch.startedAt ?? .now
         let s = draft.makeSession(measuredSeconds: measured, startedAt: start, endedAt: .now, project: project)
-        context.insert(s)
+        try? SessionPersistence.commit(s, in: context)
         finish()
     }
 
