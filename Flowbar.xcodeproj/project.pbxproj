@@ -65,6 +65,8 @@
 		A100009D /* StoreQuarantineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009D /* StoreQuarantineTests.swift */; };
 		A100009E /* BackupSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009E /* BackupSchedule.swift */; };
 		A100009F /* BackupScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100009F /* BackupScheduleTests.swift */; };
+		A10000A0 /* ProjectArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000A0 /* ProjectArchive.swift */; };
+		A10000A1 /* ProjectArchiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000A1 /* ProjectArchiveTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +128,8 @@
 		B100009D /* StoreQuarantineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreQuarantineTests.swift; sourceTree = "<group>"; };
 		B100009E /* BackupSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupSchedule.swift; sourceTree = "<group>"; };
 		B100009F /* BackupScheduleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupScheduleTests.swift; sourceTree = "<group>"; };
+		B10000A0 /* ProjectArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectArchive.swift; sourceTree = "<group>"; };
+		B10000A1 /* ProjectArchiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectArchiveTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +211,7 @@
 				B100009A /* SessionPersistence.swift */,
 				B100009C /* StoreQuarantine.swift */,
 				B100009E /* BackupSchedule.swift */,
+				B10000A0 /* ProjectArchive.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 				B1000099 /* SessionPersistenceTests.swift */,
 				B100009D /* StoreQuarantineTests.swift */,
 				B100009F /* BackupScheduleTests.swift */,
+				B10000A1 /* ProjectArchiveTests.swift */,
 			);
 			path = FlowbarTests;
 			sourceTree = "<group>";
@@ -374,6 +380,7 @@
 				A100009A /* SessionPersistence.swift in Sources */,
 				A100009C /* StoreQuarantine.swift in Sources */,
 				A100009E /* BackupSchedule.swift in Sources */,
+				A10000A0 /* ProjectArchive.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +398,7 @@
 				A1000099 /* SessionPersistenceTests.swift in Sources */,
 				A100009D /* StoreQuarantineTests.swift in Sources */,
 				A100009F /* BackupScheduleTests.swift in Sources */,
+				A10000A1 /* ProjectArchiveTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

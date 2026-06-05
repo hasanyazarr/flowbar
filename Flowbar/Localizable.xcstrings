@@ -83,6 +83,16 @@
         }
       }
     },
+    "Active": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devam Eden"
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "tr": {
@@ -149,6 +159,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gelişmiş haftalık zaman planlayıcı ve hatırlatıcı menü bar aracı. macOS sistem görünümünü (Açık/Karanlık mod) otomatik takip eder."
+          }
+        }
+      }
+    },
+    "Archive": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arşivle"
           }
         }
       }
@@ -389,6 +409,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sıkışık"
+          }
+        }
+      }
+    },
+    "Completed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamlanan"
+          }
+        }
+      }
+    },
+    "Completed %@": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamlandı: %@"
           }
         }
       }
@@ -703,6 +743,16 @@
         }
       }
     },
+    "LEARNINGS": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ÖĞRENDİKLERİM"
+          }
+        }
+      }
+    },
     "Language": {
       "localizations": {
         "tr": {
@@ -739,6 +789,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sistem Açılışında Otomatik Başlat"
+          }
+        }
+      }
+    },
+    "Mark as completed and move to the Completed view": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamlandı olarak işaretle ve Tamamlananlar'a taşı"
           }
         }
       }
@@ -799,6 +859,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "En çok çalışılan projeler"
+          }
+        }
+      }
+    },
+    "Move this project back to active": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu projeyi devam edenlere geri taşı"
           }
         }
       }
@@ -969,6 +1039,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Not (opsiyonel)"
+          }
+        }
+      }
+    },
+    "OUTCOME": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SONUÇ"
           }
         }
       }
@@ -1233,12 +1313,32 @@
         }
       }
     },
+    "Restore to active": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devam edenlere geri al"
+          }
+        }
+      }
+    },
     "Resume": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
             "value": "Devam et"
+          }
+        }
+      }
+    },
+    "Retrospective": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değerlendirme"
           }
         }
       }
@@ -1679,6 +1779,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Haftalık"
+          }
+        }
+      }
+    },
+    "What did you learn?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne öğrendin?"
+          }
+        }
+      }
+    },
+    "What was the result or output?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonuç ya da çıktı ne oldu?"
           }
         }
       }
