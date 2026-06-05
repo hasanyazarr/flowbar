@@ -16,6 +16,12 @@ final class Project {
     var statusRaw: String = ProjectStatus.inProgress.rawValue
     var priority: Int = 0
     var isArchived: Bool = false
+    /// Retrospektif: proje arşivlenirken yazılan kısa sonuç/çıktı notu (opsiyonel).
+    var retroOutcome: String = ""
+    /// Retrospektif: bu projeden öğrenilenler (opsiyonel).
+    var retroLearnings: String = ""
+    /// Projenin arşive (tamamlandı) alındığı an; aktifken nil.
+    var completedAt: Date? = nil
 
     init(name: String) {
         self.id = UUID()
@@ -27,6 +33,15 @@ final class Project {
         self.statusRaw = ProjectStatus.inProgress.rawValue
         self.priority = 0
         self.isArchived = false
+        self.retroOutcome = ""
+        self.retroLearnings = ""
+        self.completedAt = nil
+    }
+
+    /// Retrospektifte herhangi bir içerik var mı?
+    var hasRetrospective: Bool {
+        !retroOutcome.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            || !retroLearnings.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     var status: ProjectStatus {

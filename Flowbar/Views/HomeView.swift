@@ -187,6 +187,8 @@ struct HomeView: View {
     @State private var showSettings = false
     @AppStorage("timerLayout") private var timerLayoutRaw = TimerLayout.card.rawValue
     @AppStorage("projectsViewMode") private var projectsViewMode = "list"
+    /// Projects sekmesi: "active" (devam eden) veya "completed" (arşivlenmiş) görünüm.
+    @State private var projectsArchiveMode = "active"
     @AppStorage("historyViewMode") private var historyViewMode = "list"
     @AppStorage("historySortMode") private var historySortModeRaw = HistorySortMode.recent.rawValue
 
@@ -205,9 +207,16 @@ struct HomeView: View {
     }
 
     private var managementProjects: [Project] {
-        let byCategory = ProjectFiltering.filtered(activeProjects, categoryID: filterCategoryID)
-        return ProjectFiltering.filtered(byCategory, query: managementSearch)
-            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        let source = projectsArchiveMode == "completed"
+            ? ProjectArchive.completed(allProjects)
+            : ProjectArchive.active(allProjects)
+        let byCategory = ProjectFiltering.filtered(source, categoryID: filterCategoryID)
+        let filtered = ProjectFiltering.filtered(byCategory, query: managementSearch)
+        // Completed: en son tamamlanan üstte (ProjectArchive.completed sırasını koru).
+        // Active: isimce alfabetik.
+        return projectsArchiveMode == "completed"
+            ? filtered
+            : filtered.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
     }
 
     private var historySessions: [Session] {
@@ -544,6 +553,13 @@ struct HomeView: View {
             if PopoverLayout.showsInlineProjectCreation(for: selectedTab.layoutKind) {
                 addProjectRow(buttonTitle: String(localized: "Add"))
             }
+
+            Picker("", selection: $projectsArchiveMode.animation(.snappy(duration: 0.16))) {
+                Text("Active").tag("active")
+                Text("Completed").tag("completed")
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
 
             HStack(spacing: 8) {
                 SearchField(text: $managementSearch, placeholder: String(localized: "Search projects…"))
@@ -1065,6 +1081,7 @@ struct ProjectExpandableCard: View {
     let isExpanded: Bool
     let onToggle: () -> Void
     let onDelete: () -> Void
+    @Environment(\.modelContext) private var context
     @Query(sort: \Category.name) private var categories: [Category]
     @State private var showDeleteConfirm = false
 
@@ -1185,10 +1202,17 @@ struct ProjectExpandableCard: View {
                         .frame(maxWidth: .infinity)
                     }
 
+                    // Retrospektif: sonuç + öğrendiklerin (opsiyonel, her zaman düzenlenebilir).
+                    // Done veya arşivlenmiş projelerde gösterilir.
+                    if project.status == .done || project.isArchived {
+                        retrospectiveFields
+                    }
+
                     if showDeleteConfirm {
                         deleteConfirmBar
                     } else {
-                        HStack {
+                        HStack(spacing: 8) {
+                            archiveButton
                             Spacer()
                             Button(role: .destructive) {
                                 withAnimation(.snappy(duration: 0.14)) { showDeleteConfirm = true }
@@ -1221,6 +1245,79 @@ struct ProjectExpandableCard: View {
                         : (isExpanded ? Color.accentColor.opacity(0.25) : Color.clear),
                     lineWidth: 1
                 )
+        }
+    }
+
+    // MARK: - Retrospective
+
+    @ViewBuilder
+    private var retrospectiveFields: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Divider().opacity(0.5)
+            Label("Retrospective", systemImage: "checkmark.seal")
+                .font(.caption).fontWeight(.semibold)
+                .foregroundStyle(Color.accentColor)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("OUTCOME")
+                    .font(.system(size: 9, weight: .bold, design: .rounded))
+                    .foregroundStyle(.secondary)
+                SessionNoteEditor(text: $project.retroOutcome,
+                                  placeholder: String(localized: "What was the result or output?"))
+                    .frame(height: 48, alignment: .topLeading)
+                    .onChange(of: project.retroOutcome) { SessionPersistence.save(context) }
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("LEARNINGS")
+                    .font(.system(size: 9, weight: .bold, design: .rounded))
+                    .foregroundStyle(.secondary)
+                SessionNoteEditor(text: $project.retroLearnings,
+                                  placeholder: String(localized: "What did you learn?"))
+                    .frame(height: 48, alignment: .topLeading)
+                    .onChange(of: project.retroLearnings) { SessionPersistence.save(context) }
+            }
+
+            if project.isArchived, let completedAt = project.completedAt {
+                Text("Completed \(completedAt.formatted(date: .abbreviated, time: .omitted))")
+                    .font(.caption2).foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    // MARK: - Archive / Restore
+
+    @ViewBuilder
+    private var archiveButton: some View {
+        if project.isArchived {
+            Button {
+                withAnimation(.snappy(duration: 0.16)) {
+                    ProjectArchive.unarchive(project)
+                    SessionPersistence.save(context)
+                }
+            } label: {
+                Label("Restore to active", systemImage: "arrow.uturn.backward")
+                    .font(.caption)
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .help("Move this project back to active")
+        } else if project.status == .done {
+            Button {
+                withAnimation(.snappy(duration: 0.16)) {
+                    ProjectArchive.archive(project,
+                                           outcome: project.retroOutcome,
+                                           learnings: project.retroLearnings,
+                                           now: .now)
+                    SessionPersistence.save(context)
+                }
+            } label: {
+                Label("Archive", systemImage: "archivebox")
+                    .font(.caption)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.small)
+            .help("Mark as completed and move to the Completed view")
         }
     }
 
