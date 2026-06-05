@@ -109,7 +109,7 @@ if [[ "${SKIP_GH:-0}" != "1" ]]; then
     git push -q origin "$TAG" 2>/dev/null || true
     gh release create "$TAG" "$DMG_PATH" \
       --title "$APP_NAME $NEW" \
-      --notes "Otomatik sürüm. DMG'yi indirip Flowbar.app'i /Applications'a sürükleyin." \
+      --notes "Automated release. Download the DMG and drag Flowbar.app into /Applications." \
       && echo "✓ GitHub Release: $TAG" \
       || echo "✗ GitHub Release oluşturulamadı (gh auth login? remote?)"
   else
